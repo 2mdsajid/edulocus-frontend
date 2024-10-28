@@ -14,7 +14,7 @@ export function cn(...inputs: ClassValue[]) {
 export function getFirstTwoUpperCase(inputString: string | null | undefined) {
   if (inputString) {
     const firstTwoUpperCase = inputString.slice(0, 2).toUpperCase();
-    return firstTwoUpperCase;
+    return firstTwoUpperCase ;
   }
 }
 
@@ -80,3 +80,20 @@ export const generateVerificationKey = (length: number) => {
   }
   return key;
 };
+
+
+const colors = [
+  "#FF6384", // Pink
+  "#36A2EB", // Blue
+  "#FFCE56", // Yellow
+  "#4BC0C0", // Teal
+  "#9966FF", // Purple
+  "#FF9F40", // Orange
+  "#FF5733", // Coral
+  "#C70039", // Crimson
+  "#900C3F", // Dark Red
+  "#581845", // Dark Purple
+];
+
+// Helper function to get a random color from the colors array
+export const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];

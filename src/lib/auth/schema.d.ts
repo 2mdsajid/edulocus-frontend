@@ -16,7 +16,6 @@ export type User = {
 }
 
 export type TBaseUser = Omit<User,
-    'image' |
     'password' |
     'isCompleted' |
     'ip' |

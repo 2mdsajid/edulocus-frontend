@@ -17,6 +17,7 @@ import { RxCross2 } from 'react-icons/rx';
 import { VscOutput } from 'react-icons/vsc';
 import NavLink from "./NavLink";
 import ProfileDialog from "./ProfileDialog";
+import { TBaseUser } from "@/lib/auth/schema";
 // import { LucideNewspaper } from 'lucide-react';
 
 
@@ -35,9 +36,15 @@ const notifications = [
   'Claim Your First Rewards'
 ]
 
-const Header = () => {
+type Props = {
+  user: TBaseUser | null
+}
+
+const Header = (props: Props) => {
 
   const pathname = usePathname()
+
+  const { user } = props
 
   const [showLinks, setShowLinks] = useState(false);
   const [isScrolled, setIsScrolled] = useState(true);
@@ -65,7 +72,7 @@ const Header = () => {
   }, [pathname]);
 
   return (
-    <div className={`w-screen h-16 fixed top-0 left-0 z-100 flex items-center justify-between px-4 md:px-10 lg:px-20 xl:px-32 ${isScrolled ? 'border-b dark:border-white border-gray-800 shadow-sm dark:bg-dark-primary bg-primary' : 'bg-transparent'} `}>
+    <div className={`w-screen h-16 fixed top-0 left-0 z-100 flex items-center justify-between px-4 md:px-10 lg:px-20 xl:px-32 ${isScrolled ? 'border-b dark:border-white border-gray-800 shadow-sm dark:bg-dark-primary bg-primary ' : 'bg-transparent'} `}>
       <div className="w-full h-full flex items-center justify-between">
 
         <div className="sm:hidden">
@@ -87,8 +94,8 @@ const Header = () => {
           </div>
 
           <NavLink
-            navlabel='Results'
-            navlink='/result'
+            navlabel='Membership'
+            navlink='/membership'
             showLinks={showLinks}
             handleToggle={handleToggle}
             icon={<VscOutput />}
@@ -148,8 +155,9 @@ const Header = () => {
             <PopoverTrigger>
               <div className='relative border  -white rounded-full cursor-pointer' >
                 <Avatar>
-                  {dummyUser.image ? <AvatarImage src={dummyUser.image} /> :
-                    <AvatarFallback className='text-black dark:text'>{getFirstTwoUpperCase(dummyUser.name)}</AvatarFallback>}
+                  {user?.image
+                    ? <AvatarImage src={user.image} />
+                    : <AvatarFallback className='text-black dark:text'>{getFirstTwoUpperCase(user?.name || 'EDULOCUS')}</AvatarFallback>}
                 </Avatar>
                 <div className='absolute right-0 bottom-0'>
                   <IoIosArrowDropdownCircle />
@@ -157,7 +165,7 @@ const Header = () => {
               </div>
             </PopoverTrigger>
             <PopoverContent className='m-2 dark:bg-dark-primary bg-primary border  '>
-              <ProfileDialog />
+              <ProfileDialog user={user} />
             </PopoverContent>
           </Popover>
         </div>

@@ -1,6 +1,5 @@
-import React from 'react'
 import { cn } from '@/lib/utils'
-import { Button } from './ui/button'
+import { Button } from '../ui/button'
 
 const SubmitButton = ({ className, initialstate, loadingstate, isLoadingState, onClick }: { className?: string, initialstate: string, loadingstate: string, isLoadingState: boolean, onClick?: () => void }) => {
     return (

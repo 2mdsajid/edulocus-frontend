@@ -1,6 +1,6 @@
 import React from 'react'
 import { getSingleTestById } from './_components/actions'
-import ErrorPage from '@/components/ErrorPage'
+import ErrorPage from '@/components/reusable/ErrorPage'
 import TestDetails from './_components/TestDetails'
 import TestQuestions from './_components/TestQuestions'
 import { getUserSession } from '@/lib/auth/auth'

@@ -7,11 +7,15 @@ type Props = {}
 
 const LandingPage = (props: Props) => {
     return (
-        <div className="min-h-[100vh] bg-gradient-to-r from-green-400/60 to-blue-400/60 via-gray-200 bg-blur-lg gap-5 flex flex-col lg:flex-row items-start lg:items-start justify-start pt-32 pb-16 md:pt-40 px-4 md:px-10 lg:px-20 xl:px-32">
+        <div className="min-h-[100vh] bg-gradient-to-b from-color1 to-color1  bg-blur-lg gap-5 flex flex-col lg:flex-row items-start lg:items-start justify-start pt-32 pb-16 md:pt-40 px-4 md:px-10 lg:px-20 xl:px-32">
             {/* Text section */}
             <div className="lg:w-1/2 text-center lg:text-left mb-8 lg:mb-0 space-y-12">
-                <span className="block font-semibold -mb-10 text-left">PG/MD/MS Entrance Exams</span>
-                <h1 className="text-5xl font-bold text-gray-900 text-left">Welcome to Edulocus</h1>
+                <span className="block font-bold tracking-wider -mb-10 text-left">PG/MD/MS Entrance Exams</span>
+                <h1 className="mb-6 text-4xl text-left font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
+                    Welcome To{" "}
+                    <span className="text-color7">EduLocus</span>
+                </h1>
+                {/* <h1 className="text-5xl font-bold text-gray-900 text-left">Welcome to Edulocus</h1> */}
                 <p className="text-xl text-gray-800 text-left leading-7">
                     Edulocus is your one-stop platform for comprehensive online learning and assessments.
                     We offer interactive, engaging tests and tailored resources to help you succeed in your
@@ -45,8 +49,8 @@ const LandingPage = (props: Props) => {
                     variant={'outline'}
                     className="w-full lg:w-fit text-xl lg:text-2xl px-[2rem] py-[1.75rem] flex gap-2 font-semibold tracking-wider border border-accent dark:border-white bg-white dark:bg-accent text-accent dark:text-white shadow-lg transition ease-in-out duration-500 hover:scale-105 hover:shadow-2xl hover:bg-accent hover:text-white dark:hover:bg-white dark:hover:text-accent"
                 >
-                    <Link href={'/login'} className="w-full">
-                        Join Edulocus
+                    <Link href={'/membership'} className="w-full">
+                        Explore Membership
                         <span className="my-5">
                             <BiSolidLogInCircle />
                         </span>

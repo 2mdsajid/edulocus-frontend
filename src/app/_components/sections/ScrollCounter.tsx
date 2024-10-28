@@ -38,9 +38,9 @@ const ScrollCounter = ({ title, value }: TypeCounterProps) => {
     <div  id="counterElement" className=''>
       {counterOn ? (
         <div className={`flex flex-col items-center gap-y-3 mb-3 mt-10 animate-fadeIn `}>
-          <div className="inline-block mx-1 p-2 px-10 py-5 shadow-md bg-accent3 dark:bg-dark-accent3 rounded-lg cursor-pointer transition ease-in-out duration-500 hover:bg-second hover:scale-105 hover:shadow-3xl">
+          <div className="inline-block mx-1 p-2 px-10 py-5 shadow-md bg-white rounded-lg cursor-pointer transition ease-in-out duration-500 hover:bg-second hover:scale-105 hover:shadow-3xl">
             <div className="flex cursor-default items-center justify-center gap-0 ">
-              <div className="font-mono text-4xl leading-none ">
+              <div className="font-mono text-4xl leading-none b">
                 <CountUp start={0} end={value} duration={2} delay={0} />
               </div>
               <div className="text-4xl flex items-center font-medium">+</div>
@@ -54,7 +54,7 @@ const ScrollCounter = ({ title, value }: TypeCounterProps) => {
         </div>
       ) : (
         <div className="flex flex-col items-center gap-y-3 mb-3 mt-10">
-          <div className="inline-block mx-1 p-2 px-10 py-5 shadow-md bg-accent3 dark:bg-dark-accent3 rounded-lg cursor-pointer transition ease-in-out duration-500 hover:bg-second hover:scale-105 hover:shadow-3xl">
+          <div className="inline-block mx-1 p-2 px-10 py-5 shadow-md bg-white rounded-lg cursor-pointer transition ease-in-out duration-500 hover:bg-second hover:scale-105 hover:shadow-3xl">
             <div className="flex cursor-default items-center justify-center gap-0">
               <div className="font-mono text-4xl leading-none ">{/* <CountUp start={0} end={value} duration={2} delay={0} /> */}</div>
               <div className="text-4xl flex items-center font-medium">+</div>

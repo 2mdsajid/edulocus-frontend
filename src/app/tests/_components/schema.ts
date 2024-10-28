@@ -1,4 +1,6 @@
-export type ANSWER = 'A' | 'B' | 'C' | 'D'
+import { LucideIcon } from "lucide-react";
+
+export type ANSWER = 'a' | 'b' | 'c' | 'd'
 export type Option = {
     questionId: string;
     a: string;
@@ -19,6 +21,13 @@ export type Question = {
     attempt: number;
     correctattempt: number;
     userId: string;
+}
+
+export type QuestionCount = {
+    id: string;
+    subject: string;
+    chapter: string;
+    count: number;
 }
 
 export type CustomTest = {
@@ -71,8 +80,6 @@ export type TQuestion = TBaseQuestion & {
     timetaken?: number
 }
 
-export type TAddQuestion = Omit<TQuestion, 'id'>
-
 export type TcreateCustomTest = Pick<CustomTest,
     'name' |
     'slug' |
@@ -99,9 +106,13 @@ export type TTypeOfTest = "MODEL"
     | "THEORY_BASED"
     | "REVISION"
     | "RETAKE"
+
+
 export type TTypeOfTestsAndDescription = {
     type: TTypeOfTest;
     description: string;
-    icon: string;
+    icon: LucideIcon;
 }
+
+
 

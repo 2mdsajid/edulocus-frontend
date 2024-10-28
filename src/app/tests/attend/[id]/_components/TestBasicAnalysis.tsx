@@ -1,8 +1,7 @@
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { AiOutlineQuestion } from 'react-icons/ai';
-import { BiCheck, BiStar, BiTimeFive, BiX } from 'react-icons/bi';
-import { IoMdCheckbox } from 'react-icons/io';
-import { PiWatchLight } from 'react-icons/pi';
+import { Check, CheckSquare, Clock, Star, Watch, X } from 'lucide-react';
+import TestStatCard from './TestStatCard';
+import { getRandomColor } from '@/lib/utils';
+import { PieChartWithCenterLabel } from '@/components/reusable/PieChartWithCenterLabel';
 
 type Props = {
     total_timetaken: number
@@ -13,89 +12,77 @@ type Props = {
 
 const TestBasicAnalysis = (props: Props) => {
     const { total_timetaken, questions_attempt, total_questions, corrrect_attempt } = props
+
+    const unattempt_questions = total_questions - questions_attempt
+    const incorrect_attempts = questions_attempt - corrrect_attempt
+
+    const scoreParametersData = [
+        { name: 'correct', value: corrrect_attempt, total: total_questions, fill: getRandomColor() },
+        { name: 'incorrect', value: incorrect_attempts, total: total_questions, fill: getRandomColor() },
+        { name: 'unattempt', value: unattempt_questions, total: total_questions, fill: getRandomColor() },
+    ]
+
+
     return (
-        <div className='w-full flex flex-col gap-4'>
-            {total_timetaken > 0 && <Card className='flex items-center rounded-md border  border-green-100 shadow-md'>
-                <div className='text-5xl pl-4 text-green-400'>
-                    <PiWatchLight />
+        <div className="w-full h-fit  bg-gradient-to-br from-purple-50 to-indigo-100 p-6 flex flex-col gap-4 items-center justify-center">
+            <div className="w-full max-w-3xl bg-white rounded-xl shadow-lg overflow-hidden">
+                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {total_timetaken > 0
+                        && <TestStatCard
+                            icon={<Watch className="w-8 h-8 text-emerald-500" />}
+                            value={`${total_timetaken} sec`}
+                            label="Total Time Taken"
+                            bgColor="bg-emerald-50"
+                            borderColor="border-emerald-200"
+                        />}
+                    {total_timetaken > 0
+                        && <TestStatCard
+                            icon={<Clock className="w-8 h-8 text-blue-500" />}
+                            value={`${Math.round((total_timetaken / questions_attempt) / 1000)} sec`}
+                            label="Average Time Per Question"
+                            bgColor="bg-blue-50"
+                            borderColor="border-blue-200"
+                        />}
+                    <TestStatCard
+                        icon={<CheckSquare className="w-8 h-8 text-indigo-500" />}
+                        value={`${questions_attempt} / ${total_questions}`}
+                        label="Total Questions Attempt"
+                        bgColor="bg-indigo-50"
+                        borderColor="border-indigo-200"
+                    />
+                    <TestStatCard
+                        icon={<Check className="w-8 h-8 text-green-500" />}
+                        value={`${corrrect_attempt}`}
+                        label="Correct Attempt"
+                        bgColor="bg-green-50"
+                        borderColor="border-green-200"
+                    />
+                    <TestStatCard
+                        icon={<X className="w-8 h-8 text-red-500" />}
+                        value={`${questions_attempt - corrrect_attempt}`}
+                        label="Incorrect Attempt"
+                        bgColor="bg-red-50"
+                        borderColor="border-red-200"
+                    />
+                    <TestStatCard
+                        icon={<Star className="w-8 h-8 text-yellow-500" />}
+                        value={`${corrrect_attempt - (questions_attempt - corrrect_attempt) * 0.25}`}
+                        label="Total Score"
+                        bgColor="bg-yellow-50"
+                        borderColor="border-yellow-200"
+                    />
                 </div>
-                <CardHeader className=''>
-                    <CardTitle className='text-green-400'>{total_timetaken / 1000} sec</CardTitle>
-                    <CardDescription className='text-green-400 dark:text-green-100' >Total Time Taken</CardDescription>
-                </CardHeader>
-            </Card>}
-            {total_timetaken > 0 &&
-                <Card className='flex items-center rounded-md border  border-secondary shadow-md'>
-                    <div className='text-5xl pl-4 text-secondary'>
-                        <BiTimeFive />
-                    </div>
-                    <CardHeader>
-                        <div className='text-secondary'>
-                            <CardTitle>{(total_timetaken / questions_attempt) / 1000} sec</CardTitle>
-                            <CardDescription className='dark:text-secondary'>
-                                Average Time Taken Per Question
-                            </CardDescription>
-                        </div>
-                    </CardHeader>
-                </Card>}
-
-            <Card className='flex items-center rounded-md border  border-accent shadow-md'>
-                <div className='text-5xl pl-4 text-accent'>
-                    <IoMdCheckbox />
-                </div>
-                <CardHeader className=''>
-                    <CardTitle className='text-accent'>{questions_attempt} / {total_questions}</CardTitle>
-                    <CardDescription className='dark:text-accent'>
-                        Total Questions Attempt
-                    </CardDescription>
-                </CardHeader>
-            </Card>
-
-            <Card className='flex items-center rounded-md border border-green-700 shadow-md'>
-                <div className='text-5xl pl-4 text-green-700'>
-                    <BiCheck />
-                </div>
-                <CardHeader >
-                    <CardTitle className='text-green-700' >{corrrect_attempt}</CardTitle>
-                    <CardDescription className='dark:text-green-700'>
-                        Correct Attempt
-                    </CardDescription>
-                </CardHeader>
-            </Card>
-
-            <Card className=' flex items-center rounded-md border border-red-700 shadow-md'>
-                <div className='text-5xl pl-4 text-red-700'>
-                    <BiX />
-                </div>
-                <CardHeader >
-                    <CardTitle className='text-red-700'>{questions_attempt - corrrect_attempt}</CardTitle>
-                    <CardDescription className='dark:text-red-700'>
-                        Incorrect Attempt
-                    </CardDescription>
-                </CardHeader>
-            </Card>
-
-            <Card className='flex items-center rounded-md border border-blue-700 shadow-md'>
-                <div className='text-5xl pl-4 text-blue-700'>
-                    <BiStar />
-                </div>
-                <CardHeader >
-                    <CardTitle className='text-blue-700'>{corrrect_attempt - (questions_attempt - corrrect_attempt) * 0.25}</CardTitle>
-                    <CardDescription className='dark:text-blue-700'>
-                        Total Score
-                    </CardDescription>
-                </CardHeader>
-            </Card>
-
-            <Card className='flex items-center rounded-md shadow-md'>
-                <div className='text-5xl pl-4 text-secondary'>
-                    <AiOutlineQuestion />
-                </div>
-                <CardHeader >
-                    <CardTitle className='text-secondary'>{total_questions - questions_attempt}</CardTitle>
-                    <CardDescription>Unattempt Questions</CardDescription>
-                </CardHeader>
-            </Card>
+            </div>
+            <div className="w-full">
+                <PieChartWithCenterLabel
+                    chartTitle='Various Scores'
+                    chartDescription='A comprehensive chart showing the score of different types'
+                    dataKey='value'
+                    nameKey='name'
+                    centreLabel='Total'
+                    chartData={scoreParametersData}
+                />
+            </div>
         </div>
     )
 }

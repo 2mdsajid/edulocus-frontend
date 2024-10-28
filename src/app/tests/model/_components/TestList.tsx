@@ -4,14 +4,13 @@ import { TBaseCustomTest } from './schema';
 
 type Props = {
   tests: TBaseCustomTest[];
-  typeoftest: string;
 };
 
-const TestList = ({ tests, typeoftest }: Props) => {
+const TestList = ({ tests }: Props) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {tests.map(test => (
-        <Link key={test.id} href={`/tests/${typeoftest.toLowerCase()}/${test.id}`}>
+        <Link key={test.id} href={`/tests/view/${test.id}`}>
           <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle>{test.name}</CardTitle>

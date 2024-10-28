@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/hooks/use-toast'
 import { generateRandomName } from '@/lib/utils'
+import { Play, Shuffle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -42,9 +43,15 @@ const TestInput = (props: Props) => {
                         setUsername(e.currentTarget.value);
                     }}
                 />
-                <Button className='w-max ' onClick={generateUsername}>Random</Button>
+                <button onClick={generateUsername} className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center">
+                    <Shuffle className="w-4 h-4 mr-2" />
+                    Random
+                </button>
             </div>
-            <Button onClick={startTest}>Start Test</Button>
+            <button onClick={startTest} className="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center">
+                <Play className="w-5 h-5 mr-2" />
+                Start Test
+            </button>
         </div>
     )
 }

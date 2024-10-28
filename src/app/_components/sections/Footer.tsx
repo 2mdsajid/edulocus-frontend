@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 const Footer = () => {
     return (
-        <footer className={`bg-gray-100 w-full  flex flex-col justify-center mx-auto pb-5`}>
+        <footer className={`bg-color8 text-white w-full  flex flex-col justify-center mx-auto pb-5`}>
             <div className={`flex flex-col md:flex-row md:justify-between my-5`}>
                 <div className='w-[70%] mx-auto md:w-[30%]  flex-col gap-4 items-center md:items-start flex mb-10 md:mb-0'>
                     <h1 className='text-4xl font-bold'>EDULOCUS</h1>

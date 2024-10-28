@@ -64,9 +64,9 @@ export type TypeSubjectWiseScores = {
 }
 
 export type TypeSubjectWiseBarGraphData = {
-    name: string;
-    Total: number;
-    Correct: number;
-    Incorrect: number;
-    Unattempt: number;
-}[]
+    subject: string;
+    total: number;
+    correct: number;
+    incorrect: number;
+    unattempt: number;
+}

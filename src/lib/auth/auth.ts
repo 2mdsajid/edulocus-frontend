@@ -5,8 +5,6 @@ import { redirect } from "next/navigation";
 import { TBaseUser, TJWT, TLogInUser, TSignUpUser } from "./schema";
 import { ShadcnToast } from "../global";
 
-
-
 export const getUserSession = async (): Promise<{
   data: TBaseUser | null;
   message: string;
@@ -14,7 +12,6 @@ export const getUserSession = async (): Promise<{
   try {
     const cookieStore = cookies();
     const authToken = cookieStore.get("auth-token")?.value;
-
     if (!authToken || authToken === undefined || authToken === null) {
       return { data: null, message: "User not logged in!" };
     }
@@ -35,7 +32,6 @@ export const getUserSession = async (): Promise<{
     const { data, message } = await response.json();
     return { data, message };
   } catch (error) {
-    console.log("🚀 ~ getUserSession ~ error:", error)
     return { data: null, message: "Some Error Occured while getting user session!" };
   }
 };

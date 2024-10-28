@@ -1,0 +1,30 @@
+import ErrorPage from '@/components/reusable/ErrorPage'
+import { getUserSession } from '@/lib/auth/auth'
+import { ROLES_HIEARCHY } from '@/lib/data'
+import React from 'react'
+import AddQuestionsForm from './_components/AddQuestionsForm'
+import { getSyllabus } from '../_components/actions'
+
+type Props = {}
+
+const page = async (props: Props) => {
+  const { data: user, message: userAuthMessage } = await getUserSession()
+  if (!user || !ROLES_HIEARCHY.MODERATOR.includes(user.role)) {
+    return <ErrorPage errorMessage='You do not have permission to access this page' />
+  }
+
+  const { data: syllabus, message: syllabusMessage } = await getSyllabus()
+  if (!syllabus) {
+    return <ErrorPage errorMessage={syllabusMessage} />
+  }
+
+  return (
+    <div>
+      <AddQuestionsForm
+        syllabus={syllabus}
+      />
+    </div>
+  )
+}
+
+export default page

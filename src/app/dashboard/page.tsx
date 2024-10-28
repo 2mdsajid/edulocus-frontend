@@ -1,4 +1,4 @@
-import ErrorPage from '@/components/ErrorPage';
+import ErrorPage from '@/components/reusable/ErrorPage';
 import { PieChartWithCenterLabel } from '@/components/reusable/PieChartWithCenterLabel';
 import { ReusableLineChart } from '@/components/reusable/ReusableLineChart';
 import { getUserSession } from '@/lib/auth/auth';

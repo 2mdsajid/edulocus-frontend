@@ -1,13 +1,13 @@
 'use client'
 
 import { TQuestion } from '@/app/tests/_components/schema';
-import ReusableLInk from '@/components/ReusableLink';
-import SubmitButton from '@/components/SubmitButton';
-import { Button } from '@/components/ui/button';
+import { MultipleBarDiagram } from '@/components/reusable/MultipleBarDiagram';
+import ReusableLInk from '@/components/reusable/ReusableLink';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { toast } from '@/hooks/use-toast';
+import { TBaseUser } from '@/lib/auth/schema';
 import { categorizeQuestionsBySubject } from '@/lib/utils';
+import { CheckCircle, Send } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { sendTestAnalytic, sendUserScore } from './actions';
@@ -18,7 +18,7 @@ import TestChapterwiseScoreTable from './TestChapterwiseScoreTable';
 import TestQuestionRender from './TestQuestionRender';
 import TestShareLinks from './TestShareLinks';
 import TestTimer2 from './TestTimer2';
-import { TBaseUser } from '@/lib/auth/schema';
+import SubmitButton from '@/components/reusable/SubmitButton';
 
 type Props = {
     id: string;
@@ -35,7 +35,7 @@ const TestQuestions = (props: Props) => {
 
     const submitref = useRef<HTMLButtonElement | null>(null)
 
-    const TIME_PER_QUESTION = 54000
+    const TIME_PER_QUESTION = 540000
     const NEGATIVEMARK = 0.25
 
     const { id: testid, user } = props
@@ -55,7 +55,7 @@ const TestQuestions = (props: Props) => {
     const [questionsAttempt, setQuesitionsAttempt] = useState<string[]>([])
     const [incorrectAttempt, setIncorrectAttempt] = useState<string[]>([])
     const [correctAttempt, setCorrectAttempt] = useState<string[]>([])
-    const [subjectWiseGraphData, setSubjectSubjectWiseGraphData] = useState<TypeSubjectWiseBarGraphData>()
+    const [subjectWiseGraphData, setSubjectSubjectWiseGraphData] = useState<TypeSubjectWiseBarGraphData[]>([])
     const [chapterwisescore, setChapterwiseScore] = useState<TypeTypeSubjectWiseChapterScores>()
     const [totalTimeTaken, setTotalTimeTaken] = useState(0)
 
@@ -129,11 +129,11 @@ const TestQuestions = (props: Props) => {
         });
 
         const subjectwise_graph_data = Object.keys(subject_wise_score).map((subject) => ({
-            name: subject,
-            Total: subject_wise_score[subject].total || 0,
-            Correct: subject_wise_score[subject].correct || 0,
-            Incorrect: subject_wise_score[subject].incorrect || 0,
-            Unattempt: subject_wise_score[subject].total - (subject_wise_score[subject].correct + subject_wise_score[subject].incorrect)
+            subject: subject,
+            total: subject_wise_score[subject].total || 0,
+            correct: subject_wise_score[subject].correct || 0,
+            incorrect: subject_wise_score[subject].incorrect || 0,
+            unattempt: subject_wise_score[subject].total - (subject_wise_score[subject].correct + subject_wise_score[subject].incorrect),
         }));
 
         setChapterwiseScore(subject_wise_chapter_scores)
@@ -279,6 +279,39 @@ const TestQuestions = (props: Props) => {
                             />
                         </div>
 
+                        <div>
+                            <MultipleBarDiagram
+                                chartTitle="Subject Wise Scores"
+                                chartDescription="Chart showing subject wise scores"
+                                xAxisKey="subject"
+                                dataKeys={['correct', 'incorrect', 'total', 'unattempt']}
+                                chartData={subjectWiseGraphData}
+                                footerDescription="Showing total visitors for the last 6 months"
+                                trendingUpText="Trending up by 5.2% this month"
+                                config={{
+                                    correct: {
+                                        label: "Correct",
+                                        color: "hsl(var(--chart-1))",
+                                    },
+                                    incorrect: {
+                                        label: "Incorrect",
+                                        color: "hsl(var(--chart-2))",
+                                    },
+                                    total: {
+                                        label: "Total",
+                                        color: "hsl(var(--chart-3))",
+                                    },
+                                    unattempt: {
+                                        label: "unattempt",
+                                        color: "hsl(var(--chart-4))",
+                                    },
+
+                                }}
+                            />
+                        </div>
+
+
+
                         {chapterwisescore &&
                             <div className='space-y-3'>
                                 <TestChapterwiseScoreTable
@@ -303,71 +336,109 @@ const TestQuestions = (props: Props) => {
                 </TestAnalysisAndAnswersSwitch>
                 :
                 <div className='w-full'>
-                    <div className='fixed top-28 right-5 flex flex-col p-2 bg-accent3 dark:bg-dark-accent3 rounded-md border'>
-                        {timeout &&
+                    <div className="fixed top-28 right-5 flex flex-col p-2 sm:p-3 md:p-4 bg-white dark:bg-gray-900 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg space-y-2">
+                        {timeout && (
                             <TestTimer2
                                 expiryTimestamp={timeout}
                                 onExpire={checkAns}
                                 onTick={useSetCurrentCountdown}
-                                className='bg-accent3 dark:bg-dark-accent3 m-0 p-0 text-black dark:text-white hover:bg-accent3 dark:hover:bg-dark-accent3'
-                            />}
-                        <Button className='w-fit bg-accent3 dark:bg-dark-accent3 m-0 p-0 text-black dark:text-white hover:bg-accent3 dark:hover:bg-dark-accent3'>Attempt : {questionsAttempt.length}/{uquestions.length}</Button>
+                                className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-white font-bold rounded-lg py-2 px-4 hover:bg-blue-200 dark:hover:bg-blue-800 transition"
+                            />
+                        )}
+
+                        <div className="flex items-center justify-center gap-5 bg-purple-100 rounded-lg p-2">
+                            <span className="flex gap-1 font-semibold text-purple-800"><CheckCircle className="w-6 h-6 text-purple-600" />Attempted:</span>
+                            <span className='font-semibold text-purple-800'>{questionsAttempt.length}/{uquestions.length}</span>
+                        </div>
+
+
                         <Dialog>
-                            {!issubmitclicked &&
-                                <DialogTrigger ref={submitref} className="">
-                                    <div className='w-full mx-auto px-2 py-1 rounded-md font-semibold text-center bg-black text-white dark:bg-white dark:text-black'>Submit</div>
-                                </DialogTrigger>}
-                            <DialogContent className=''>
-                                <Card>
+                            {!issubmitclicked && (
+                                <DialogTrigger ref={submitref} className="w-full">
+                                    <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center space-x-2">
+                                        <Send className="w-5 h-5" />
+                                        <span>Submit</span>
+                                    </button>
+                                </DialogTrigger>
+                            )}
+
+                            <DialogContent className="p-6 rounded-lg shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                                <Card className="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-sm">
                                     <CardHeader>
-                                        <CardTitle>{questionsAttempt.length} / {uquestions.length}</CardTitle>
-                                        <CardDescription>Questions Attempt</CardDescription>
+                                        <CardTitle className="text-xl font-semibold text-center text-gray-800 dark:text-gray-100">
+                                            {questionsAttempt.length} / {uquestions.length}
+                                        </CardTitle>
+                                        <CardDescription className="text-center text-gray-500 dark:text-gray-400">
+                                            Questions Attempted
+                                        </CardDescription>
                                     </CardHeader>
                                 </Card>
-                                {(uquestions.length - questionsAttempt.length > 0) && <p>You still have <span className='text-xl font-semibold'>{uquestions.length - questionsAttempt.length}</span> questions left to attempt</p>}
-                                <SubmitButton onClick={submitForm} initialstate='Submit' loadingstate='Submitting' isLoadingState={issubmitclicked}></SubmitButton>
+
+                                {uquestions.length - questionsAttempt.length > 0 && (
+                                    <p className="text-lg font-semibold text-gray-700 dark:text-gray-200 mt-4 text-center">
+                                        You still have{" "}
+                                        <span className="text-xl font-bold text-red-600 dark:text-red-400">
+                                            {uquestions.length - questionsAttempt.length}
+                                        </span>{" "}
+                                        questions left to attempt.
+                                    </p>
+                                )}
+
+                                <SubmitButton
+                                    onClick={submitForm}
+                                    initialstate="Submit"
+                                    loadingstate="Submitting"
+                                    isLoadingState={issubmitclicked}
+                                    className="w-full mt-4 bg-purple-500 dark:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg shadow hover:bg-purple-600 dark:hover:bg-purple-600 transition"
+                                />
                             </DialogContent>
                         </Dialog>
-
                     </div>
-                    <form className='w-full ' onSubmit={checkAns} action="" method="POST">
-                        <p className='text-2xl font-bold my-5 text-center'>Questions</p>
-                        <div className=''>
-                            {/* Chceck if more than one subjects */}
-                            {SUBJECTS.length > 1 &&
-                                <div className='flex w-full justify-between overflow-x-auto sticky left-0
-                                 top-16 bg-primary dark:bg-dark-primary mb-5'>
-                                    {SUBJECTS.map((s, i) => {
-                                        return (
-                                            <a href={`#${s}`}
-                                                className={`text-center flex-grow border border-black dark:border-white text-black dark:!text-white py-2 px-4 cursor-pointer ${selectedSubject === s && 'bg-blue-400'}`}
-                                                key={i}
-                                                onClick={() => {
-                                                    setSelectedSubject(s)
-                                                }}
-                                            >{s}</a>
-                                        )
-                                    })}
-                                </div>}
-                            <div className="">
-                                {SUBJECTS.map((s, i) => {
-                                    return (
-                                        <div key={s} id={s} className={`${s} subject pt-[6.1rem]`}>
-                                            {/* <h2 className='text-2xl font-bold my-5 text-center'>{s}</h2> */}
-                                            <div>
-                                                {categorizedQuestions[s].map((question, index) => (
-                                                    <div key={question.id}>
-                                                        <TestQuestionRender
-                                                            question={question}
-                                                            index={index}
-                                                            getInput={getInput}
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </div>
+
+                    <form className="w-full space-y-6" onSubmit={checkAns} action="" method="POST">
+                        <p className="text-3xl font-bold my-8 text-center text-gray-800 dark:text-gray-100">Questions</p>
+
+                        <div className="w-full">
+                            {/* Check if more than one subject */}
+                            {SUBJECTS.length > 1 && (
+                                <div className="flex w-full justify-between items-center overflow-x-auto sticky top-16 left-0 z-10 bg-accent3 border dark:bg-gray-900 py-3 px-2 mb-8 shadow-lg rounded-md">
+                                    {SUBJECTS.map((s, i) => (
+                                        <a
+                                            href={`#${s}`}
+                                            className={`flex-grow text-center text-lg py-1 px-3 rounded-md cursor-pointer mx-1 font-semibold transition-all duration-200 border-2 
+              ${selectedSubject === s
+                                                    ? 'bg-blue-500 text-white border-blue-500 dark:bg-blue-600'
+                                                    : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-400 dark:border-gray-600'
+                                                }`}
+                                            key={i}
+                                            onClick={() => {
+                                                setSelectedSubject(s);
+                                            }}
+                                        >
+                                            {s}
+                                        </a>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* Questions section */}
+                            <div className="space-y-10">
+                                {SUBJECTS.map((s, i) => (
+                                    <div key={s} id={s} className={`${s} subject`}>
+                                        <h2 className='py-12 text-2xl font-bold'>{s}</h2>
+                                        <div className="space-y-6">
+                                            {categorizedQuestions[s].map((question, index) => (
+                                                <div key={question.id} className="transition-all">
+                                                    <TestQuestionRender
+                                                        question={question}
+                                                        index={index}
+                                                        getInput={getInput}
+                                                    />
+                                                </div>
+                                            ))}
                                         </div>
-                                    )
-                                })}
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </form>

@@ -6,12 +6,12 @@ import { Textarea } from "@/components/ui/textarea";
 
 const ContactSection = () => {
     return (
-        <div className="min-h-[80vh] flex flex-col bg-accent3 px-4 md:px-10 lg:px-20 xl:px-32">
+        <div className="min-h-[80vh] flex flex-col bg-color1 py-16 px-4 md:px-10 lg:px-20 xl:px-32">
             <div>
-                <h1 className='text-4xl pt-14 pb-4 text-center font-semibold tracking-tight font-pt-serif'>
+                <h2 className='text-4xl mb-4 text-center font-extrabold tracking-wider text-purple-800 font-pt-serif'>
                     Get In Touch
-                </h1>
-                <p className='text-xl py-2 text-center font-normal max-w-3xl mx-auto'>
+                </h2>
+                <p className='text-xl text-center font-normal max-w-3xl mx-auto mb-12 text-gray-600'>
                     Your queries, questions, feedbacks! we are waiting to hear from you.
                 </p>
             </div>

@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import Header from "./_components/navbar/NavBar";
+import { getUserSession } from "@/lib/auth/auth";
+import NavBarNew from "./_components/navbar/NavBarNew";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -20,20 +22,24 @@ export const metadata: Metadata = {
   description: "An Educational Website for medical entrance examinations",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
+  const { data: user, message: userAuthMessage } = await getUserSession()
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
-        <main className='relative bg-primary dark:bg-dark-primary'>
-                {children}
-              </main>
+        <NavBarNew user={user} />
+        <main className='relative'>
+          {children}
+        </main>
       </body>
       <Toaster />
     </html>

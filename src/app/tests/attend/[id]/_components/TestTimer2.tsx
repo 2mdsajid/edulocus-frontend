@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import React, { useEffect, useState } from 'react';
+import { Clock } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useTimer } from 'react-timer-hook';
 
 interface TestTimerProps {
@@ -44,17 +44,20 @@ function TestTimer2({
   }, [seconds, onTick, remainingTime]);
 
   return (
-    <Button
+    <div
       className={cn(
-        'flex h-full w-full items-center justify-center',
+        'flex items-center justify-between gap-2 bg-blue-100 rounded-lg p-4',
         className
       )}
     >
-      {label ? label : 'Time Left'}{' '}
+      <span className='flex'>
+        <Clock className="w-6 h-6 text-blue-600" />
+        {label ? label : 'Time Left'}
+      </span>
       {days > 0 && `${convertToTwoDigit(days)}:`}
       {hours > 0 && `${convertToTwoDigit(hours)}:`}
       {convertToTwoDigit(minutes)}:{convertToTwoDigit(seconds)}
-    </Button>
+    </div>
   );
 }
 

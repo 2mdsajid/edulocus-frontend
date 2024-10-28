@@ -1,4 +1,4 @@
-import ErrorPage from "@/components/ErrorPage"
+import ErrorPage from "@/components/reusable/ErrorPage"
 import { SearchableResultTable, SearchableResultTableColumns } from "@/components/reusable/SearchableResultTable"
 import { getUserSession } from "@/lib/auth/auth"
 import { getTestMetadata } from "./_components/actions"
@@ -61,19 +61,31 @@ const page = async (props: Props) => {
         }));
 
     return (
-        <div className="flex flex-col md:flex-row flex-grow gap-5 min-h-[93vh] ">
-            <div className="w-full md:w-[50%] bg-accent3 dark:bg-dark-accent3 p-8 rounded-lg shadow h-fit ">
-                {testMetadata.image && <img src={testMetadata.image} alt={testMetadata.name} className="rounded-md" loading="lazy" />}
-                <h2 className="text-4xl font-bold mb-2">{testMetadata.name}</h2>
-                <div className="flex gap-2 items-center mb-3">
-                    <p className="text-gray-700 dark:text-gray-300 ">By : {testMetadata.createdBy}</p> |
-                    <p className="text-gray-700 dark:text-gray-300">{testMetadata.questionsCount} Questions</p>
+        <div className="flex flex-col md:flex-row flex-grow gap-5 ">
+            <div className="w-full md:w-[40%]  bg-accent3 dark:bg-dark-accent3 border p-8 rounded-lg shadow h-fit">
+                {testMetadata.image && (
+                    <img
+                        src={testMetadata.image}
+                        alt={testMetadata.name}
+                        className="rounded-md w-full h-48 object-cover mb-4"
+                        loading="lazy"
+                    />
+                )}
+                <div className="text-center mb-5">
+                    <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">{testMetadata.name}</h2>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                        <p>
+                            <span>By: {testMetadata.createdBy}</span> | <span>{testMetadata.questionsCount} Questions</span>
+                        </p>
+                    </div>
                 </div>
-                <TestInput
-                    testid={testMetadata.id}
-                />
+
+                <div className="relative">
+                    <TestInput testid={testMetadata.id} />
+                </div>
             </div>
-            <div className="w-full md:w-[50%]  h-fit p-4 rounded-lg shadow-md">
+
+            <div className="w-full md:w-[60%] bg-accent3  h-fit p-4 rounded-lg shadow border">
                 <div className="flex items-center space-x-2">
                     <span className="text-2xl">🏆</span> {/* Emoji acting as an icon */}
                     <h2 className="text-xl font-bold ">Leaderboard</h2>
