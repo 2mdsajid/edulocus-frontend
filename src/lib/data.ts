@@ -115,8 +115,8 @@ export const FEATURES = [
 
 
 export function constructMetadata({
-  title = "Edulocus - an online education platform for CEE students",
-  description = "Edulocus is an educational website offering variety of MCQs for CEE appearing students",
+  title = "Edulocus - an online education platform for PG students",
+  description = "Edulocus is an educational website offering variety of MCQs for PG/MD/MS Examinations",
   image = "/thumbnail.jpg",
   icons = "/favicon.ico",
   noIndex = false
@@ -147,8 +147,7 @@ export function constructMetadata({
       creator: "@c0mrad1_"
     },
     icons,
-    metadataBase: new URL('https://medlocusweb.com'),
-    themeColor: '#FFF',
+    metadataBase: new URL('https://edulocusweb.com'),
     ...(noIndex && {
       robots: {
         index: false,

@@ -7,10 +7,17 @@ import { getDashboardAnalytics } from './_components/actions';
 import DashboardCard from './_components/DashboardCard';
 import RecentTestCard from './_components/RecentTestCard';
 import { SubjectWiseScoreBarGraph } from './_components/SubjectWiseScoreBarGraph';
+import { constructMetadata } from '@/lib/data';
 
 type Props = {};
 
+export const metadata = constructMetadata({
+    title: "Edulocus | Dashboard",
+    description: "Dashboard by edulocus"
+})
+
 const page = async (props: Props) => {
+    
     const { data: user, message: userSessionMessage } = await getUserSession();
     // Redirect non-subscribed users
     if (!user || !user.isSubscribed) {

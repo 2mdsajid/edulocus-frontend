@@ -1,8 +1,14 @@
+import { constructMetadata } from '@/lib/data'
 import React from 'react'
 
 type Props = {
     children: React.ReactNode
 }
+
+export const metadata = constructMetadata({
+    title: "Edulocus | Tests",
+    description: "Explore various modes of tests by edulocus"
+})
 
 const layout = (props: Props) => {
     return (

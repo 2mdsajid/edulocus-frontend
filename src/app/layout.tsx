@@ -5,6 +5,9 @@ import { Toaster } from "@/components/ui/toaster";
 import Header from "./_components/navbar/NavBar";
 import { getUserSession } from "@/lib/auth/auth";
 import NavBarNew from "./_components/navbar/NavBarNew";
+import { constructMetadata } from "@/lib/data";
+import { redirect } from "next/navigation";
+import ComingSoon from "./_components/ComingSoon";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -17,18 +20,13 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  title: "Edulocus",
-  description: "An Educational Website for medical entrance examinations",
-};
+export const metadata = constructMetadata()
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-
   const { data: user, message: userAuthMessage } = await getUserSession()
 
   return (
@@ -36,10 +34,11 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NavBarNew user={user} />
+        <ComingSoon />
+        {/* <NavBarNew user={user} />
         <main className='relative'>
           {children}
-        </main>
+        </main> */}
       </body>
       <Toaster />
     </html>
