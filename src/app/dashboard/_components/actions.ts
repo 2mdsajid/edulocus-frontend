@@ -20,6 +20,7 @@ export const getDashboardAnalytics = async (userId: string): Promise<{
             },
         });
 
+
         if (!response.ok) {
             const { data, message } = await response.json();
             return { data: null, message }

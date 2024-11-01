@@ -1,7 +1,7 @@
-import Link from 'next/link'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Calendar, ShieldQuestion } from 'lucide-react';
+import Link from 'next/link';
 import { TBaseCustomTest } from './schema';
-import { BookOpen, Calendar, ClipboardList, ShieldQuestion } from 'lucide-react';
 
 type Props = {
   tests: TBaseCustomTest[];
@@ -9,7 +9,7 @@ type Props = {
 
 const TestList = ({ tests }: Props) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-4 bg-bg1 gap-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 pt-4 sm:p-4 bg-bg1 gap-3">
     {tests.map(test => (
       <Link key={test.id} href={`/tests/view/${test.id}`} className="block">
         <Card className="hover:shadow-lg transition-all duration-300 border-color3 hover:border-color5 bg-primary group">

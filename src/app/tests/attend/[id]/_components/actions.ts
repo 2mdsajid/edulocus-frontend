@@ -14,6 +14,12 @@ export const getSingleTestById = async (testid: string): Promise<{
                 "Content-Type": "application/json",
             },
         });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
         const { data, message } = await response.json();
         return { data, message };
     } catch (error) {
@@ -34,6 +40,13 @@ export const sendTestAnalytic = async (testData: TCreateTestAnalytic): Promise<{
             },
             body: JSON.stringify(testData),
         });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+
         const { data, message } = await response.json();
         return { data, message };
     } catch (error) {

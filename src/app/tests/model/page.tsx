@@ -16,7 +16,7 @@ const page = async (props: Props) => {
   }
 
   return (
-    <div className="p-4">
+    <div className="w-full">
       <h1 className="text-2xl font-bold">Available Tests</h1>
       <TestList tests={customTestsData} />
     </div>

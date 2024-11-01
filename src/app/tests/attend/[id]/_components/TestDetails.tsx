@@ -14,7 +14,7 @@ const TestDetails = (props: Props) => {
   const { id: testid, questionsCount, testName, username, slug, createdBy } = props
 
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className="w-full flex justify-center items-center bg-primary">
       <div className="w-full bg-white bg-opacity-20 backdrop-blur-lg rounded-xl shadow border overflow-hidden">
         <div className="p-6 sm:p-8">
           {testName && (
