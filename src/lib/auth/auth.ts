@@ -39,7 +39,7 @@ export const getUserSession = async (): Promise<{
 export const logOut = async () => {
   const cookieStore = cookies();
   cookieStore.delete("auth-token");
-  redirect("/login");
+  return
 };
 
 export const deAuthToken = async (token: string): Promise<TJWT | null> => {

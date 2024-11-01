@@ -2,31 +2,30 @@
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { toast } from "@/hooks/use-toast"
 import { handleLogIn } from "@/lib/auth/auth"
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-
 type Props = {}
 
 const LoginForm = (props: Props) => {
   const router = useRouter()
-  const [isButtonClicked, setIsButtonClicked] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const onLogin = async (e: any) => {
+  const onLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsButtonClicked(true)
+    setIsLoading(true)
 
     if (!email || !password) {
-      setIsButtonClicked(false)
+      setIsLoading(false)
       return toast({
         variant: 'destructive',
-        title: 'WARNING',
-        description: 'Credentials required'
+        title: 'Error',
+        description: 'Email and password are required'
       })
     }
 
@@ -35,53 +34,51 @@ const LoginForm = (props: Props) => {
       password
     })
 
-    // this toast will be shown when there is error[state=destructive]
-    //  else the request it will be redirected to the pathname returned by the signinAction
     if (state === 'destructive') {
-      setIsButtonClicked(false)
+      setIsLoading(false)
       return toast({
         variant: state,
-        title: state,
+        title: 'Error',
         description: message
       })
     }
     
-    setIsButtonClicked(false)
+    setIsLoading(false)
     router.push('/dashboard')
-    return
   }
 
-
   return (
-    <div className="w-full p-4 space-y-5">
-      <h2 className="text-3xl font-bold">Sign In</h2>
-      <form className="flex flex-col gap-3">
-        <div className="flex flex-col">
-          <label className="pb-1 font-semibold">Email:</label>
-          <Input
-            className=""
-            name='email'
-            type="email"
-            onChange={(e) => setEmail(e.currentTarget.value)}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label className="pb-1 font-semibold">Password:</label>
-          <Input
-            name='password'
-            type="password"
-            onChange={(e) => setPassword(e.currentTarget.value)}
-          />
-        </div>
-        <Button
-          onClick={onLogin}
-          type="submit">{
-            isButtonClicked
-              ? '...'
-              : 'Login'
-          }</Button>
-      </form>
-    </div>
+    <form onSubmit={onLogin} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          name='email'
+          type="email"
+          placeholder="Enter your email"
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="password">Password</Label>
+        <Input
+          id="password"
+          name='password'
+          type="password"
+          placeholder="Enter your password"
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
+      <Button
+        type="submit"
+        className="w-full"
+        disabled={isLoading}
+      >
+        {isLoading ? 'Signing in...' : 'Sign In'}
+      </Button>
+    </form>
   )
 }
 

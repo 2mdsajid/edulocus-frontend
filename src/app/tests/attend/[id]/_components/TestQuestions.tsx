@@ -19,6 +19,8 @@ import TestQuestionRender from './TestQuestionRender';
 import TestShareLinks from './TestShareLinks';
 import TestTimer2 from './TestTimer2';
 import SubmitButton from '@/components/reusable/SubmitButton';
+import FeedbackComponent from './FeedbackComponent';
+import ContributeCardComponent from './ContributeCardComponent';
 
 type Props = {
     id: string;
@@ -320,16 +322,20 @@ const TestQuestions = (props: Props) => {
                             </div>
                         }
 
-                        <div className='space-y-3'>
+                        {/* <div className='space-y-3'>
                             <p>Did you like the test ? Share with your firends !</p>
                             <TestShareLinks
                                 url={props.sharableTestUrl}
                                 slug={props.id}
                             />
+                        </div> */}
+
+                        <div className=" w-full">
+                            <FeedbackComponent />
                         </div>
 
-                        <div className=" max-w-4xl">
-                            <p className='text-sm'>Please give us a short feedback <ReusableLInk link='/contact'>here</ReusableLInk> to improve this website. Thank you!</p>
+                        <div className=" w-full">
+                            <ContributeCardComponent />
                         </div>
 
                     </div>

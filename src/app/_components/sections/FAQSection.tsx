@@ -13,7 +13,7 @@ const faqData = [
   },
   {
     question: "How can I contact customer support?",
-    answer: "You can reach our dedicated customer support team via email at support@edulocus.com or through the live chat feature on our website. We're available 24/7 to assist you.",
+    answer: "You can reach our dedicated customer support team via email at edulocusweb@gmail.com or through the live chat feature on our website. We're available 24/7 to assist you.",
   },
   {
     question: "What is your refund policy?",
@@ -42,7 +42,7 @@ const FAQSection: React.FC = () => {
         <Accordion type="single" collapsible className="w-full">
           {faqData.map((item, index) => (
             <AccordionItem key={index} value={`item-${index}`} className="border-b border-purple-200">
-              <AccordionTrigger className="text-left text-lg font-medium text-purple-700 hover:text-purple-900 py-4">
+              <AccordionTrigger className="text-left text-lg font-medium text-gray-700 hover:text-gray-900 py-4">
                 {item.question}
               </AccordionTrigger>
               <AccordionContent className="text-gray-600 pb-4">

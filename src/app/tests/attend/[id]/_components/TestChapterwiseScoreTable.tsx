@@ -1,5 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { TypeTypeSubjectWiseChapterScores } from './schema';
+import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 type Props = {
     data: TypeTypeSubjectWiseChapterScores
@@ -9,9 +10,12 @@ const TestChapterwiseScoreTable = (props: Props) => {
     const data = props.data
 
     return (
-        <div className="w-full mx-auto overflow-x-auto">
-            <h2 className="text-2xl font-bold mb-4">Subject Wise Chapter Scores</h2>
-            <table className="w-full  border-collapse ">
+        <div className="w-full mx-auto overflow-x-auto bg-primary p-3 rounded-md shadow-md">
+            <div className='space-y-1  py-3'>
+                <CardTitle>Individual Subjects</CardTitle>
+                <CardDescription>More insight to individual subjects</CardDescription>
+            </div>
+            <table className="w-full border-collapse ">
                 <Accordion type="single" className='' collapsible>
                     {Object.entries(data).map(([subject, chapters]) => (
                         <AccordionItem key={subject} value={subject} className='mb-3 border-b-0'>

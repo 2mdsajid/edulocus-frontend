@@ -6,6 +6,7 @@ import Features from "./_components/sections/Features";
 import FeaturesBrief from "./_components/sections/FeaturesBrief";
 import Footer from "./_components/sections/Footer";
 import LandingPage from "./_components/sections/LandingPage";
+import ProductFeatures from "./_components/sections/ProductFeatures";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <FeaturesBrief />
       <Features />
       <CounterSection />
+      <ProductFeatures />
       {/* <ContactSection /> */}
       <FAQSection />
       <AboutUs />

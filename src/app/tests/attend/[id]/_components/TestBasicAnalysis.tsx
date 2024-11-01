@@ -24,8 +24,8 @@ const TestBasicAnalysis = (props: Props) => {
 
 
     return (
-        <div className="w-full h-fit  bg-gradient-to-br from-purple-50 to-indigo-100 p-6 flex flex-col gap-4 items-center justify-center">
-            <div className="w-full max-w-3xl bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="w-full h-fit  flex flex-col gap-4 items-center justify-center">
+            <div className="w-full max-w-3xl bg-primary rounded-xl shadow-lg overflow-hidden">
                 <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                     {total_timetaken > 0
                         && <TestStatCard

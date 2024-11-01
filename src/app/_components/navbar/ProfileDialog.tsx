@@ -13,12 +13,15 @@ import { BiLogOutCircle } from 'react-icons/bi'
 import { logOut } from '@/lib/auth/auth'
 import { ROLES_HIEARCHY } from '@/lib/data'
 import { TBaseUser } from '@/lib/auth/schema'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   user: TBaseUser | null
 }
 
 const ProfileDialog = (props: Props) => {
+
+  const router = useRouter()
 
   const { user } = props
 
@@ -62,7 +65,10 @@ const ProfileDialog = (props: Props) => {
               Profile
             </Link>
             <div className='my-2 flex gap-3 items-center text-lg cursor-pointer rounded-sm p-1 hover:bg-gray-500'
-              onClick={logOut}>
+              onClick={() => {
+                logOut()
+                router.push('/')
+              }}>
               <BiLogOutCircle />
               Log Out
             </div>

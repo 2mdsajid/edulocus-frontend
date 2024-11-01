@@ -92,7 +92,7 @@ const FeedbackForm = () => {
     return (
         <Card className="w-full max-w-md shadow-2xl">
             <CardHeader className="space-y-1">
-                <CardTitle className="text-2xl font-bold text-center">Contact Us</CardTitle>
+                <CardTitle className="text-2xl font-bold text-center text-color7">Feedback / Contact</CardTitle>
                 <CardDescription className="text-center">Enter your details to get in touch</CardDescription>
             </CardHeader>
             <CardContent>
@@ -103,7 +103,7 @@ const FeedbackForm = () => {
                             name="name"
                             render={({ field }) => (
                                 <FormItem className="">
-                                    <FormLabel>Name</FormLabel>
+                                    <FormLabel className="text-color7">Name</FormLabel>
                                     <FormControl>
                                         <Input className='dark:bg-black rounded-md dark:text-white' placeholder="name" {...field} />
                                     </FormControl>
@@ -116,7 +116,7 @@ const FeedbackForm = () => {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel className="text-color7">Email</FormLabel>
                                     <FormControl className='rounded-md'>
                                         <Input className='dark:bg-black rounded-md dark:text-white' placeholder="example@gmail.com" {...field} />
                                     </FormControl>
@@ -129,7 +129,7 @@ const FeedbackForm = () => {
                             name="message"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Message</FormLabel>
+                                    <FormLabel className="text-color7">Message</FormLabel>
                                     <FormControl>
                                         <Textarea className='dark:bg-black rounded-md dark:text-white' placeholder="Your Message..." {...field} />
                                     </FormControl>
@@ -138,19 +138,19 @@ const FeedbackForm = () => {
                             )}
                         />
                         {/* <div>
-                        <FormLabel>Upload the screenshot of any issues (optional)</FormLabel>
+                        <FormLabel className="text-color7">Upload the screenshot of any issues (optional)</FormLabel>
                         <ImageUploadButton
                             onImageUploadComplete={(value: TUploadThingResponseData[]) => handleCompleteUpload(value)}
                             onImageUploadError={handleUploadError}
                         />
                     </div> */}
 
-                        <SubmitButton className='' initialstate='Submit' loadingstate='Submitting' isLoadingState={issubmitclicked} />
+                        <SubmitButton className='bg-color6 hover:bg-color8' initialstate='Submit' loadingstate='Submitting' isLoadingState={issubmitclicked} />
                     </form>
                 </Form>
             </CardContent>
             <CardFooter className="text-center text-sm text-muted-foreground">
-                We&apos;ll never share your details. Read our <a href="#" className="underline">Privacy Policy</a>.
+                We&apos;ll never share your details. Read our &nbsp;<a href="/privacy" className="underline">Privacy Policy</a>.
             </CardFooter>
         </Card>
     )

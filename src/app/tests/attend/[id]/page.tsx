@@ -29,7 +29,7 @@ const page = async (props: Props) => {
     const testUrl = `${process.env.NEXT_PUBLIC_BASEURL}/tests/${testid}`
 
     return (
-        <div className='max-w-2xl mx-auto py-4'>
+        <div className='max-w-3xl mx-auto py-4 bg-color1'>
             <TestDetails
                 id={test.id}
                 questionsCount={test.questions.length.toString()}
