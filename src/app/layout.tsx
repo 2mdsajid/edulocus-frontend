@@ -34,11 +34,10 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ComingSoon />
-        {/* <NavBarNew user={user} />
+        <NavBarNew user={user} />
         <main className='relative'>
           {children}
-        </main> */}
+        </main>
       </body>
       <Toaster />
     </html>

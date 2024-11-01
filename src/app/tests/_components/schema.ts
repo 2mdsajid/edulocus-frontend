@@ -111,6 +111,7 @@ export type TTypeOfTest = "MODEL"
 export type TTypeOfTestsAndDescription = {
     type: TTypeOfTest;
     description: string;
+    isAvailable: boolean;
     icon: LucideIcon;
 }
 

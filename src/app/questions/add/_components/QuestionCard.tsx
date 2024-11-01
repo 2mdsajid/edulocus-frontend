@@ -59,7 +59,7 @@ const QuestionCard = ({
                         <Textarea
                             rows={1}
                             className="text-xs h-21"
-                            value={question.explanation}
+                            value={question.exp}
                             onChange={(e) => editQuestion(e.target.value, 'explanation', index)}
                             placeholder="Type the explanation here."
                             id="explanation"

@@ -3,6 +3,7 @@ import { toast } from '@/hooks/use-toast'
 import React, { useState } from 'react'
 import { startChapterWiseTest } from './actions'
 import { useRouter } from 'next/navigation'
+import { Loader2, PlayCircle } from 'lucide-react'
 
 type Props = {
     subject: string
@@ -32,11 +33,17 @@ const ChapterWiseStartButton = (props: Props) => {
 
 
     return (
-        <Button onClick={startTest}>{
-            isBtnClicked
-                ? '...'
-                : 'Start A Test'
-        }
+        <Button
+            onClick={startTest}
+            className="w-full bg-color7 hover:bg-color8 text-white"
+            disabled={isBtnClicked}
+        >
+            {isBtnClicked ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+                <PlayCircle className="mr-2 h-4 w-4" />
+            )}
+            {isBtnClicked ? 'Starting...' : 'Start A Test'}
         </Button>
     )
 }

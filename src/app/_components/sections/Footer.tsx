@@ -1,8 +1,5 @@
-import React from 'react';
-import { HiOutlineMail } from 'react-icons/hi'
-import { BsGlobe2 } from 'react-icons/bs'
-import { FaFacebookF, FaMapMarkerAlt, FaTelegram, FaYoutube } from 'react-icons/fa';
 import Link from 'next/link';
+import { FaFacebookF, FaInstagram, FaTelegram, FaViber } from 'react-icons/fa';
 
 const Footer = () => {
     return (
@@ -13,27 +10,35 @@ const Footer = () => {
                     {/* <p className='w-full py-5 text-lg'>Welcome to Medlocus, a platform designed to help students excel in their studies through comprehensive MCQ practice.</p>
                      */}
                     <div className='items-center md:items-start flex flex-col'>
-                        <div className='flex gap-3'>
-                            <Link href={'https://www.facebook.com/edulocus'} className='flex items-center gap-1 text-lg'>
+                        <div className='flex items-center gap-3 mb-2'>
+                            <Link target='_blank' referrerPolicy='no-referrer' href={'https://www.facebook.com/profile.php?id=61567770503553'} className='flex items-center gap-1 text-lg'>
                                 <FaFacebookF />
                             </Link>
-                            <Link href={'https://t.me/edulocus'} className='flex items-center gap-1 text-lg'>
+                            <Link target='_blank' referrerPolicy='no-referrer' href={'https://t.me/edulocus_tg'} className='flex items-center gap-1 text-lg'>
                                 <FaTelegram />
                             </Link>
+                            <Link target='_blank' referrerPolicy='no-referrer' href="https://www.instagram.com/edulocus/" className="">
+                                <FaInstagram className="" />
+                                <span className="sr-only">Instagram</span>
+                            </Link>
+                            <Link target='_blank' referrerPolicy='no-referrer' href="https://invite.viber.com/?g2=AQAR1VddClIhRlOy6Xmu3fiA8qWKNPCerYr1fVwVAJPdGlU1%2BgbgtWFTitvm5c1E" className="">
+                                <FaViber className="" />
+                                <span className="sr-only">Viber</span>
+                            </Link>
                         </div>
-                        <p>edulocus@gmail.com</p>
+                        <p>edulocusweb@gmail.com</p>
                     </div>
                 </div>
 
                 <div className='w-[70%] md:w-max mx-auto flex flex-col items-center md:items-start mb-10 md:mb-0'>
                     <h1 className='font-semibold text-2xl '>Know Us More</h1>
-                    <Link className='hover:underline' href={'/codebase'} >Codebase</Link>
+                    <Link className='hover:underline' href={'/questions/syllabus'} >Syllabus</Link>
                 </div>
 
                 <div className='w-[70%] md:w-max mx-auto flex flex-col items-center md:items-start mb-10 md:mb-0'>
                     <h1 className='text-2xl font-semibold'>Useful Links</h1>
-                    <Link className='hover:underline' href={'/contact'} >Contact</Link>
-                    <Link className='hover:underline' href={'/contribute'} >Contribute</Link>
+                    <Link className='hover:underline' href={'/feedback'} >Contact</Link>
+                    <Link className='hover:underline' href={'/membership'} >Membership</Link>
                 </div>
                 {/* <div className='w-[70%] md:w-max mx-auto flex flex-col items-center md:items-start mb-10 md:mb-0'>
                     <h1 className='text-2xl font-semibold'>Recommended</h1>

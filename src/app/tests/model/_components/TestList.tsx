@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { TBaseCustomTest } from './schema';
+import { BookOpen, Calendar, ClipboardList, ShieldQuestion } from 'lucide-react';
 
 type Props = {
   tests: TBaseCustomTest[];
@@ -8,21 +9,33 @@ type Props = {
 
 const TestList = ({ tests }: Props) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {tests.map(test => (
-        <Link key={test.id} href={`/tests/view/${test.id}`}>
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle>{test.name}</CardTitle>
-              <CardDescription>{new Date(test.date).toLocaleDateString()}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>{`${test.questions.length} questions`}</p>
-            </CardContent>
-          </Card>
-        </Link>
-      ))}
-    </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-4 bg-bg1 gap-3">
+    {tests.map(test => (
+      <Link key={test.id} href={`/tests/view/${test.id}`} className="block">
+        <Card className="hover:shadow-lg transition-all duration-300 border-color3 hover:border-color5 bg-primary group">
+          <CardHeader className="space-y-1">
+            <div className="flex items-start justify-start">
+              <CardTitle className="text-black tracking-wide text-xl uppercase group-hover:text-gray-600 transition-colors duration-300 flex items-center gap-2">
+                {/* <ClipboardList className="w-6 h-6 text-color7" /> */}
+                {test.name}
+              </CardTitle>
+            </div>
+            <CardDescription className="text-gray-800 flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-color6" />
+              {new Date(test.date).toLocaleDateString()}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-2">
+              <p className="flex items-center gap-1 text-sm font-medium text-gray-600 bg-color1 rounded-full px-4 py-1 ">
+                <ShieldQuestion className='h-4 w-4'/> {`${test.questions.length} questions`}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </Link>
+    ))}
+  </div>
   );
 }
 

@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import ChapterList from './ChapterList';
 import { TTotalQuestionsPerSubjectAndChapter } from './schema';
+import { Book, Search } from 'lucide-react';
 
 type Props = {
     data: TTotalQuestionsPerSubjectAndChapter
@@ -24,26 +25,37 @@ const ChapterwiseMainPage = (props: Props) => {
 
     return (
         <div className='w-full p-6'>
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="flex flex-wrap gap-2 mb-6">
                 {Object.keys(totalQuestionsPerSubjectAndChapterData).map((subject) => (
                     <div key={subject} onClick={() => handleSubjectClick(subject)} className="cursor-pointer">
-                        <Badge className={`${subject === selectedSubject ? 'bg-gray-500' : ''}`}>
-                            {subject}
+                        <Badge
+                            className={`${subject === selectedSubject
+                                ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                                : 'bg-purple-200 hover:bg-purple-300 text-black'
+                                } transition-colors duration-200 py-1 `}
+                        >
+                            <Book className="w-4 h-4 mr-1" />
+                            {subject.toUpperCase().replace(/_/g, " ")}
                         </Badge>
-                    </div>)
-                )}
+                    </div>
+                ))}
             </div>
 
             {selectedSubject && (
                 <>
-                    <h3 className="text-xl text-black mb-4">Chapters for {selectedSubject}</h3>
-                    <Input
-                        type="text"
-                        placeholder={`Search chapters...`}
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="mb-4"
-                    />
+                    <h3 className="text-2xl font-bold text-black dark:text-purple-100 mb-4">
+                        Chapters for {selectedSubject.toUpperCase().replace(/_/g, " ")}
+                    </h3>
+                    <div className="relative mb-6 max-w-lg">
+                        <Search className=" absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-400" />
+                        <Input
+                            type="text"
+                            placeholder={`Search chapters...`}
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="pl-10 bg-white dark:bg-purple-800 border-purple-300 dark:border-purple-600 focus:ring-purple-500 focus:border-purple-500"
+                        />
+                    </div>
                     <ChapterList
                         chapters={totalQuestionsPerSubjectAndChapterData[selectedSubject]}
                         selectedSubject={selectedSubject}

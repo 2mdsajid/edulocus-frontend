@@ -76,8 +76,8 @@ const SubscriptionForm = (props: Props) => {
     return (
         <Card className="w-full max-w-md shadow-2xl">
             <CardHeader className="space-y-1">
-                <CardTitle className="text-2xl font-bold text-center">Contact Us</CardTitle>
-                <CardDescription className="text-center">Enter your details to get in touch</CardDescription>
+                <CardTitle className="text-2xl font-bold text-center text-color7">Subscription Form</CardTitle>
+                <CardDescription className="text-center">Enter your correct details. we&apos;ll get in touch soon.</CardDescription>
             </CardHeader>
             <CardContent>
                 <Form {...form}>
@@ -87,7 +87,7 @@ const SubscriptionForm = (props: Props) => {
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Name</FormLabel>
+                                    <FormLabel className="text-color8">Name</FormLabel>
                                     <FormControl>
                                         <Input className="mb-0" placeholder="Your name" {...field} />
                                     </FormControl>
@@ -100,7 +100,7 @@ const SubscriptionForm = (props: Props) => {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel className="text-color8">Email</FormLabel>
                                     <FormControl>
                                         <Input placeholder="example@gmail.com" {...field} />
                                     </FormControl>
@@ -113,7 +113,7 @@ const SubscriptionForm = (props: Props) => {
                             name="phone"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Phone Number</FormLabel>
+                                    <FormLabel className="text-color8">Phone Number</FormLabel>
                                     <FormControl>
                                         <Input className="mb-0" placeholder="+977982344****" {...field} />
                                     </FormControl>
@@ -121,7 +121,7 @@ const SubscriptionForm = (props: Props) => {
                                 </FormItem>
                             )}
                         />
-                        <Button className="w-full" type="submit" disabled={isSubmitClicked}>
+                        <Button className="w-full bg-color7 hover:bg-color8" type="submit" disabled={isSubmitClicked}>
                             {isSubmitClicked ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -135,7 +135,7 @@ const SubscriptionForm = (props: Props) => {
                 </Form>
             </CardContent>
             <CardFooter className="text-center text-sm text-muted-foreground">
-                We&apos;ll never share your details. Read our <a href="#" className="underline">Privacy Policy</a>.
+                We&apos;ll never share your details. Read our&nbsp; <a href="/privacy" className="underline"> Privacy Policy</a>.
             </CardFooter>
         </Card>
     )

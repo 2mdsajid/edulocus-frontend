@@ -1,26 +1,36 @@
 import Link from "next/link"
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { LucideIcon } from 'lucide-react'
 import { TTypeOfTestsAndDescription } from "./schema"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import { LockIcon, PlayCircle } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
-
-const TestTypeCard = ({ type, description, icon: Icon }: TTypeOfTestsAndDescription) => {
+const TestTypeCard = ({ type, description, icon: Icon, isAvailable }: TTypeOfTestsAndDescription) => {
   return (
     <Link href={`/tests/${type.toLowerCase().replace(/_/g, '')}`} className="block">
-      <Card className="group hover:shadow-xl transition-all duration-300 bg-white dark:bg-purple-900 overflow-hidden border-purple-200 dark:border-purple-700 hover:border-purple-300 dark:hover:border-purple-600">
-        <div className="flex items-center p-6">
-          <div className="flex-shrink-0 w-16 h-16 mr-6 bg-purple-100 dark:bg-purple-800 rounded-full flex items-center justify-center group-hover:bg-purple-200 dark:group-hover:bg-purple-700 transition-colors duration-300">
-            <Icon className="text-purple-600 dark:text-purple-300 w-8 h-8 group-hover:scale-110 transition-transform duration-300" />
-          </div>
-          <CardHeader className="p-0">
-            <CardTitle className="text-xl font-bold text-purple-700 dark:text-purple-200 group-hover:text-purple-500 dark:group-hover:text-purple-100 transition-colors duration-300">
-              {type.replace(/_/g, ' ')}
-            </CardTitle>
-            <CardDescription className="text-sm text-black dark:text-purple-300 mt-2 group-hover:text-gray-500 dark:group-hover:text-purple-200 transition-colors duration-300">
-              {description}
-            </CardDescription>
-          </CardHeader>
-        </div>
+      <Card className={`overflow-hidden ${isAvailable ? 'bg-primary' : 'bg-gray-100'}`}>
+        <CardHeader className="-mb-2">
+          <CardTitle className="text-xl font-bold flex items-center gap-2">
+            <Icon className="w-6 h-6 text-purple-600" />
+            {type.replace(/_/g, ' ')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-600 mb-2">{description}</p>
+          {isAvailable ? (
+            <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
+              <PlayCircle className="w-6 h-6" /> Start
+            </Button>
+          ) : (
+            <div className="space-y-2">
+              <Link href="/membership" passHref>
+                <Button variant="outline" className="w-full">
+                  <LockIcon className="w-6 h-6 text-gray-400" />
+                  Start
+                </Button>
+              </Link>
+            </div>
+          )}
+        </CardContent>
       </Card>
     </Link>
   )

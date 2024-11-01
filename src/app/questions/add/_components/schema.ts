@@ -12,5 +12,5 @@ export type TExpectedQuestionFormatFromFile = {
     chapter?: string
     subject?: string
     difficulty?: string
-    explanation?: string
+    exp?: string
 }

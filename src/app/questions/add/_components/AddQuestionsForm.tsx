@@ -142,9 +142,9 @@ const AddQuestionsForm = (props: Props) => {
         const questions: TAddQuestion[] = compatiblequestions.map((q) => ({
             question: q.qn,
             answer: q.ans as TAnswer,
-            explanation: q.explanation || '',
-            subject: q.subject || subject,
-            chapter: q.chapter || chapter,
+            explanation: q.exp || '',
+            subject: modeOfUpload === "SAME_SUBJECT" ? subject : q.subject || "",
+            chapter: modeOfUpload === "SAME_SUBJECT" ? chapter : q.chapter || "",
             unit: "",
             difficulty: q.difficulty || 'm',
             options: q.options,
