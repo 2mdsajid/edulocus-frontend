@@ -13,7 +13,7 @@ import { addQuestions } from './actions'
 import ChapterInput from './ChapterInput'
 import { isExpectedFileFormat } from './methods'
 import QuestionCard from './QuestionCard'
-import { TAddQuestion, TAnswer, TExpectedQuestionFormatFromFile } from './schema'
+import { TAddQuestion, TAnswer, TExpectedQuestionFormatFromFile, TField } from './schema'
 import SubjectInput from './SubjectInput'
 
 const API_END_POINTS = {
@@ -82,22 +82,22 @@ const AddQuestionsForm = (props: Props) => {
 
 
     // this will edit uploaded questions
-    const editQuestion = (value: string, id: string, i: number) => {
+    const editQuestion = (value: string, field: string, i: number) => {
         setCompatibleQuestions((prevQuestions) => {
             const updatedQuestions = [...prevQuestions]; // Shallow copy the array
 
-            if (['a', 'b', 'c', 'd'].includes(id)) {
+            if (['a', 'b', 'c', 'd'].includes(field)) {
                 updatedQuestions[i] = {
                     ...updatedQuestions[i],
                     options: {
                         ...updatedQuestions[i].options,
-                        [id]: value,
+                        [field]: value,
                     },
                 };
             } else {
                 updatedQuestions[i] = {
                     ...updatedQuestions[i],
-                    [id]: value,
+                    [field]: value,
                 };
             }
 

@@ -19,12 +19,13 @@ export const ROLES_HIEARCHY = {
   USER: ['ADMIN', 'USER', 'SUPERADMIN', 'MODERATOR', 'SAJID'],
 }
 
+import { TTypeOfTestsAndDescription } from "@/app/tests/_components/schema";
 import {
   BarChart,
   Book,
   BookOpen,
   Cpu,
-  FileText, // Alternative for Tools
+  FileText, FlaskConical, // Alternative for Tools
   Folder,
   Puzzle,
   RefreshCcw,
@@ -36,7 +37,6 @@ import {
   Wrench, // Alternative for Dice
   Zap
 } from 'lucide-react';
-import { TTypeOfTestsAndDescription } from "@/app/tests/_components/schema";
 
 
 export const typeOfTestsAndDescriptionData: TTypeOfTestsAndDescription[] = [
@@ -56,6 +56,49 @@ export const typeOfTestsAndDescriptionData: TTypeOfTestsAndDescription[] = [
   { type: 'REVISION', description: 'Test for reviewing learned material.', isAvailable: false, icon: RefreshCcw },
   { type: 'RETAKE', description: 'Test retake for improving previous scores.', isAvailable: false, icon: Repeat }
 ]
+
+
+// this is for the subjects
+import {
+  Ambulance,
+  Baby,
+  Bone,
+  Brain,
+  Dna,
+  Ear,
+  Eye,
+  Heart,
+  LucideIcon,
+  Microscope,
+  Pill,
+  Radio,
+  Stethoscope,
+  Sun,
+  Syringe,
+  Users
+} from 'lucide-react';
+
+export const subjectData: { [key: string]: { icon: LucideIcon, name: string } } = {
+  anatomy: { icon: Bone, name: "Anatomy" },
+  physiology: { icon: Heart, name: "Physiology" },
+  biochemistry: { icon: FlaskConical, name: "Biochemistry" },
+  pathology: { icon: Microscope, name: "Pathology" },
+  pharmacology: { icon: Pill, name: "Pharmacology" },
+  microbiology: { icon: Microscope, name: "Microbiology" }, // Changed from Bacteria to Microscope
+  community_medicine: { icon: Users, name: "Community Medicine" },
+  ent: { icon: Ear, name: "ENT" },
+  opthalmology: { icon: Eye, name: "Ophthalmology" },
+  obg: { icon: Baby, name: "Obstetrics & Gynecology" },
+  forensic: { icon: Dna, name: "Forensic Medicine" },
+  paediatrics: { icon: Baby, name: "Pediatrics" },
+  surgery: { icon: Syringe, name: "Surgery" },
+  medicine: { icon: Stethoscope, name: "Medicine" },
+  radiology: { icon: Radio, name: "Radiology" },
+  emergency_medicine: { icon: Ambulance, name: "Emergency Medicine" },
+  psychiatry: { icon: Brain, name: "Psychiatry" },
+  dermatology: { icon: Sun, name: "Dermatology" },
+  orthopedics: { icon: Bone, name: "Orthopedics" }
+}
 
 export const NAV_LINKS: NAVLINKS[] = [
   {

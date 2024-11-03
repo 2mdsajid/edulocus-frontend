@@ -60,7 +60,7 @@ const QuestionCard = ({
                             rows={1}
                             className="text-xs h-21"
                             value={question.exp}
-                            onChange={(e) => editQuestion(e.target.value, 'explanation', index)}
+                            onChange={(e) => editQuestion(e.target.value, 'exp', index)}
                             placeholder="Type the explanation here."
                             id="explanation"
                         />

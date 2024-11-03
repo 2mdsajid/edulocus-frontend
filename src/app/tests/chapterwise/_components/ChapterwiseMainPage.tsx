@@ -6,6 +6,7 @@ import { useState } from 'react';
 import ChapterList from './ChapterList';
 import { TTotalQuestionsPerSubjectAndChapter } from './schema';
 import { Book, Search } from 'lucide-react';
+import { subjectData } from '@/lib/data';
 
 type Props = {
     data: TTotalQuestionsPerSubjectAndChapter
@@ -23,30 +24,33 @@ const ChapterwiseMainPage = (props: Props) => {
         setSearchQuery('');  // Reset search query when a new subject is selected
     };
 
+
+
     return (
         <div className='w-full p-6'>
             <div className="flex flex-wrap gap-2 mb-6">
-                {Object.keys(totalQuestionsPerSubjectAndChapterData).map((subject) => (
-                    <div key={subject} onClick={() => handleSubjectClick(subject)} className="cursor-pointer">
+                {Object.keys(totalQuestionsPerSubjectAndChapterData).map((subject) => {
+                    const { icon: SubjectIcon, name } = subjectData[subject] || { icon: Book, name: subject.replace(/_/g, ' ') }
+                    return <div key={subject} onClick={() => handleSubjectClick(subject)} className="cursor-pointer">
                         <Badge
                             className={`${subject === selectedSubject
                                 ? 'bg-purple-600 hover:bg-purple-700 text-white'
                                 : 'bg-purple-200 hover:bg-purple-300 text-black'
-                                } transition-colors duration-200 py-1 `}
+                                } transition-colors duration-200 py-1 text-xs`}
                         >
-                            <Book className="w-4 h-4 mr-1" />
-                            {subject.toUpperCase().replace(/_/g, " ")}
+                            <SubjectIcon className="w-4 h-4 mr-1" />
+                            {name.toUpperCase().replace(/_/g, " ")}
                         </Badge>
                     </div>
-                ))}
+                })}
             </div>
 
             {selectedSubject && (
                 <>
-                    <h3 className="text-2xl font-bold text-black dark:text-purple-100 mb-4">
+                    <h3 className="text-lg font-bold text-black dark:text-purple-100 mb-3">
                         Chapters for {selectedSubject.toUpperCase().replace(/_/g, " ")}
                     </h3>
-                    <div className="relative mb-6 max-w-lg">
+                    <div className="relative mb-4 max-w-lg">
                         <Search className=" absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-400" />
                         <Input
                             type="text"
