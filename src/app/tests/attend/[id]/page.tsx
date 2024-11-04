@@ -5,6 +5,8 @@ import TestDetails from './_components/TestDetails'
 import TestQuestions from './_components/TestQuestions'
 import { getUserSession } from '@/lib/auth/auth'
 import { generateRandomName } from '@/lib/utils'
+import { constructMetadata } from '@/lib/data'
+import { Metadata } from 'next'
 
 type Props = {
     params: {
@@ -14,6 +16,22 @@ type Props = {
         username: string
     }
 }
+
+
+export const generateMetadata = async (props: Props): Promise<Metadata> => {
+    const { data: testData, message } = await getSingleTestById(props.params.id)
+    if (!testData) {
+        return constructMetadata({
+            title: `EduLocus | Test`,
+            description: `Test from EduLocus .`
+        });
+    }
+    return constructMetadata({
+        title: `Edulocus | Test`,
+        description: `${testData.slug} created by ${testData.createdBy} for a comprehensive learning experience.`,
+    });
+};
+
 
 const page = async (props: Props) => {
 

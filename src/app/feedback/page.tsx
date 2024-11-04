@@ -1,7 +1,13 @@
-import React from 'react'
+import { constructMetadata } from '@/lib/data'
 import FeedbackForm from './_components/FeedbackForm'
 
 type Props = {}
+
+export const metadata = constructMetadata({
+    title: 'EduLocus | Feedback',
+    description: 'EduLocus Feedback page for users to send feedback or complains or try to contact us'
+})
+
 
 const page = (props: Props) => {
     return (

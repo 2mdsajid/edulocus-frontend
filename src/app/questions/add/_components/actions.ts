@@ -36,6 +36,7 @@ export const addQuestions = async (questions: TAddQuestion[], apiEndPoint: strin
         const { data, message } = await response.json();
         return { data, message };
     } catch (error) {
+        console.log("🚀 ~ addQuestions ~ error:", error)
         return { data: null, message: "Some Error Occured while adding the questions!" };
     }
 };

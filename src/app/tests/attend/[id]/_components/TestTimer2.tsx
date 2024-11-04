@@ -46,12 +46,12 @@ function TestTimer2({
   return (
     <div
       className={cn(
-        'flex items-center justify-between gap-2 bg-blue-100 rounded-lg p-4',
+        'flex items-center gap-2 md:justify-between bg-blue-100 rounded-lg p-4 text-sm md:text-lg ',
         className
       )}
     >
-      <span className='flex'>
-        <Clock className="w-6 h-6 text-blue-600" />
+      <span className='flex items-center gap-1 '>
+        <Clock className="w-4 h-4 md:w-6 md:h-6 text-blue-600" />
         {label ? label : 'Time Left'}
       </span>
       {days > 0 && `${convertToTwoDigit(days)}:`}

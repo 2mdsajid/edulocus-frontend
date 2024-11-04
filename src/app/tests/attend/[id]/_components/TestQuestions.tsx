@@ -342,18 +342,22 @@ const TestQuestions = (props: Props) => {
                 </TestAnalysisAndAnswersSwitch>
                 :
                 <div className='w-full'>
-                    <div className="fixed top-28 right-5 flex flex-col p-2 sm:p-3 md:p-4 bg-white dark:bg-gray-900 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg space-y-2">
+                    {/* timer dialog */}
+                    <div className="fixed top-16 right-0 flex flex-col p-1 sm:p-3 md:p-4 bg-white dark:bg-gray-900 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg space-y-1 md:space-y-2">
                         {timeout && (
                             <TestTimer2
                                 expiryTimestamp={timeout}
                                 onExpire={checkAns}
                                 onTick={useSetCurrentCountdown}
-                                className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-white font-bold rounded-lg py-2 px-4 hover:bg-blue-200 dark:hover:bg-blue-800 transition"
+                                className="w-fit bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-white font-bold rounded-lg py-1 px-2 hover:bg-blue-200 dark:hover:bg-blue-800 transition"
                             />
                         )}
 
-                        <div className="flex items-center justify-center gap-5 bg-purple-100 rounded-lg p-2">
-                            <span className="flex gap-1 font-semibold text-purple-800"><CheckCircle className="w-6 h-6 text-purple-600" />Attempted:</span>
+                        <div className="flex items-center md:justify-between gap-2 w-full bg-purple-100 rounded-lg py-1 px-2 text-sm md:text-lg">
+                            <span className="flex items-center gap-1 font-semibold text-purple-800">
+                                <CheckCircle className="w-4 h-4 md:w-6 md:h-6 text-purple-600" />
+                                Attempted:
+                            </span>
                             <span className='font-semibold text-purple-800'>{questionsAttempt.length}/{uquestions.length}</span>
                         </div>
 
@@ -361,8 +365,8 @@ const TestQuestions = (props: Props) => {
                         <Dialog>
                             {!issubmitclicked && (
                                 <DialogTrigger ref={submitref} className="w-full">
-                                    <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center space-x-2">
-                                        <Send className="w-5 h-5" />
+                                    <button className="w-full text-sm md:text-lg bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center gap-2 py-1 px-2">
+                                        <Send className="w-4 h-4 md:w-6 md:h-6" />
                                         <span>Submit</span>
                                     </button>
                                 </DialogTrigger>
@@ -401,12 +405,13 @@ const TestQuestions = (props: Props) => {
                         </Dialog>
                     </div>
 
+                    {/* remaining part of the page */}
                     <form className="w-full space-y-6" onSubmit={checkAns} action="" method="POST">
-                        <p className="text-3xl font-bold my-8 text-center text-gray-800 dark:text-gray-100">Questions</p>
+                        {/* <p className="text-3xl font-bold my-8 text-center text-gray-800 dark:text-gray-100">Questions</p> */}
 
                         <div className="w-full">
-                            {/* Check if more than one subject */}
-                            {SUBJECTS.length > 1 && (
+                            {/* Check if more than one subject for subject navigation*/}
+                            {/* {SUBJECTS.length > 1 && (
                                 <div className="flex w-full justify-between items-center overflow-x-auto sticky top-16 left-0 z-10 bg-accent3 border dark:bg-gray-900 py-3 px-2 mb-8 shadow-lg rounded-md">
                                     {SUBJECTS.map((s, i) => (
                                         <a
@@ -425,13 +430,13 @@ const TestQuestions = (props: Props) => {
                                         </a>
                                     ))}
                                 </div>
-                            )}
+                            )} */}
 
                             {/* Questions section */}
                             <div className="space-y-10">
                                 {SUBJECTS.map((s, i) => (
                                     <div key={s} id={s} className={`${s} subject`}>
-                                        <h2 className='py-12 text-2xl font-bold'>{s}</h2>
+                                        <h2 className='text-3xl font-bold my-8 text-center text-gray-800 dark:text-gray-100 capitalize'>{s.replace(/_/g, ' ')}</h2>
                                         <div className="space-y-6">
                                             {categorizedQuestions[s].map((question, index) => (
                                                 <div key={question.id} className="transition-all">

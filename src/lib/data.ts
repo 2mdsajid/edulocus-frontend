@@ -19,6 +19,8 @@ export const ROLES_HIEARCHY = {
   USER: ['ADMIN', 'USER', 'SUPERADMIN', 'MODERATOR', 'SAJID'],
 }
 
+
+// different types of tests ----------------------------------------------------------------
 import { TTypeOfTestsAndDescription } from "@/app/tests/_components/schema";
 import {
   BarChart,
@@ -58,7 +60,7 @@ export const typeOfTestsAndDescriptionData: TTypeOfTestsAndDescription[] = [
 ]
 
 
-// this is for the subjects
+// this is for the subjects with their icons ----------------------------------------------------------------
 import {
   Ambulance,
   Baby,
@@ -99,6 +101,74 @@ export const subjectData: { [key: string]: { icon: LucideIcon, name: string } } 
   dermatology: { icon: Sun, name: "Dermatology" },
   orthopedics: { icon: Bone, name: "Orthopedics" }
 }
+
+
+// premium features data ----------------------------------------------------------------
+import {
+  BarChart3,
+  Calendar,
+  Gauge,
+  Rocket,
+  Sparkles,
+  Trophy
+} from "lucide-react";
+
+export type TMembershipFeatures = {
+  FeatureIcon: LucideIcon,
+  title: string,
+  description: string
+}
+
+export const membershipFeatures: TMembershipFeatures[] = [
+  {
+    FeatureIcon: Gauge,
+    title: "Accessible Dashboard",
+    description:
+      "Get quick and easy access to all your insights and tools in one user-friendly dashboard, designed to make your journey smoother and more productive.",
+  },
+  {
+    FeatureIcon: BarChart3,
+    title: "Detailed Test Analysis",
+    description:
+      "Analyze each test in-depth with a breakdown of your performance, so you know exactly where you excel and where you can improve.",
+  },
+  {
+    FeatureIcon: BookOpen,
+    title: "Unlimited Access to All Tests",
+    description:
+      "Practice without limits! Access an extensive library of tests that cover every topic and difficulty level to ensure you're fully prepapurple.",
+  },
+  {
+    FeatureIcon: Rocket,
+    title: "Early Access to New Features",
+    description:
+      "Be the first to try out our latest features! Premium members get priority access to tools and updates designed to give you a competitive edge.",
+  },
+  {
+    FeatureIcon: Trophy,
+    title: "Exclusive Content from Top Achievers",
+    description:
+      "Gain insights directly from top scorers! Access unique study guides, tips, and techniques from those who've been at the top.",
+  },
+  {
+    FeatureIcon: Sparkles,
+    title: "AI-Based Test & Topic Recommendations",
+    description:
+      "Let our AI guide you! Receive personalized recommendations for tests, chapters, and topics to focus on, based on your unique learning profile.",
+  },
+  {
+    FeatureIcon: Brain,
+    title: "Intelligent Analysis",
+    description:
+      "Our AI-driven insights help you understand your strengths and weaknesses on a deeper level, making it easier to target your improvement areas.",
+  },
+  {
+    FeatureIcon: Calendar,
+    title: "All Past Year Questions",
+    description:
+      "Prepare with confidence by accessing all past questions, helping you understand patterns and trends in the exams and tests.",
+  },
+]
 
 export const NAV_LINKS: NAVLINKS[] = [
   {

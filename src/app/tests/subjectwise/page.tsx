@@ -1,10 +1,15 @@
 
-import React from 'react'
-import { getTotalQuestionsPerSubject } from './_components/actions'
 import ErrorPage from '@/components/reusable/ErrorPage'
+import { constructMetadata } from '@/lib/data'
+import { getTotalQuestionsPerSubject } from './_components/actions'
 import SubjectsList from './_components/SubjectsList'
 
 type Props = {}
+
+export const metadata =  constructMetadata({
+  title: `Edulocus | Subjectwise Test`,
+  description: `Subjectwise test created from EduLocus for a comprehensive learning experience.`,
+});
 
 const page = async (props: Props) => {
 

@@ -1,6 +1,13 @@
+import { constructMetadata } from '@/lib/data';
 import React from 'react'
 
 type Props = {}
+
+export const metadata = constructMetadata({
+    title: `Edulocus | Privacy`,
+    description: `Privacy policies for EduLocus members data.`,
+});
+
 
 const page = (props: Props) => {
     return (

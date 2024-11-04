@@ -3,6 +3,8 @@ import { SearchableResultTable, SearchableResultTableColumns } from "@/component
 import { getUserSession } from "@/lib/auth/auth"
 import { getTestMetadata } from "./_components/actions"
 import TestInput from "./_components/TestInput"
+import { Metadata } from "next"
+import { constructMetadata } from "@/lib/data"
 
 type Props = {
     params: {
@@ -11,28 +13,19 @@ type Props = {
 }
 
 
-// export const generateMetadata = async (props: Props): Promise<Metadata> => {
-
-
-//     const response = await fetch(`${process.env.BACKEND}/get-custom-tests-metadata/${typeoftest}/${testid}`, {
-//         method: 'GET',
-//         cache: 'no-store'
-//     })
-
-//     if (!response.ok) {
-//         return constructMetadata({
-//             title: `Edulocus | ${typeoftest}`,
-//             description: `${testid} from ${typeoftest} created by ..`
-//         });
-//     }
-//     const testData = await response.json() as any
-//     return constructMetadata({
-//         title: `Edulocus | ${typeoftest}`,
-//         description: `${testid} from ${typeoftest} created by ${testData.creatorName}`,
-//         image: testData.image ? testData.image : testData.creatorImage
-//     });
-
-// };
+export const generateMetadata = async (props: Props): Promise<Metadata> => {
+    const { data: testMetadata, message } = await getTestMetadata(props.params.id)
+    if (!testMetadata) {
+        return constructMetadata({
+            title: `EduLocus | Model Test`,
+            description: `ModelTest from EduLocus for more comprehensive learning experience.`
+        });
+    }
+    return constructMetadata({
+        title: `Edulocus | Model Test`,
+        description: `${testMetadata.slug} created by ${testMetadata.createdBy} for a comprehensive learning experience.`,
+    });
+};
 
 
 const page = async (props: Props) => {

@@ -1,13 +1,9 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import Header from "./_components/navbar/NavBar";
 import { getUserSession } from "@/lib/auth/auth";
-import NavBarNew from "./_components/navbar/NavBarNew";
 import { constructMetadata } from "@/lib/data";
-import { redirect } from "next/navigation";
-import ComingSoon from "./_components/ComingSoon";
+import localFont from "next/font/local";
+import NavBarNew from "./_components/navbar/NavBarNew";
+import "./globals.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,6 +27,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="5af07f51-10cb-41b3-9998-d456214b0eab"></script>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

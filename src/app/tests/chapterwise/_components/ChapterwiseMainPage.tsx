@@ -27,7 +27,7 @@ const ChapterwiseMainPage = (props: Props) => {
 
 
     return (
-        <div className='w-full p-6'>
+        <div className='w-full '>
             <div className="flex flex-wrap gap-2 mb-6">
                 {Object.keys(totalQuestionsPerSubjectAndChapterData).map((subject) => {
                     const { icon: SubjectIcon, name } = subjectData[subject] || { icon: Book, name: subject.replace(/_/g, ' ') }

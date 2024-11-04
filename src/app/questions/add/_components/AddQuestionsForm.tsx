@@ -122,6 +122,7 @@ const AddQuestionsForm = (props: Props) => {
         const isChapterInSubject = isTopicInSyllabus(props.syllabus, subject, chapter)
         if (modeOfUpload === "SAME_SUBJECT" && (!subject || !chapter)) {
             setIssubmitclicked(false)
+            console.log("🚀 ~ sendFIle ~ false:", false)
             return toast({
                 variant: "destructive",
                 title: "Warning",
@@ -149,8 +150,10 @@ const AddQuestionsForm = (props: Props) => {
             difficulty: q.difficulty || 'm',
             options: q.options,
         }));
-
+        
+        console.log("🚀 ~ constquestions:TAddQuestion[]=compatiblequestions.map ~ questions:", questions)
         const apiEndPoint = API_END_POINTS[modeOfUpload]
+        console.log("🚀 ~ sendFIle ~ apiEndPoint:", apiEndPoint)
         const { data, message } = await addQuestions(questions, apiEndPoint)
         setIssubmitclicked(false)
         if (!data || data === null || data === undefined) {

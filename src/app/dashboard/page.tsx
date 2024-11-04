@@ -13,7 +13,7 @@ type Props = {};
 
 export const metadata = constructMetadata({
     title: "Edulocus | Dashboard",
-    description: "Dashboard by edulocus"
+    description: "Dashboard by EduLocus"
 })
 
 const page = async (props: Props) => {

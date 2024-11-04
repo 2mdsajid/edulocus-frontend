@@ -23,7 +23,7 @@ export default function ChapterList({ chapters, searchQuery, selectedSubject }: 
   }
 
   return (
-    <div className='w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
+    <div className='w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-5'>
       {filteredChapters.map(([chapter, number]) => (
         <ChapterCard
           key={chapter}
