@@ -9,22 +9,28 @@ import { toast } from '@/hooks/use-toast'
 import React, { useRef, useState } from 'react'
 import { isTopicInSyllabus } from '../../_components/methods'
 import { TPGSyllabus } from '../../_components/schema'
-import { addQuestions } from './actions'
+import { addQuestions, createPastTest } from './actions'
 import ChapterInput from './ChapterInput'
 import { isExpectedFileFormat } from './methods'
 import QuestionCard from './QuestionCard'
-import { TAddQuestion, TAnswer, TExpectedQuestionFormatFromFile, TField } from './schema'
+import { TAddQuestion, TAnswer, TExpectedQuestionFormatFromFile, TStreamHierarchy } from './schema'
 import SubjectInput from './SubjectInput'
+import StreamInput from './StreamInput'
+import CategoryInput from './CategoryInput'
+import AffiliationInput from './AffiliationInput'
+import { Input } from '@/components/ui/input'
 
 const API_END_POINTS = {
     SAME_SUBJECT: "add-multiple-question-for-same-subject-and-chapter",
     DIFFERENT_SUBJECT: "add-multiple-question-for-different-subject-and-chapter",
+    PAST_PAPER: ""
 } as const
 
 type TApiEndPointsKeys = keyof typeof API_END_POINTS;
 
 type Props = {
     syllabus: TPGSyllabus
+    streamHirearchy: TStreamHierarchy[]
 }
 
 const AddQuestionsForm = (props: Props) => {
@@ -33,6 +39,13 @@ const AddQuestionsForm = (props: Props) => {
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
+    // for past questions only -----
+    const [isPastQuestion, setIsPastQuestion] = useState<boolean | null>(null);
+    const [stream, setStream] = useState(props.streamHirearchy[0].name)
+    const [category, setCategory] = useState<string | null>(null);
+    const [year, setYear] = useState(2007)
+    const [affiliation, setAffiliation] = useState<string | null>(null)
+
     const [compatiblequestions, setCompatibleQuestions] = useState<TExpectedQuestionFormatFromFile[]>([])
     const [incompatiblequestions, setIncompatiblequestions] = useState<any[]>([])
 
@@ -40,6 +53,14 @@ const AddQuestionsForm = (props: Props) => {
     const [issubmitclicked, setIssubmitclicked] = useState(false)
 
     const [modeOfUpload, setModeOfUpload] = useState<TApiEndPointsKeys>(Object.keys(API_END_POINTS)[0] as TApiEndPointsKeys);
+
+    // to handle past radio buttons
+    const handlePastQuestionChange = (value: boolean) => {
+        if (value === true) {
+            setModeOfUpload("DIFFERENT_SUBJECT")
+        }
+        setIsPastQuestion(value);
+    };
 
     // this will handle the upload file and check the expeq format of questions in the file
     const handleJsonFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,7 +143,6 @@ const AddQuestionsForm = (props: Props) => {
         const isChapterInSubject = isTopicInSyllabus(props.syllabus, subject, chapter)
         if (modeOfUpload === "SAME_SUBJECT" && (!subject || !chapter)) {
             setIssubmitclicked(false)
-            console.log("🚀 ~ sendFIle ~ false:", false)
             return toast({
                 variant: "destructive",
                 title: "Warning",
@@ -150,27 +170,52 @@ const AddQuestionsForm = (props: Props) => {
             difficulty: q.difficulty || 'm',
             options: q.options,
         }));
-        
-        console.log("🚀 ~ constquestions:TAddQuestion[]=compatiblequestions.map ~ questions:", questions)
-        const apiEndPoint = API_END_POINTS[modeOfUpload]
-        console.log("🚀 ~ sendFIle ~ apiEndPoint:", apiEndPoint)
-        const { data, message } = await addQuestions(questions, apiEndPoint)
-        setIssubmitclicked(false)
-        if (!data || data === null || data === undefined) {
-            return toast({
-                variant: "destructive",
-                title: "Warning",
+
+
+        // sending the past paper data to another endpoint to avoid adding qustion conflicts
+        if (isPastQuestion) {
+            const pastTestPayloadData = {
+                year,
+                stream,
+                affiliation,
+                category,
+                questions
+            }
+
+            const { data, message } = await createPastTest(pastTestPayloadData)
+            setIssubmitclicked(false)
+            if (!data || data === null || data === undefined) {
+                return toast({
+                    variant: "destructive",
+                    title: "Warning",
+                    description: message,
+                })
+            }
+            toast({
+                variant: "success",
+                title: "Success",
+                description: message,
+            })
+            
+        } else {
+            const apiEndPoint = API_END_POINTS[modeOfUpload]
+            const { data, message } = await addQuestions(questions, apiEndPoint)
+            setIssubmitclicked(false)
+            if (!data || data === null || data === undefined) {
+                return toast({
+                    variant: "destructive",
+                    title: "Warning",
+                    description: message,
+                })
+            }
+            toast({
+                variant: "success",
+                title: "Success",
                 description: message,
             })
         }
-
-        toast({
-            variant: "success",
-            title: "Success",
-            description: message,
-        })
         setCompatibleQuestions([])
-        fileInputRef.current!.value = ''; 
+        fileInputRef.current!.value = '';
         setIssubmitclicked(false)
         return
     }
@@ -178,23 +223,90 @@ const AddQuestionsForm = (props: Props) => {
 
     return (
         <div className='flex flex-col gap-3 w-full max-w-3xl mx-auto'>
-            <Card className='px-3 py-4 bg-accent3 dark:bg-dark-accent3'>
+            <Card className='px-3 py-4 bg-accent3 dark:bg-dark-accent3 space-y-3'>
                 <div className='flex flex-col gap-3 itemsc'>
                     <CardTitle>Add Questions Via JSON File</CardTitle>
                     <CardDescription>Please read the syllabus first <span><ReusableLInk link='/questions/syllabus'>here</ReusableLInk></span> before.</CardDescription>
                 </div>
+
+                {/* past questions radio buttons */}
                 <div>
-                    <DropDownInput
-                        category='mode'
-                        value={modeOfUpload}
-                        dropdownMenu={Object.keys(API_END_POINTS)}
-                        onChange={(value:TApiEndPointsKeys) => setModeOfUpload(value)}
-                    />
+                    <label>Is this a past question?</label>
+                    <div className='flex gap-3'>
+                        <label>
+                            <input
+                                type="radio"
+                                name="isPastQuestion"
+                                value="true"
+                                checked={isPastQuestion === true}
+                                onChange={() => handlePastQuestionChange(true)}
+                            />
+                            Yes
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="isPastQuestion"
+                                value="false"
+                                checked={!isPastQuestion}
+                                onChange={() => handlePastQuestionChange(false)}
+                            />
+                            No
+                        </label>
+                    </div>
                 </div>
+
+                {isPastQuestion
+                    && <div className='space-y-3'>
+                        <Input
+                            type='number'
+                            value={year}
+                            onChange={(e) => setYear(Number(e.currentTarget.value))}
+                            placeholder='year'
+                        />
+
+                        <StreamInput
+                            streamHierarchy={props.streamHirearchy}
+                            stream={stream}
+                            onChange={(value) => setStream(value)}
+                        />
+
+                        {stream
+                            && <CategoryInput
+                                streamHierarchy={props.streamHirearchy}
+                                stream={stream}
+                                category={category}
+                                onChange={(value) => setCategory(value)}
+                            />
+                        }
+
+                        {category
+                            && <AffiliationInput
+                                streamHierarchy={props.streamHirearchy}
+                                stream={stream}
+                                category={category}
+                                affiliation={affiliation}
+                                onChange={(value) => setAffiliation(value)}
+                            />
+                        }
+                    </div>}
+
+
+
                 <input type='file' accept='.json' onChange={handleJsonFileUpload} ref={fileInputRef} />
-                
+
+                {!isPastQuestion &&
+                    <div>
+                        <DropDownInput
+                            category='mode'
+                            value={modeOfUpload}
+                            dropdownMenu={Object.keys(API_END_POINTS)}
+                            onChange={(value: TApiEndPointsKeys) => setModeOfUpload(value)}
+                        />
+                    </div>}
+
                 {/* it will ask subjects only if it is of same subject questions */}
-                {modeOfUpload === "SAME_SUBJECT"
+                {(modeOfUpload === "SAME_SUBJECT")
                     && <div className='flex flex-col mt-5 gap-4'>
                         <SubjectInput
                             syllabus={props.syllabus}
@@ -211,6 +323,7 @@ const AddQuestionsForm = (props: Props) => {
                         }
                     </div>}
 
+                {/* this is the upload button */}
                 {compatiblequestions.length > 0
                     && <Dialog>
                         <DialogTrigger>
@@ -218,16 +331,17 @@ const AddQuestionsForm = (props: Props) => {
                         </DialogTrigger>
                         <DialogContent>
                             <p>Please make sure you selected the correct chapter, subject and unit. Also make the necessary changes as this will be the final confirmation before commiting them to the database.</p>
-                            <div className='flex flex-col gap-0'>
+                            {modeOfUpload === "SAME_SUBJECT" && <div className='flex flex-col gap-0'>
                                 <p><span className="font-semibold text-gray-600 dark:text-gray-400">subject:</span> {subject}</p>
                                 <p><span className="font-semibold text-gray-600 dark:text-gray-400">chapter:</span> {chapter}</p>
-                            </div>
+                            </div>}
                             <SubmitButton initialstate='send' loadingstate='sending' isLoadingState={issubmitclicked} onClick={sendFIle} />
                         </DialogContent>
                     </Dialog>
                 }
             </Card>
 
+            {/* render the questions in the input fields */}
             {compatiblequestions.length > 0 && (
                 <div className="flex flex-col gap-2">
                     <p className="text-xl my-3 font-semibold tracking-wider">Questions</p>
@@ -243,6 +357,7 @@ const AddQuestionsForm = (props: Props) => {
                 </div>
             )}
 
+            {/* render the incompatible questions */}
             {incompatiblequestions.length > 0 &&
                 <div className='max-h-[40vh] overflow-auto p-1 px-2 bg-black text-white'>
                     <p className='text-xl my-3 font-semibold tracking-wider'>Incompatible Questions</p>

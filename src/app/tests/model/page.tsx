@@ -1,8 +1,7 @@
 import React from 'react'
-import { TTypeOfTest } from '@/app/tests/_components/schema'
-import { getAllTestsByType } from './_components/actions'
 import ErrorPage from '@/components/reusable/ErrorPage'
 import TestList from './_components/TestList'
+import { getAllTestsByType } from '../_components/actions'
 
 type Props = {
 

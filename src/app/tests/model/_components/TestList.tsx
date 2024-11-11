@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, ShieldQuestion } from 'lucide-react';
 import Link from 'next/link';
-import { TBaseCustomTest } from './schema';
+import { TBaseCustomTest } from '../../_components/schema';
 
 type Props = {
   tests: TBaseCustomTest[];

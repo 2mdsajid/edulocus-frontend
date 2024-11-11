@@ -56,7 +56,8 @@ export const typeOfTestsAndDescriptionData: TTypeOfTestsAndDescription[] = [
   { type: 'PBQ_BASED', description: 'Test focused on practical-based questions (PBQ).', isAvailable: false, icon: Puzzle },
   { type: 'THEORY_BASED', description: 'Test focused on theoretical questions.', isAvailable: false, icon: Book },
   { type: 'REVISION', description: 'Test for reviewing learned material.', isAvailable: false, icon: RefreshCcw },
-  { type: 'RETAKE', description: 'Test retake for improving previous scores.', isAvailable: false, icon: Repeat }
+  { type: 'RETAKE', description: 'Test retake for improving previous scores.', isAvailable: false, icon: Repeat },
+  { type: 'PAST_PAPER', description: 'Test retake for improving previous scores.', isAvailable: true, icon: Repeat }
 ]
 
 
@@ -269,3 +270,4 @@ export function constructMetadata({
     })
   }
 }
+

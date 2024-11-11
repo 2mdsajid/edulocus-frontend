@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken"
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { TBaseUser, TJWT, TLogInUser, TSignUpUser } from "./schema";
-import { ShadcnToast } from "../global";
 
 export const getUserSession = async (): Promise<{
   data: TBaseUser | null;

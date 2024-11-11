@@ -2,7 +2,6 @@
 
 import { cookies } from "next/headers";
 import { TTotalQuestionsPerSubject } from "./schema";
-import { TTypeOfTest } from "../../_components/schema";
 
 export const getTotalQuestionsPerSubject = async (): Promise<{
     data: TTotalQuestionsPerSubject[] | null;

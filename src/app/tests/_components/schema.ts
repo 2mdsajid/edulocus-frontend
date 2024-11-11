@@ -43,6 +43,14 @@ export type CustomTest = {
     questions: string[];
 }
 
+export type TPastPaper = {
+    category: string | null;
+    stream: STREAM;
+    year: number;
+    affiliation: string | null;
+    customTestId: string;
+}
+
 export type TestQuestionAnswer = {
     id: string;
     questionId: string;
@@ -87,25 +95,20 @@ export type TcreateCustomTest = Pick<CustomTest,
     'questions'
 >
 
+// for model, past tests and other custom tests
+export type TBasePastPaper = Omit<TPastPaper, 'customTestId'>
+export type TBaseCustomTest = Pick<CustomTest,
+    'id' |
+    'name' |
+    'date' |
+    'questions'
+> & {
+    pastPaper: TBasePastPaper | null
+}
+
+
 // for leaderboards
 export type TBaseUserScore = Pick<UserScore, 'username' | 'totalScore'>
-
-// typs of tests
-export type TTypeOfTest = "MODEL"
-    | "SUBJECT_WISE"
-    | "CHAPTER_WISE"
-    | "TOPIC_WISE"
-    | "CUSTOM"
-    | "UNIT_WISE"
-    | "DIFFICULTY_BASED"
-    | "RANDOM"
-    | "FLASH"
-    | "AI_GENERATED"
-    | "PERFORMANCE_ANALYZER"
-    | "PBQ_BASED"
-    | "THEORY_BASED"
-    | "REVISION"
-    | "RETAKE"
 
 
 export type TTypeOfTestsAndDescription = {

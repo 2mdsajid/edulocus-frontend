@@ -3,6 +3,7 @@ import { getUserSession } from "@/lib/auth/auth";
 import { constructMetadata } from "@/lib/data";
 import localFont from "next/font/local";
 import NavBarNew from "./_components/navbar/NavBarNew";
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import "./globals.css";
 
 const geistSans = localFont({
@@ -35,7 +36,7 @@ export default async function RootLayout({
       >
         <NavBarNew user={user} />
         <main className='relative'>
-          {children}
+          <NuqsAdapter>{children}</NuqsAdapter>
         </main>
       </body>
       <Toaster />

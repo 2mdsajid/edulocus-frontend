@@ -444,6 +444,7 @@ const TestQuestions = (props: Props) => {
                                                         question={question}
                                                         index={index}
                                                         getInput={getInput}
+                                                        user={props.user}
                                                     />
                                                 </div>
                                             ))}
