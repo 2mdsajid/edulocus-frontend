@@ -3,7 +3,6 @@ import parse from 'html-react-parser';
 import { TQuestion } from "@/app/tests/_components/schema";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { TypeResponseQuestions } from "./global";
 import jwt from 'jsonwebtoken'
 
 export function cn(...inputs: ClassValue[]) {
