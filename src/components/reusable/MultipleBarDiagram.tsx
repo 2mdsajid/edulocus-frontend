@@ -14,6 +14,8 @@ import {
 import {
     ChartConfig,
     ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
@@ -32,24 +34,24 @@ type Props<T> = {
 
 // Reusable BarChart component
 export function MultipleBarDiagram<T extends Record<string, any>>(props: Props<T>) {
-    const { 
-        chartTitle, 
-        chartDescription, 
-        xAxisKey, 
-        dataKeys, 
-        chartData, 
-        footerDescription, 
-        trendingUpText 
+    const {
+        chartTitle,
+        chartDescription,
+        xAxisKey,
+        dataKeys,
+        chartData,
+        footerDescription,
+        trendingUpText
     } = props;
 
     const chartConfig = props.config || generateBarChartConfig(chartData, dataKeys);
 
     return (
-        <Card>
-            <CardHeader>
+        <Card className="">
+            {/* <CardHeader>
                 <CardTitle>{chartTitle}</CardTitle>
                 <CardDescription>{chartDescription}</CardDescription>
-            </CardHeader>
+            </CardHeader> */}
             <CardContent>
                 <ChartContainer config={chartConfig}>
                     <BarChart
@@ -65,7 +67,7 @@ export function MultipleBarDiagram<T extends Record<string, any>>(props: Props<T
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
-                            tickFormatter={(value) => value.slice(0, 3)} // Shorten to 3 characters
+                            tickFormatter={(value) => value} // Shorten to 3 characters
                         />
                         <ChartTooltip
                             cursor={false}
@@ -74,21 +76,12 @@ export function MultipleBarDiagram<T extends Record<string, any>>(props: Props<T
                         {dataKeys.map((key, index) => (
                             <Bar key={String(key)} dataKey={String(key)} fill={`var(--color-${String(key)})`} radius={4} />
                         ))}
+
                     </BarChart>
                 </ChartContainer>
             </CardContent>
-            {/* <CardFooter className="flex-col items-start gap-2 text-sm">
-                {trendingUpText && (
-                    <div className="flex gap-2 font-medium leading-none">
-                        {trendingUpText} <TrendingUp className="h-4 w-4" />
-                    </div>
-                )}
-                {footerDescription && (
-                    <div className="leading-none text-muted-foreground">
-                        {footerDescription}
-                    </div>
-                )}
-            </CardFooter> */}
+            <CardFooter className="flex-col items-start gap-2 text-sm">
+            </CardFooter>
         </Card>
     );
 }

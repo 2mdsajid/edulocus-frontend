@@ -23,8 +23,6 @@ const page = async (props: Props) => {
   const uniqueCategories = Array.from(
     new Set(customTestsData.map((test: TBaseCustomTest) => test.pastPaper?.category || null))
   ).filter((category) => category !== null);
-  console.log("🚀 ~ page ~ uniqueCategories:", uniqueCategories)
-
 
   return (
     <div className="w-full">

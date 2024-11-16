@@ -20,10 +20,10 @@ const SubjectCard = (props: Props) => {
                 <SubjectIcon className="w-6 h-6 text-purple-600 dark:text-purple-300 mr-2" />
                 <h2 className="text-xl font-semibold tracking-wide capitalize">{name}</h2>
             </div>
-            {/* <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4">
                 <HelpCircle className="w-5 h-5 text-purple-500 dark:text-purple-400 mr-2" />
                 <p className="text-md text-gray-600">Questions: {props.count}</p>
-            </div> */}
+            </div>
             <SubjectWiseStartButton subject={props.subject} />
         </div>
     )

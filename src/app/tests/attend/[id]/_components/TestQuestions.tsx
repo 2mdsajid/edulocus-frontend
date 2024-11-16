@@ -1,8 +1,7 @@
 'use client'
 
-import { TQuestion } from '@/app/tests/_components/schema';
-import { MultipleBarDiagram } from '@/components/reusable/MultipleBarDiagram';
-import ReusableLInk from '@/components/reusable/ReusableLink';
+import { TQuestion, TUserAns } from '@/app/tests/_components/schema';
+import SubmitButton from '@/components/reusable/SubmitButton';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { TBaseUser } from '@/lib/auth/schema';
@@ -10,17 +9,16 @@ import { categorizeQuestionsBySubject } from '@/lib/utils';
 import { CheckCircle, Send } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { sendTestAnalytic, sendUserScore } from './actions';
-import { TCreateTestAnalytic, TCreateTestQuestionAnswer, TSaveUserScore, TypeSubjectWiseBarGraphData, TypeSubjectWiseScores, TypeTypeSubjectWiseChapterScores } from './schema';
+import { sendTestAnalytic, sendUserScore } from '../actions';
+import { TCreateTestAnalytic, TCreateTestQuestionAnswer, TSaveUserScore, TSubjectWiseChapterScores, TypeSubjectWiseScores } from '../schema';
+import ContributeCardComponent from './ContributeCardComponent';
+import FeedbackComponent from './FeedbackComponent';
+import { SubjectwiseAccuracy } from './SubjectwiseAccuracy';
 import TestAnalysisAndAnswersSwitch from './TestAnalysisAndAnswersSwitch';
 import TestBasicAnalysis from './TestBasicAnalysis';
 import TestChapterwiseScoreTable from './TestChapterwiseScoreTable';
 import TestQuestionRender from './TestQuestionRender';
-import TestShareLinks from './TestShareLinks';
 import TestTimer2 from './TestTimer2';
-import SubmitButton from '@/components/reusable/SubmitButton';
-import FeedbackComponent from './FeedbackComponent';
-import ContributeCardComponent from './ContributeCardComponent';
 
 type Props = {
     id: string;
@@ -37,7 +35,7 @@ const TestQuestions = (props: Props) => {
 
     const submitref = useRef<HTMLButtonElement | null>(null)
 
-    const TIME_PER_QUESTION = 540000
+    const TIME_PER_QUESTION = 54000
     const NEGATIVEMARK = 0.25
 
     const { id: testid, user } = props
@@ -47,6 +45,8 @@ const TestQuestions = (props: Props) => {
     const [counttop, setCountTop] = useState(0)
 
     const [uquestions, setUquestions] = useState<TQuestion[]>([])
+    const [userAnswer, setUserAnswer] = useState<TUserAns>({})
+
     const [categorizedQuestions, setCategorizedQuestions] = useState(categorizeQuestionsBySubject(props.questions));
     const SUBJECTS = Object.keys(categorizedQuestions)
 
@@ -57,9 +57,10 @@ const TestQuestions = (props: Props) => {
     const [questionsAttempt, setQuesitionsAttempt] = useState<string[]>([])
     const [incorrectAttempt, setIncorrectAttempt] = useState<string[]>([])
     const [correctAttempt, setCorrectAttempt] = useState<string[]>([])
-    const [subjectWiseGraphData, setSubjectSubjectWiseGraphData] = useState<TypeSubjectWiseBarGraphData[]>([])
-    const [chapterwisescore, setChapterwiseScore] = useState<TypeTypeSubjectWiseChapterScores>()
+    const [chapterwisescore, setChapterwiseScore] = useState<TSubjectWiseChapterScores>()
     const [totalTimeTaken, setTotalTimeTaken] = useState(0)
+
+
 
     // states for submitting tests
     const [istestsubmitted, setIsTestSubmitted] = useState(false)
@@ -78,7 +79,7 @@ const TestQuestions = (props: Props) => {
         let correct_questions_ids = [] as string[]
         let incorrect_questions_ids = [] as string[]
         let subject_wise_score = {} as TypeSubjectWiseScores
-        let subject_wise_chapter_scores = {} as TypeTypeSubjectWiseChapterScores
+        let subject_wise_chapter_scores = {} as TSubjectWiseChapterScores
 
         // to store teh analytics for premium users
         let test_analytic = {} as TCreateTestAnalytic
@@ -139,7 +140,6 @@ const TestQuestions = (props: Props) => {
         }));
 
         setChapterwiseScore(subject_wise_chapter_scores)
-        setSubjectSubjectWiseGraphData(subjectwise_graph_data)
         setTotalTimeTaken(total_timetaken)
         setCorrectAttempt(correct_questions_ids)
         setIncorrectAttempt(incorrect_questions_ids)
@@ -230,10 +230,17 @@ const TestQuestions = (props: Props) => {
     const getInput = (value: string, id: string) => {
         if (issubmitclicked) return
         const timetaken = counttop - currentcountdown
-        const index = uquestions.findIndex(q => q.id === id)
-        uquestions[index].timetaken = timetaken
+        // const index = uquestions.findIndex(q => q.id === id)
+        // uquestions[index].timetaken = timetaken
+        // uquestions[index].uans = value.toLowerCase()
+        setUserAnswer({
+            ...userAnswer,
+            id: {
+                uans: value.toLowerCase(),
+                timetaken: timetaken || 0
+            }
+        })
         setCountTop(currentcountdown)
-        uquestions[index].uans = value.toLowerCase()
         if (!questionsAttempt.includes(id)) {
             setQuesitionsAttempt([...questionsAttempt, id])
         }
@@ -264,6 +271,7 @@ const TestQuestions = (props: Props) => {
         setUquestions(props.questions)
         setTimeout(TIME_PER_QUESTION * props.questions.length)
         setCountTop(TIME_PER_QUESTION * props.questions.length)
+        // checkAns()
     }, [])
 
     return (
@@ -282,36 +290,11 @@ const TestQuestions = (props: Props) => {
                         </div>
 
                         <div>
-                            <MultipleBarDiagram
-                                chartTitle="Subject Wise Scores"
-                                chartDescription="Chart showing subject wise scores"
-                                xAxisKey="subject"
-                                dataKeys={['correct', 'incorrect', 'total', 'unattempt']}
-                                chartData={subjectWiseGraphData}
-                                footerDescription="Showing total visitors for the last 6 months"
-                                trendingUpText="Trending up by 5.2% this month"
-                                config={{
-                                    correct: {
-                                        label: "Correct",
-                                        color: "hsl(var(--chart-1))",
-                                    },
-                                    incorrect: {
-                                        label: "Incorrect",
-                                        color: "hsl(var(--chart-2))",
-                                    },
-                                    total: {
-                                        label: "Total",
-                                        color: "hsl(var(--chart-3))",
-                                    },
-                                    unattempt: {
-                                        label: "unattempt",
-                                        color: "hsl(var(--chart-4))",
-                                    },
-
-                                }}
-                            />
+                            {chapterwisescore
+                                && <SubjectwiseAccuracy
+                                    data={chapterwisescore}
+                                />}
                         </div>
-
 
 
                         {chapterwisescore &&
@@ -406,53 +389,23 @@ const TestQuestions = (props: Props) => {
                     </div>
 
                     {/* remaining part of the page */}
-                    <form className="w-full space-y-6" onSubmit={checkAns} action="" method="POST">
-                        {/* <p className="text-3xl font-bold my-8 text-center text-gray-800 dark:text-gray-100">Questions</p> */}
-
-                        <div className="w-full">
-                            {/* Check if more than one subject for subject navigation*/}
-                            {/* {SUBJECTS.length > 1 && (
-                                <div className="flex w-full justify-between items-center overflow-x-auto sticky top-16 left-0 z-10 bg-accent3 border dark:bg-gray-900 py-3 px-2 mb-8 shadow-lg rounded-md">
-                                    {SUBJECTS.map((s, i) => (
-                                        <a
-                                            href={`#${s}`}
-                                            className={`flex-grow text-center text-lg py-1 px-3 rounded-md cursor-pointer mx-1 font-semibold transition-all duration-200 border-2 
-              ${selectedSubject === s
-                                                    ? 'bg-blue-500 text-white border-blue-500 dark:bg-blue-600'
-                                                    : 'bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-400 dark:border-gray-600'
-                                                }`}
-                                            key={i}
-                                            onClick={() => {
-                                                setSelectedSubject(s);
-                                            }}
-                                        >
-                                            {s}
-                                        </a>
+                    <form className="w-full space-y-10" onSubmit={checkAns} action="" method="POST">
+                        {SUBJECTS.map((s, i) => (
+                            <div key={s} id={s} className={`${s} subject`}>
+                                <h2 className='text-3xl font-bold my-8 text-center text-gray-800 dark:text-gray-100 capitalize'>{s.replace(/_/g, ' ')}</h2>
+                                <div className="space-y-6">
+                                    {categorizedQuestions[s].map((question, index) => (
+                                        <TestQuestionRender
+                                            key={question.id}
+                                            question={question}
+                                            index={index}
+                                            getInput={getInput}
+                                            user={props.user}
+                                        />
                                     ))}
                                 </div>
-                            )} */}
-
-                            {/* Questions section */}
-                            <div className="space-y-10">
-                                {SUBJECTS.map((s, i) => (
-                                    <div key={s} id={s} className={`${s} subject`}>
-                                        <h2 className='text-3xl font-bold my-8 text-center text-gray-800 dark:text-gray-100 capitalize'>{s.replace(/_/g, ' ')}</h2>
-                                        <div className="space-y-6">
-                                            {categorizedQuestions[s].map((question, index) => (
-                                                <div key={question.id} className="transition-all">
-                                                    <TestQuestionRender
-                                                        question={question}
-                                                        index={index}
-                                                        getInput={getInput}
-                                                        user={props.user}
-                                                    />
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
                             </div>
-                        </div>
+                        ))}
                     </form>
                 </div>}
         </div>

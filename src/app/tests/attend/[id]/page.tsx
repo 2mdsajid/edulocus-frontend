@@ -1,5 +1,5 @@
 import React from 'react'
-import { getSingleTestById } from './_components/actions'
+import { getSingleTestById } from './actions'
 import ErrorPage from '@/components/reusable/ErrorPage'
 import TestDetails from './_components/TestDetails'
 import TestQuestions from './_components/TestQuestions'
@@ -44,7 +44,7 @@ const page = async (props: Props) => {
     }
 
     const { username } = props.searchParams || generateRandomName()
-    const testUrl = `${process.env.NEXT_PUBLIC_BASEURL}/tests/${testid}`
+    const testUrl = `${process.env.NEXT_PUBLIC_BASEURL}/tests/view/${testid}`
 
     return (
         <div className='max-w-3xl mx-auto py-4 bg-color1'>

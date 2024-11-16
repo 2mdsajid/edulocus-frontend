@@ -80,10 +80,15 @@ export type TBaseQuestion = Omit<Question,
 
 export type TBaseOption = Omit<Option, 'questionId'>
 
+export type TUserAns = {
+    [key: string]: {
+        uans: string
+        timetaken: number
+    }
+}
+
 export type TQuestion = TBaseQuestion & {
     options: TBaseOption,
-
-    // to add additional data by users
     uans?: string
     timetaken?: number
 }

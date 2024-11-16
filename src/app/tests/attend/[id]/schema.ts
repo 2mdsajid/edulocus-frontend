@@ -25,20 +25,7 @@ export type TCreateTestAnalytic = Pick<TestAnalytic,
 // for leaderboard
 export type TSaveUserScore = Omit<UserScore, 'id'>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-export type TypeTypeSubjectWiseChapterScores = {
+export type TSubjectWiseChapterScores = {
     [key: string]: {
         [key: string]: {
             total: number;
@@ -63,10 +50,19 @@ export type TypeSubjectWiseScores = {
     }
 }
 
-export type TypeSubjectWiseBarGraphData = {
-    subject: string;
+export type TChapterAccuracy = {
+    chapter: string,
+    accuracy: number
+}
+
+export type TScoreBreakdown = {
     total: number;
     correct: number;
     incorrect: number;
     unattempt: number;
 }
+
+export type TIndividualSubjectScores = {
+    name: string;
+    chapterAccuracies: TChapterAccuracy[];
+} & TScoreBreakdown

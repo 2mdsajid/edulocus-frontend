@@ -7,6 +7,7 @@ import ChapterList from './ChapterList';
 import { TTotalQuestionsPerSubjectAndChapter } from './schema';
 import { Book, Search } from 'lucide-react';
 import { subjectData } from '@/lib/data';
+import DropDownInput from '@/components/reusable/DropDownInput';
 
 type Props = {
     data: TTotalQuestionsPerSubjectAndChapter
@@ -16,7 +17,7 @@ const ChapterwiseMainPage = (props: Props) => {
 
     const { data: totalQuestionsPerSubjectAndChapterData } = props;
 
-    const [selectedSubject, setSelectedSubject] = useState<string>(Object.keys(totalQuestionsPerSubjectAndChapterData)[0]);
+    const [selectedSubject, setSelectedSubject] = useState<string>(Object.keys(totalQuestionsPerSubjectAndChapterData).sort()[0]);
     const [searchQuery, setSearchQuery] = useState<string>('');
 
     const handleSubjectClick = (subject: string) => {
@@ -28,8 +29,8 @@ const ChapterwiseMainPage = (props: Props) => {
 
     return (
         <div className='w-full '>
-            <div className="flex flex-wrap gap-2 mb-6">
-                {Object.keys(totalQuestionsPerSubjectAndChapterData).map((subject) => {
+            <div className="flex-wrap gap-2 mb-6 hidden md:flex">
+                {Object.keys(totalQuestionsPerSubjectAndChapterData).sort().map((subject) => {
                     const { icon: SubjectIcon, name } = subjectData[subject] || { icon: Book, name: subject.replace(/_/g, ' ') }
                     return <div key={subject} onClick={() => handleSubjectClick(subject)} className="cursor-pointer">
                         <Badge
@@ -43,6 +44,17 @@ const ChapterwiseMainPage = (props: Props) => {
                         </Badge>
                     </div>
                 })}
+            </div>
+
+            <div className="mb-6 md:hidden">
+                <DropDownInput
+                label='subject'
+                labelClassName='text-lg font-bold text-black dark:text-purple-100 mb-3'
+                category='Choose A Subject'
+                value={selectedSubject}
+                dropdownMenu={Object.keys(totalQuestionsPerSubjectAndChapterData).sort()}
+                onChange={(value) => handleSubjectClick(value)}
+                />
             </div>
 
             {selectedSubject && (

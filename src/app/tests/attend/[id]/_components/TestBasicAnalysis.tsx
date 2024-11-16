@@ -30,7 +30,7 @@ const TestBasicAnalysis = (props: Props) => {
                     {total_timetaken > 0
                         && <TestStatCard
                             icon={<Watch className="w-8 h-8 text-emerald-500" />}
-                            value={`${total_timetaken} sec`}
+                            value={`${Math.round(total_timetaken/1000)} sec`}
                             label="Total Time Taken"
                             bgColor="bg-emerald-50"
                             borderColor="border-emerald-200"

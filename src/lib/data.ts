@@ -194,9 +194,8 @@ export const NAV_LINKS: NAVLINKS[] = [
 
 
 export const QUESTION_BORDER_COLOR = {
-  correct: 'border-green-500',
-  incorrect: 'border-red-500',
-  unattempt: 'border-secondary'
+  correct: 'green-500',
+  incorrect: 'red-500',
 }
 
 

@@ -15,10 +15,10 @@ const ChapterCard = (props: Props) => {
                 <BookOpen className="w-5 h-5 text-purple-600 dark:text-purple-300 mr-2" />
                 <h2 className="text-lg font-bold  capitalize">{props.chapter.replace(/_/g, ' ')}</h2>
             </div>
-            {/* <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4">
                 <HelpCircle className="w-4 h-4 text-purple-500 dark:text-purple-400 mr-2" />
                 <p className="text-md text-gray-600">{props.count} Questions</p>
-            </div> */}
+            </div>
             <ChapterWiseStartButton
                 subject={props.selectedSubject}
                 chapter={props.chapter}

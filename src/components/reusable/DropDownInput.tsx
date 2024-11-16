@@ -28,11 +28,11 @@ const DropDownInput = (props: Props) => {
                 <label htmlFor={category} className={
                     cn('font-bold mb-5', labelClassName)
                 }>Select a {label || category}</label>
-                <Select onValueChange={onChange}>
+                <Select onValueChange={onChange} >
                     <SelectTrigger className="w-max">
                         <SelectValue placeholder={value || category} />
                     </SelectTrigger>
-                    <SelectContent className='w-max '>
+                    <SelectContent className='w-max'>
                         {dropdownMenu?.map((item: string, index: number) => {
                             return <SelectItem key={index} value={item}>{item.replace(/-/g, ' ')}</SelectItem>
                         })}
