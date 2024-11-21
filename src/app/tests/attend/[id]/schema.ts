@@ -10,6 +10,7 @@ export type TSingleCustomTestWithQuestions = Pick<CustomTest,
     fetchedQuestions: TQuestion[]
 }
 
+// TO STORE USER ANSWER AND THE QUESTION IDS
 export type TCreateTestQuestionAnswer = Pick<TestQuestionAnswer,
     'questionId' |
     'userAnswer'

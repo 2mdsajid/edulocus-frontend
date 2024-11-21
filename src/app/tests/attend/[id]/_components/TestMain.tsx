@@ -4,20 +4,17 @@ import { TQuestion, TUserAns } from '@/app/tests/_components/schema';
 import SubmitButton from '@/components/reusable/SubmitButton';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TBaseUser } from '@/lib/auth/schema';
 import { categorizeQuestionsBySubject } from '@/lib/utils';
 import { CheckCircle, Send } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { sendTestAnalytic, sendUserScore } from '../actions';
-import { TCreateTestAnalytic, TCreateTestQuestionAnswer, TSaveUserScore, TSubjectWiseChapterScores, TypeSubjectWiseScores } from '../schema';
-import ContributeCardComponent from './ContributeCardComponent';
-import FeedbackComponent from './FeedbackComponent';
-import { SubjectwiseAccuracy } from './SubjectwiseAccuracy';
-import TestAnalysisAndAnswersSwitch from './TestAnalysisAndAnswersSwitch';
-import TestBasicAnalysis from './TestBasicAnalysis';
-import TestChapterwiseScoreTable from './TestChapterwiseScoreTable';
+import { TCreateTestAnalytic, TCreateTestQuestionAnswer, TSaveUserScore, TSubjectWiseChapterScores } from '../schema';
+import TestAnalysis from './TestAnalysis';
 import TestQuestionRender from './TestQuestionRender';
+import TestQuestoinsAndAnswersViewer from './TestQuestoinsAndAnswersViewer';
 import TestTimer2 from './TestTimer2';
 
 type Props = {
@@ -30,7 +27,7 @@ type Props = {
     user: TBaseUser | null
 }
 
-const TestQuestions = (props: Props) => {
+const TestMain = (props: Props) => {
     const router = useRouter()
 
     const submitref = useRef<HTMLButtonElement | null>(null)
@@ -50,14 +47,13 @@ const TestQuestions = (props: Props) => {
     const [categorizedQuestions, setCategorizedQuestions] = useState(categorizeQuestionsBySubject(props.questions));
     const SUBJECTS = Object.keys(categorizedQuestions)
 
-    const [currentindex, setCurrentIndex] = useState(0)
-    const [selectedSubject, setSelectedSubject] = useState(SUBJECTS[0])
+    // const [currentindex, setCurrentIndex] = useState(0)
+    // const [selectedSubject, setSelectedSubject] = useState(SUBJECTS[0])
 
     // questions parameters -- time, ans bla bla bla bla bla bla bla bla bla
     const [questionsAttempt, setQuesitionsAttempt] = useState<string[]>([])
-    const [incorrectAttempt, setIncorrectAttempt] = useState<string[]>([])
     const [correctAttempt, setCorrectAttempt] = useState<string[]>([])
-    const [chapterwisescore, setChapterwiseScore] = useState<TSubjectWiseChapterScores>()
+    const [subjectWiseChapterScore, setSubjectWiseChapterScore] = useState<TSubjectWiseChapterScores>({})
     const [totalTimeTaken, setTotalTimeTaken] = useState(0)
 
 
@@ -78,7 +74,6 @@ const TestQuestions = (props: Props) => {
         let total_timetaken = 0;
         let correct_questions_ids = [] as string[]
         let incorrect_questions_ids = [] as string[]
-        let subject_wise_score = {} as TypeSubjectWiseScores
         let subject_wise_chapter_scores = {} as TSubjectWiseChapterScores
 
         // to store teh analytics for premium users
@@ -87,23 +82,33 @@ const TestQuestions = (props: Props) => {
 
 
         // MOSY IMPORTANT PART --- ITERATE OVER QUESTIONS 
-        uquestions.forEach((question) => {
+        const mergedQuestions = uquestions.map((question) => {
+            const userAnsData = userAnswer[question.id] || { uans: '', timetaken: 0 };
+            
+            // Append the user answer and timetaken to the question object
+            return {
+                ...question,
+                uans: userAnsData.uans,
+                timetaken: userAnsData.timetaken,
+            };
+        });
 
-            // pushing for storing last seven days scores
+        // UPDATING THE ORIGINAL QUESTOIONS WITH USER ANSWERS, TIMETAKEN
+        setUquestions(mergedQuestions)
+
+        mergedQuestions.forEach((question) => {
             questions_ids_and_answers.push({
                 questionId: question.id,
                 userAnswer: question.uans || '',
-            })
+            });
 
-            if (!subject_wise_score[question.subject]) subject_wise_score[question.subject] = {
-                total: 0,
-                correct: 0,
-                incorrect: 0,
+
+            total_timetaken += question.timetaken;
+
+            // Initialize chapter-specific scores if not already done
+            if (!subject_wise_chapter_scores[question.subject]) {
+                subject_wise_chapter_scores[question.subject] = {};
             }
-            total_timetaken += question?.timetaken || 0;
-
-            // Initialize the structure if not present
-            if (!subject_wise_chapter_scores[question.subject]) subject_wise_chapter_scores[question.subject] = {};
             if (!subject_wise_chapter_scores[question.subject][question.chapter]) {
                 subject_wise_chapter_scores[question.subject][question.chapter] = {
                     total: 0,
@@ -113,40 +118,28 @@ const TestQuestions = (props: Props) => {
                 };
             }
 
-            // Update total count
+            // Update total counts
             subject_wise_chapter_scores[question.subject][question.chapter].total++;
-            subject_wise_score[question.subject]['total']++
-            if (!question.uans) return subject_wise_chapter_scores[question.subject][question.chapter].unattempt++;
 
+            if (!question.uans) {
+                return subject_wise_chapter_scores[question.subject][question.chapter].unattempt++;
+            }
 
             // Check if the answer is correct or incorrect
-            if (question.answer.toLowerCase() === question.uans) {
+            if (question.answer.toLowerCase() === question.uans.toLowerCase()) {
                 correct_questions_ids.push(question.id);
                 subject_wise_chapter_scores[question.subject][question.chapter].correct++;
-                subject_wise_score[question.subject]['correct']++
             } else {
                 incorrect_questions_ids.push(question.id);
                 subject_wise_chapter_scores[question.subject][question.chapter].incorrect++;
-                subject_wise_score[question.subject]['incorrect']++
             }
         });
 
-        const subjectwise_graph_data = Object.keys(subject_wise_score).map((subject) => ({
-            subject: subject,
-            total: subject_wise_score[subject].total || 0,
-            correct: subject_wise_score[subject].correct || 0,
-            incorrect: subject_wise_score[subject].incorrect || 0,
-            unattempt: subject_wise_score[subject].total - (subject_wise_score[subject].correct + subject_wise_score[subject].incorrect),
-        }));
-
-        setChapterwiseScore(subject_wise_chapter_scores)
+        setSubjectWiseChapterScore(subject_wise_chapter_scores)
         setTotalTimeTaken(total_timetaken)
         setCorrectAttempt(correct_questions_ids)
-        setIncorrectAttempt(incorrect_questions_ids)
 
         /*  storing analytics and history information after calculations */
-        const correct_attempts = correctAttempt.length
-        const questions_attempts = questionsAttempt.length
         let score = correct_questions_ids.length - (questionsAttempt.length - correct_questions_ids.length) * NEGATIVEMARK
         setIsTestSubmitted(true)
         window.scrollTo(0, 0);
@@ -220,6 +213,7 @@ const TestQuestions = (props: Props) => {
 
     };
 
+    // THIS WILL TRIGGER TEH SUBMIT WHEN TIME ENDS
     const checkAns = async () => {
         if (submitref.current) {
             submitref.current.click()
@@ -227,43 +221,46 @@ const TestQuestions = (props: Props) => {
         await submitForm();
     };
 
+    // THIS FUNCTION WILL STORE THE USER ANSWER, TIME IN AN OBJECT WITH THE QUESTIONS ID -- TO ITERATE LATER
     const getInput = (value: string, id: string) => {
-        if (issubmitclicked) return
-        const timetaken = counttop - currentcountdown
-        // const index = uquestions.findIndex(q => q.id === id)
-        // uquestions[index].timetaken = timetaken
-        // uquestions[index].uans = value.toLowerCase()
-        setUserAnswer({
-            ...userAnswer,
-            id: {
+        if (issubmitclicked) return;
+        const timetaken = counttop - currentcountdown;
+    
+        setUserAnswer((prevUserAnswer) => ({
+            ...prevUserAnswer, // Spread previous state to keep other answers intact
+            [id]: {  // Dynamically set `id` as the key
                 uans: value.toLowerCase(),
                 timetaken: timetaken || 0
             }
-        })
-        setCountTop(currentcountdown)
+        }));
+    
+        console.log("🚀 ~ getInput ~ userAnswer:", userAnswer);  // Note that this log may show the state from the previous render
+        setCountTop(currentcountdown);
+    
         if (!questionsAttempt.includes(id)) {
-            setQuesitionsAttempt([...questionsAttempt, id])
+            setQuesitionsAttempt([...questionsAttempt, id]);
         }
-    }
+    };
+    
 
     // THIS WILL HIGHLIGHT THE CURRENT SUBJECT WHEN SUBJECT WISE TEST IS GOING ON
-    useEffect(() => {
-        const handleScroll = () => {
-            const subjects = document.querySelectorAll('.subject'); // Adjust the class selector accordingly
-            let subjectInView = '';
-            subjects.forEach((subject) => {
-                const rect = subject.getBoundingClientRect();
-                if (rect.top <= window.innerHeight && rect.bottom >= 0) {
-                    subjectInView = subject.id;
-                }
-            })
-            setSelectedSubject(subjectInView);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+    // useEffect(() => {
+    //     const handleScroll = () => {
+    //         const subjects = document.querySelectorAll('.subject'); // Adjust the class selector accordingly
+    //         let subjectInView = '';
+    //         subjects.forEach((subject) => {
+    //             const rect = subject.getBoundingClientRect();
+    //             if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+    //                 subjectInView = subject.id;
+    //             }
+    //         })
+    //         setSelectedSubject(subjectInView);
+    //     };
+    //     window.addEventListener('scroll', handleScroll);
+    //     return () => {
+    //         window.removeEventListener('scroll', handleScroll);
+    //     };
+    // }, []);
 
 
     // THIS WILL SET INITIAL QUESTIONS TO A NEW VARIABLE TO RENDER AND ADD ANSWERS -- UANS
@@ -277,54 +274,27 @@ const TestQuestions = (props: Props) => {
     return (
         <div className='w-full'>
             {istestsubmitted
-                ?
-                <TestAnalysisAndAnswersSwitch questions={uquestions}>
-                    <div className='w-full space-y-5'>
-                        <div className='space-y-3'>
-                            <TestBasicAnalysis
-                                total_questions={uquestions.length}
-                                corrrect_attempt={correctAttempt.length}
-                                questions_attempt={questionsAttempt.length}
-                                total_timetaken={totalTimeTaken}
-                            />
-                        </div>
-
-                        <div>
-                            {chapterwisescore
-                                && <SubjectwiseAccuracy
-                                    data={chapterwisescore}
-                                />}
-                        </div>
-
-
-                        {chapterwisescore &&
-                            <div className='space-y-3'>
-                                <TestChapterwiseScoreTable
-                                    data={chapterwisescore}
-                                />
-                            </div>
-                        }
-
-                        {/* <div className='space-y-3'>
-                            <p>Did you like the test ? Share with your firends !</p>
-                            <TestShareLinks
-                                url={props.sharableTestUrl}
-                                slug={props.id}
-                            />
-                        </div> */}
-
-                        <div className=" w-full">
-                            <FeedbackComponent />
-                        </div>
-
-                        <div className=" w-full">
-                            <ContributeCardComponent />
-                        </div>
-
-                    </div>
-                </TestAnalysisAndAnswersSwitch>
-                :
-                <div className='w-full'>
+                ? <Tabs defaultValue="analysis" className="w-full my-5">
+                    <TabsList className='bg-none bg-primary dark:bg-dark-primary mb-3 sticky top-16 z-100'>
+                        <TabsTrigger className='text-xl font-semibold' value="analysis">Analysis</TabsTrigger>
+                        <TabsTrigger className='text-xl font-semibold' value="answers">Answers</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="analysis" className='w-full'>
+                        <TestAnalysis
+                            totalQuestions={uquestions.length}
+                            correctAttempt={correctAttempt.length}
+                            questionsAttempt={questionsAttempt.length}
+                            totalTimeTaken={totalTimeTaken}
+                            subjectWiseChapterScore={subjectWiseChapterScore}
+                        />
+                    </TabsContent>
+                    <TabsContent value="answers" className='w-full'>
+                        <TestQuestoinsAndAnswersViewer
+                            questions={uquestions}
+                        />
+                    </TabsContent>
+                </Tabs>
+                : <div className='w-full'>
                     {/* timer dialog */}
                     <div className="fixed top-16 right-0 flex flex-col p-1 sm:p-3 md:p-4 bg-white dark:bg-gray-900 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg space-y-1 md:space-y-2">
                         {timeout && (
@@ -412,7 +382,7 @@ const TestQuestions = (props: Props) => {
     )
 }
 
-export default TestQuestions
+export default TestMain
 
 
 

@@ -1,15 +1,12 @@
 "use client"
 
-import { useState } from 'react'
 import { CardDescription, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { useState } from 'react'
 import { subjectWiseChapterScore } from '../methods'
 import { TSubjectWiseChapterScores } from '../schema'
-import { MultipleBarDiagram } from '@/components/reusable/MultipleBarDiagram'
 import { ChaptersAccuracyGraph } from './ChaptersAccuracyGraph'
-import { SubjectScoreBreakdownGraph } from './SubjectScoreBreakdownGraph'
-import { cn } from "@/lib/utils"
 import { CustomBadge } from './CustomBadge'
+import { SubjectScoreBreakdownGraph } from './SubjectScoreBreakdownGraph'
 
 type Props = {
     data: TSubjectWiseChapterScores
@@ -17,7 +14,7 @@ type Props = {
 
 
 
-export default function TestChapterwiseScoreTable({ data }: Props) {
+export default function TestChapterwiseAnalysis({ data }: Props) {
     const eachSubjectData = subjectWiseChapterScore(data)
     const [selectedSubject, setSelectedSubject] = useState(eachSubjectData[0]?.name || '')
 

@@ -1,12 +1,11 @@
-import React from 'react'
-import { getSingleTestById } from './actions'
 import ErrorPage from '@/components/reusable/ErrorPage'
-import TestDetails from './_components/TestDetails'
-import TestQuestions from './_components/TestQuestions'
 import { getUserSession } from '@/lib/auth/auth'
-import { generateRandomName } from '@/lib/utils'
 import { constructMetadata } from '@/lib/data'
+import { generateRandomName } from '@/lib/utils'
 import { Metadata } from 'next'
+import TestDetails from './_components/TestDetails'
+import TestMain from './_components/TestMain'
+import { getSingleTestById } from './actions'
 
 type Props = {
     params: {
@@ -56,7 +55,7 @@ const page = async (props: Props) => {
                 username={username}
                 createdBy={test.createdBy}
             />
-            <TestQuestions
+            <TestMain
                 id={test.id}
                 testName={test.name}
                 questions={test.fetchedQuestions}

@@ -13,8 +13,8 @@ export const CustomBadge = ({ children, isSelected, onClick }: Props) => (
         className={cn(
             "cursor-pointer transition-all duration-300 ease-in-out",
             isSelected
-                ? "bg-color7 text-color1 hover:bg-color8"
-                : "bg-color2 text-color9 hover:bg-color4 hover:text-color10"
+                ? "bg-gray-400 text-color1 hover:bg-gray-600"
+                : "bg-primary text-black hover:bg-gray-400 hover:text-gray-600"
         )}
         onClick={onClick}
     >
