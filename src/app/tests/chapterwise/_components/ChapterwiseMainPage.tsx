@@ -35,8 +35,8 @@ const ChapterwiseMainPage = (props: Props) => {
                     return <div key={subject} onClick={() => handleSubjectClick(subject)} className="cursor-pointer">
                         <Badge
                             className={`${subject === selectedSubject
-                                ? 'bg-purple-600 hover:bg-purple-700 text-white'
-                                : 'bg-purple-200 hover:bg-purple-300 text-black'
+                                ? 'bg-gray-600 hover:bg-gray-700 text-white'
+                                : 'bg-gray-200 hover:bg-gray-300 text-black'
                                 } transition-colors duration-200 py-1 text-xs`}
                         >
                             <SubjectIcon className="w-4 h-4 mr-1" />

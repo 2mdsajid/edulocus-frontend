@@ -31,7 +31,7 @@ const TestDetails = (props: Props) => {
                   <User className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium opacity-80">Created By</p>
+                  <p className="text-sm font-medium opacity-80">User</p>
                   <p className="font-semibold">{username}</p>
                 </div>
               </div>

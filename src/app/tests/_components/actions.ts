@@ -67,6 +67,7 @@ export const getAllTestsByType = async (type: TTypeOfTest): Promise<{
         const { data, message } = await response.json();
         return { data, message };
     } catch (error) {
+        console.log("🚀 ~ getAllTestsByType ~ error:", error)
         return { data: null, message: "Some Error Occured while fetching all tests!" };
     }
 };

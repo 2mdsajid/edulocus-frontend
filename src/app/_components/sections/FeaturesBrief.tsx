@@ -36,7 +36,7 @@ const Feature: React.FC<FeatureProps> = ({ icon, title, description }) => (
     <div className="bg-purple-100 p-3 rounded-full mb-4">
       {icon}
     </div>
-    <h3 className="text-xl font-semibold text-purple-800 mb-2">{title}</h3>
+    <h3 className="text-2xl font-semibold text-black mb-2">{title}</h3>
     <p className="text-gray-600 text-center">{description}</p>
   </div>
 )
@@ -46,7 +46,7 @@ const FeaturesBrief: React.FC = () => {
   return (
     <section className="bg-color1 pb-16 px-4 md:px-10 lg:px-20 xl:px-32">
       <div className="container mx-auto">
-        <h2 className='text-4xl pt-14 pb-4 text-center font-extrabold tracking-wider text-color9 font-pt-serif'>
+        <h2 className='text-4xl pt-14 pb-4 text-center font-extrabold tracking-wider text-gray-700 font-pt-serif'>
           Our Salient Features
         </h2>
         <p className='text-xl text-center font-normal max-w-3xl mx-auto pb-16'>

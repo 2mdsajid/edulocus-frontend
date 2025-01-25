@@ -1,15 +1,4 @@
 import { Metadata } from "next";
-import { IconType } from "react-icons";
-import { CgProfile } from "react-icons/cg";
-import { MdHome } from "react-icons/md";
-import { PiExam } from "react-icons/pi";
-
-type NAVLINKS = {
-  id: string;
-  text: string;
-  href: string;
-  icon: IconType;
-};
 
 export const ROLES_HIEARCHY = {
   SAJID: ['SAJID'],
@@ -171,26 +160,33 @@ export const membershipFeatures: TMembershipFeatures[] = [
   },
 ]
 
-export const NAV_LINKS: NAVLINKS[] = [
-  {
-    id: "home",
-    text: "Home",
-    href: "/",
-    icon: MdHome,
-  },
-  {
-    id: "tests",
-    text: "Tests",
-    href: "/tests",
-    icon: PiExam,
-  },
-  {
-    id: "profile",
-    text: "Profile",
-    href: "/profile",
-    icon: CgProfile,
-  },
-];
+// export const NAV_LINKS: NAVLINKS[] = [
+//   {
+//     id: "home",
+//     text: "Home",
+//     href: "/",
+//     icon: MdHome,
+//   },
+//   {
+//     id: "tests",
+//     text: "Tests",
+//     href: "/tests",
+//     icon: PiExam,
+//   },
+//   {
+//     id: "profile",
+//     text: "Profile",
+//     href: "/profile",
+//     icon: CgProfile,
+//   },
+// ];
+
+export const navItems = [
+    { name: 'Home', href: '/' },
+    { name: 'Tests', href: '/tests' },
+    { name: 'Membership', href: '/membership' },
+    { name: 'Dhasboard', href: '/dashboard' },
+]
 
 
 export const QUESTION_BORDER_COLOR = {
@@ -225,6 +221,62 @@ export const FEATURES = [
     'description': 'You can solution sets of questions after each test !',
   }
 ];
+
+
+export const PRODUCT_FEATURES = [
+  {
+    title: "Dashboard",
+    description: "Get a comprehensive overview of your testing activities and results at a glance.",
+    image: "/dashboard.png",
+    x: 4,
+    y: 1.6,
+  },
+  {
+    title: "Proper Test Analysis",
+    description: "Dive deep into your test results with advanced analytics and visualizations.",
+    image: "/anal.png",
+    x: 2.1,
+    y: 1.2
+  },
+  {
+    title: "Access to Past Tests",
+    description: "Easily retrieve and review your testing history to track progress and identify trends.",
+    image: "/past.png",
+    x: 4,
+    y: 1.6,
+  },
+  {
+    title: "Various Tests",
+    description: "Choose from a wide variety of test types to suit your specific needs and objectives.",
+    image: "/tests.png",
+    x: 3.2,
+    y: 1.5,
+  }
+]
+
+export const FAQ_QUESTIONS = [
+  {
+    question: "What services does your website offer?",
+    answer: "We offer a comprehensive range of educational services including interactive MCQ tests, personalized study plans, detailed analytics, and expert-curated study materials for various entrance exams.",
+  },
+  {
+    question: "How can I contact customer support?",
+    answer: "You can reach our dedicated customer support team via email at edulocusweb@gmail.com or through the live chat feature on our website. We're available 24/7 to assist you.",
+  },
+  {
+    question: "What is your refund policy?",
+    answer: "We offer a 30-day money-back guarantee. If you're not satisfied with our services within the first 30 days of your subscription, you can request a full refund, no questions asked.",
+  },
+  {
+    question: "Do you offer custom study plans?",
+    answer: "Yes, we provide personalized study plans tailored to your specific needs, learning pace, and target exams. Our AI-powered system adapts to your progress and adjusts your plan accordingly.",
+  },
+  {
+    question: "How often is your question bank updated?",
+    answer: "Our question bank is continuously updated by our team of expert educators. We add new questions weekly and revise existing ones based on the latest exam patterns and trends.",
+  },
+]
+
 
 
 export function constructMetadata({

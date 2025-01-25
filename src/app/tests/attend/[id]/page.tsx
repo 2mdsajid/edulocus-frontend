@@ -6,6 +6,9 @@ import { Metadata } from 'next'
 import TestDetails from './_components/TestDetails'
 import TestMain from './_components/TestMain'
 import { getSingleTestById } from './actions'
+import { cookies } from 'next/headers'
+
+
 
 type Props = {
     params: {
@@ -34,7 +37,11 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
 
 const page = async (props: Props) => {
 
+    const cookieStore = await cookies()
+    const authToken = cookieStore.get('auth-token')?.value
+
     const { data: user, message: userAuthMessage } = await getUserSession()
+
 
     const testid = props.params.id
     const { data: test, message } = await getSingleTestById(testid)
@@ -63,6 +70,7 @@ const page = async (props: Props) => {
                 username={username}
                 sharableTestUrl={testUrl}
                 user={user}
+                authToken={authToken}
             />
         </div>
     )

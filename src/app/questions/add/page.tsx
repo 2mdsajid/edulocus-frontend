@@ -8,12 +8,12 @@ type Props = {}
 
 const page = async (props: Props) => {
   const { data: user, message: userAuthMessage } = await getUserSession()
+
   if (!user || !ROLES_HIEARCHY.MODERATOR.includes(user.role)) {
     return <ErrorPage errorMessage='You do not have permission to access this page' />
   }
 
   const { data: streamHirearchy, message: streamHirearchyMessage } = await getStreamsHierarchy()
-  console.log("🚀 ~ page ~ streamHirearchy:", streamHirearchy)
   if (!streamHirearchy) {
     return <ErrorPage errorMessage={streamHirearchyMessage} />
   }

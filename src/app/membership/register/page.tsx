@@ -1,6 +1,6 @@
 import React from 'react'
-import SubscriptionForm from './_components/SubscriptionForm'
 import { constructMetadata } from '@/lib/data'
+import SubscriptionForm from './_components/SubscriptionForm'
 
 type Props = {}
 

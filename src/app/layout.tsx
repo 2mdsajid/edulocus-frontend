@@ -6,6 +6,8 @@ import NavBarNew from "./_components/navbar/NavBarNew";
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import "./globals.css";
 
+import { cookies } from 'next/headers'
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -25,6 +27,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const { data: user, message: userAuthMessage } = await getUserSession()
+  const cookieStore = await cookies()
+
+  const authToken = cookieStore.get('auth-token')?.value || ''
+  // const session = await auth()
 
   return (
     <html lang="en">
@@ -34,8 +40,12 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NavBarNew user={user} />
+        <NavBarNew 
+        user={user} 
+        authToken={authToken}
+        />
         <main className='relative'>
+          {/* NUQS = typesafe url query parameter state management */}
           <NuqsAdapter>{children}</NuqsAdapter>
         </main>
       </body>

@@ -5,6 +5,7 @@ import TestChapterwiseScoreTable from './TestChapterwiseAnalysis'
 import FeedbackComponent from './FeedbackComponent'
 import ContributeCardComponent from './ContributeCardComponent'
 import { TSubjectWiseChapterScores } from '../schema'
+import JoinUsComponent from './JoinUsComponent'
 
 type Props = {
     totalQuestions: number
@@ -12,6 +13,7 @@ type Props = {
     questionsAttempt: number
     totalTimeTaken: number
     subjectWiseChapterScore: TSubjectWiseChapterScores
+    authToken?: string
 }
 
 const TestAnalysis = (props: Props) => {
@@ -19,8 +21,10 @@ const TestAnalysis = (props: Props) => {
         correctAttempt,
         questionsAttempt,
         totalTimeTaken,
-        subjectWiseChapterScore: chapterwisescore
+        subjectWiseChapterScore: chapterwisescore,
+        authToken
     } = props
+    console.log("🚀 ~ TestAnalysis ~ authToken:", authToken)
 
     return (
         <div className='w-full space-y-5'>
@@ -48,6 +52,17 @@ const TestAnalysis = (props: Props) => {
                     />
                 </div>
             }
+
+            {/* ask users to login when they are not logged in */}
+            {(!authToken
+                || authToken === ''
+                || authToken === undefined
+                || authToken === 'undefined') && 
+                <div className=" w-full">
+                    <JoinUsComponent />
+                </div>
+            }
+
 
             <div className=" w-full">
                 <FeedbackComponent />

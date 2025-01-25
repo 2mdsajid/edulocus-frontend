@@ -10,7 +10,7 @@ export type TScoreParametersData = {
     name: string;
     value: number;
     total: number;
-    fill: string;
+    fill:string;
 }
 
 export type TDailyTestProgressChartData = {

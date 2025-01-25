@@ -48,10 +48,10 @@ const ChangeCategoryButton = ({ categories }: Props) => {
               key={cat}
               variant={category === cat ? "default" : "outline"}
               onClick={() => handleCategoryChange(cat)}
-              className="w-full h-32 sm:h-40 flex flex-col items-center justify-center p-4 text-color8 dark:text-color3 hover:bg-color3 dark:hover:bg-color9 transition-colors duration-300 rounded-xl shadow-md hover:shadow-lg"
+              className="w-full h-32 sm:h-40  flex flex-col items-center justify-center p-4 text-gray-700 dark:text-color3 hover:bg-color3 dark:hover:bg-color9 transition-colors duration-300 rounded-xl shadow-md hover:shadow-lg"
             >
               {getCategoryIcon(cat)}
-              <span className="text-xl font-bold text-center">{cat}</span>
+              <span className="text-xl text-gray-700 font-bold text-center">{cat}</span>
             </Button>
           ))}
         </div>
@@ -59,7 +59,7 @@ const ChangeCategoryButton = ({ categories }: Props) => {
         <Button
           onClick={() => handleCategoryChange('')}
           variant="outline"
-          className="flex items-center justify-center text-color8 dark:text-color3 hover:bg-color3 dark:hover:bg-color9 transition-colors duration-300"
+          className="flex items-center justify-center text-gray-800 font-bold dark:text-color3 hover:bg-color3 dark:hover:bg-color9 transition-colors duration-300"
         >
           <ArrowLeft className="w-5 h-5 mr-2" />
           Back to Categories

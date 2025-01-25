@@ -1,5 +1,6 @@
 export type TUserRole = "USER" | "ADMIN" | "SUPERADMIN" | "MODERATOR" | "SAJID";
 export type User = {
+    googleId: string;
     name: string;
     id: string;
     email: string;
@@ -27,6 +28,7 @@ export type TBaseUser = Omit<User,
 
 export type TSignUpUser = Omit<User,
     'id' |
+    'googleId' |
     'image' |
     'isCompleted' |
     'ip' |
@@ -43,3 +45,19 @@ export type TLogInUser = {
 }
 
 export type TJWT = TBaseUser
+
+export interface LuciaSession {
+	id: string;
+	expiresAt: Date;
+	userId: string;
+}
+
+export type TLuciaGoogleAuth = {
+    id?: string
+    googleId: string
+    email: string;
+    name?: string;
+    image?: string 
+}
+
+export type LuciaSessionValidationResult = { session: LuciaSession; user: TBaseUser } | { session: null; user: null };

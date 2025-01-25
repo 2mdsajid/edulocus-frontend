@@ -1,13 +1,14 @@
 import ErrorPage from '@/components/reusable/ErrorPage';
-import { PieChartWithCenterLabel } from '@/components/reusable/PieChartWithCenterLabel';
 import { ReusableLineChart } from '@/components/reusable/ReusableLineChart';
 import { getUserSession } from '@/lib/auth/auth';
+import { constructMetadata } from '@/lib/data';
 import { redirect } from 'next/navigation';
 import { getDashboardAnalytics } from './_components/actions';
 import DashboardCard from './_components/DashboardCard';
 import RecentTestCard from './_components/RecentTestCard';
-import { SubjectWiseScoreBarGraph } from './_components/SubjectWiseScoreBarGraph';
-import { constructMetadata } from '@/lib/data';
+import { SubjectWiseScoreBarGraph } from '@/components/charts/SubjectWiseScoreBarGraph';
+import { VariousScoresPieChart } from '@/components/charts/VariousScoresPieChart';
+import { VariousSubjectScore } from '@/components/charts/VariousSubjectScore';
 
 type Props = {};
 
@@ -17,18 +18,17 @@ export const metadata = constructMetadata({
 })
 
 const page = async (props: Props) => {
-    
-    const { data: user, message: userSessionMessage } = await getUserSession();
-    // Redirect non-subscribed users
-    if (!user || !user.isSubscribed) {
-        return redirect('/');
+
+    const { data: user, message: authMessage } = await getUserSession()
+    if (!user || !user.googleId || !user.id) {
+        redirect('/login')
     }
 
-    const userId = user.id;
+
     const {
         data: dashboardAnalyticsData,
         message: dashboardAnalyticsMessage,
-    } = await getDashboardAnalytics(userId);
+    } = await getDashboardAnalytics(user?.id as string);
 
     if (!dashboardAnalyticsData) {
         return <ErrorPage errorMessage={dashboardAnalyticsMessage} />;
@@ -47,7 +47,6 @@ const page = async (props: Props) => {
         dailyTestProgressChartData,
         subjectWiseScoreChartData
     } = dashboardAnalyticsData;
-
 
     return (
         <div className='w-full bg-color1 mx-auto space-y-5 pt-24 pb-16 px-4 md:px-10 lg:px-20 xl:px-32'>
@@ -83,28 +82,12 @@ const page = async (props: Props) => {
             </div>
 
             <div className="flex gap-4 flex-col md:flex-row">
-                {/* pie chart */}
                 <div className="w-full">
-                    <PieChartWithCenterLabel
-                        chartTitle='Various Scores'
-                        chartDescription='A comprehensive chart showing the score of different types'
-                        dataKey='value'
-                        nameKey='name'
-                        centreLabel='Total'
-                        chartData={scoreParametersData}
-                    />
+                    <VariousScoresPieChart data={scoreParametersData} />
                 </div>
                 <div className="w-full h-full">
-                    <PieChartWithCenterLabel
-                        chartTitle='Various Subject Scores'
-                        chartDescription='A comprehensive chart showing the score of different Subjects'
-                        dataKey='score'
-                        nameKey='subject'
-                        centreLabel='Total Score'
-                        chartData={subjectWiseScoreChartData}
-                    />
+                    <VariousSubjectScore data={subjectWiseScoreChartData} />
                 </div>
-
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

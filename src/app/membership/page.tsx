@@ -25,7 +25,7 @@ const page = () => {
                     gain:
                 </p>
                 <Button asChild size="lg" className="rounded-full">
-                    <Link href={'/subscription'}>
+                    <Link href={'/membership/register'}>
                         Join Membership Today @299 / month <ChevronRight className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
@@ -58,7 +58,7 @@ const page = () => {
                         membership is designed to empower your learning journey with every advantage.
                     </p>
                     <Button asChild size="lg" variant="secondary" className="rounded-full">
-                        <Link href={'/subscription'}>
+                        <Link href={'/membership/register'}>
                             Get Started Now @299 / month <ChevronRight className="ml-2 h-4 w-4" />
                         </Link>
                     </Button>

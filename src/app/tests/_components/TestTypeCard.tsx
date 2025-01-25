@@ -9,15 +9,17 @@ const TestTypeCard = ({ type, description, icon: Icon, isAvailable }: TTypeOfTes
     <Link href={`/tests/${type.toLowerCase().replace(/_/g, '')}`} className="block">
       <Card className={`overflow-hidden ${isAvailable ? 'bg-primary' : 'bg-gray-100'}`}>
         <CardHeader className="-mb-2">
-          <CardTitle className="text-xl font-bold flex items-center gap-2">
-            <Icon className="w-6 h-6 text-purple-600" />
+          <CardTitle className="text-xl font-bold flex items-center gap-4">
+            <div className="bg-gray-200 p-3 rounded-full">
+              <Icon className="w-5 h-5  text-black" />
+            </div>
             {type.replace(/_/g, ' ')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-gray-600 mb-2">{description}</p>
           {isAvailable ? (
-            <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
+            <Button className="w-full bg-color7 hover:bg-color5 text-white">
               <PlayCircle className="w-6 h-6" /> Start
             </Button>
           ) : (

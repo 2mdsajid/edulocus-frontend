@@ -92,8 +92,8 @@ const FeedbackForm = () => {
     return (
         <Card className="w-full max-w-md shadow-2xl">
             <CardHeader className="space-y-1">
-                <CardTitle className="text-2xl font-bold text-center text-color7">Feedback / Contact</CardTitle>
-                <CardDescription className="text-center">Enter your details to get in touch</CardDescription>
+                <CardTitle className="text-2xl font-bold text-center text-color8">Feedback / Contact</CardTitle>
+                {/* <CardDescription className="text-center">Enter your details to get in touch</CardDescription> */}
             </CardHeader>
             <CardContent>
                 <Form {...form}>
@@ -103,7 +103,7 @@ const FeedbackForm = () => {
                             name="name"
                             render={({ field }) => (
                                 <FormItem className="">
-                                    <FormLabel className="text-color7">Name</FormLabel>
+                                    <FormLabel className="text-gray-700">Name</FormLabel>
                                     <FormControl>
                                         <Input className='dark:bg-black rounded-md dark:text-white' placeholder="name" {...field} />
                                     </FormControl>
@@ -116,7 +116,7 @@ const FeedbackForm = () => {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-color7">Email</FormLabel>
+                                    <FormLabel className="text-gray-700">Email</FormLabel>
                                     <FormControl className='rounded-md'>
                                         <Input className='dark:bg-black rounded-md dark:text-white' placeholder="example@gmail.com" {...field} />
                                     </FormControl>
@@ -129,7 +129,7 @@ const FeedbackForm = () => {
                             name="message"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-color7">Message</FormLabel>
+                                    <FormLabel className="text-gray-700">Message</FormLabel>
                                     <FormControl>
                                         <Textarea className='dark:bg-black rounded-md dark:text-white' placeholder="Your Message..." {...field} />
                                     </FormControl>
@@ -145,7 +145,7 @@ const FeedbackForm = () => {
                         />
                     </div> */}
 
-                        <SubmitButton className='bg-color6 hover:bg-color8' initialstate='Submit' loadingstate='Submitting' isLoadingState={issubmitclicked} />
+                        <SubmitButton className='bg-color8 hover:bg-color5 font-bold' initialstate='Submit' loadingstate='Submitting' isLoadingState={issubmitclicked} />
                     </form>
                 </Form>
             </CardContent>

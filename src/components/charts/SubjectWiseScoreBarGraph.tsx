@@ -17,17 +17,15 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { TSubjectwiseScoresChartData } from "./schema"
+import { TSubjectwiseScoresChartData } from "../../app/dashboard/_components/schema"
+import { subjectChartConfig } from "./chart-configs"
 
-export const description = "A bar chart with a custom label"
 
-const chartConfig = {} satisfies ChartConfig
-
-type Props ={
-    chartData: TSubjectwiseScoresChartData[]
+type Props = {
+  chartData: TSubjectwiseScoresChartData[]
 }
 
-export function SubjectWiseScoreBarGraph(props:Props) {
+export function SubjectWiseScoreBarGraph(props: Props) {
   return (
     <Card>
       <CardHeader>
@@ -35,13 +33,13 @@ export function SubjectWiseScoreBarGraph(props:Props) {
         <CardDescription>Comprehensive chart to show accuracy of individual subjects</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={subjectChartConfig}>
           <BarChart
             accessibilityLayer
             data={props.chartData}
             layout="vertical"
             margin={{
-              right: 16,
+              right: 6,
             }}
           >
             <CartesianGrid horizontal={false} />
@@ -54,7 +52,7 @@ export function SubjectWiseScoreBarGraph(props:Props) {
               tickFormatter={(value) => value.slice(0, 3)}
               hide
             />
-            <XAxis dataKey="score" type="number"  />
+            <XAxis dataKey="score" type="number" />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
@@ -67,7 +65,7 @@ export function SubjectWiseScoreBarGraph(props:Props) {
             >
               <LabelList
                 dataKey="subject"
-                position="insideLeft"
+                position="inside"
                 offset={8}
                 className="fill-black"
                 fontSize={12}

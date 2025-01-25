@@ -1,7 +1,7 @@
 import { Check, CheckSquare, Clock, Star, Watch, X } from 'lucide-react';
 import TestStatCard from './TestStatCard';
 import { getRandomColor } from '@/lib/utils';
-import { PieChartWithCenterLabel } from '@/components/reusable/PieChartWithCenterLabel';
+import { VariousScoresPieChart } from '@/components/charts/VariousScoresPieChart';
 
 type Props = {
     total_timetaken: number
@@ -30,7 +30,7 @@ const TestBasicAnalysis = (props: Props) => {
                     {total_timetaken > 0
                         && <TestStatCard
                             icon={<Watch className="w-8 h-8 text-emerald-500" />}
-                            value={`${Math.round(total_timetaken/1000)} sec`}
+                            value={`${Math.round(total_timetaken / 1000)} sec`}
                             label="Total Time Taken"
                             bgColor="bg-emerald-50"
                             borderColor="border-emerald-200"
@@ -74,14 +74,7 @@ const TestBasicAnalysis = (props: Props) => {
                 </div>
             </div>
             <div className="w-full">
-                <PieChartWithCenterLabel
-                    chartTitle='Various Scores'
-                    chartDescription='A comprehensive chart showing the score of different types'
-                    dataKey='value'
-                    nameKey='name'
-                    centreLabel='Total'
-                    chartData={scoreParametersData}
-                />
+                <VariousScoresPieChart data={scoreParametersData} />
             </div>
         </div>
     )

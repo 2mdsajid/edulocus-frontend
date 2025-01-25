@@ -25,6 +25,7 @@ type Props = {
     username: string;
     sharableTestUrl: string
     user: TBaseUser | null
+    authToken?: string
 }
 
 const TestMain = (props: Props) => {
@@ -42,7 +43,9 @@ const TestMain = (props: Props) => {
     const [counttop, setCountTop] = useState(0)
 
     const [uquestions, setUquestions] = useState<TQuestion[]>([])
-    const [userAnswer, setUserAnswer] = useState<TUserAns>({})
+    // const [userAnswer, setUserAnswer] = useState<TUserAns>({})
+    const [userAnswer, setUserAnswer] = useState<Map<string, { uans: string; timetaken: number }>>(new Map());
+
 
     const [categorizedQuestions, setCategorizedQuestions] = useState(categorizeQuestionsBySubject(props.questions));
     const SUBJECTS = Object.keys(categorizedQuestions)
@@ -83,8 +86,9 @@ const TestMain = (props: Props) => {
 
         // MOSY IMPORTANT PART --- ITERATE OVER QUESTIONS 
         const mergedQuestions = uquestions.map((question) => {
-            const userAnsData = userAnswer[question.id] || { uans: '', timetaken: 0 };
-            
+            // Use .get() to retrieve the user answer data from the Map
+            const userAnsData = userAnswer.get(question.id) || { uans: '', timetaken: 0 };
+        
             // Append the user answer and timetaken to the question object
             return {
                 ...question,
@@ -185,8 +189,8 @@ const TestMain = (props: Props) => {
         // })
 
 
-        // test analytics for storing for premium users
-        if (user && user !== null && user.isSubscribed) {
+        // test analytics for storing for all users -- premium previousle
+        if (user && user !== null && user.id) {
             test_analytic = {
                 customTestId: testid,
                 questionsWithAnswers: questions_ids_and_answers,
@@ -222,19 +226,17 @@ const TestMain = (props: Props) => {
     };
 
     // THIS FUNCTION WILL STORE THE USER ANSWER, TIME IN AN OBJECT WITH THE QUESTIONS ID -- TO ITERATE LATER
+
     const getInput = (value: string, id: string) => {
         if (issubmitclicked) return;
         const timetaken = counttop - currentcountdown;
     
-        setUserAnswer((prevUserAnswer) => ({
-            ...prevUserAnswer, // Spread previous state to keep other answers intact
-            [id]: {  // Dynamically set `id` as the key
-                uans: value.toLowerCase(),
-                timetaken: timetaken || 0
-            }
-        }));
+        setUserAnswer((prevUserAnswer) => {
+            const newUserAnswer = new Map(prevUserAnswer);
+            newUserAnswer.set(id, { uans: value.toLowerCase(), timetaken: timetaken || 0 });
+            return newUserAnswer;
+        });
     
-        console.log("🚀 ~ getInput ~ userAnswer:", userAnswer);  // Note that this log may show the state from the previous render
         setCountTop(currentcountdown);
     
         if (!questionsAttempt.includes(id)) {
@@ -274,6 +276,9 @@ const TestMain = (props: Props) => {
     return (
         <div className='w-full'>
             {istestsubmitted
+
+
+                // AFTER SUBMITTING THE ANSWERS
                 ? <Tabs defaultValue="analysis" className="w-full my-5">
                     <TabsList className='bg-none bg-primary dark:bg-dark-primary mb-3 sticky top-16 z-100'>
                         <TabsTrigger className='text-xl font-semibold' value="analysis">Analysis</TabsTrigger>
@@ -286,15 +291,23 @@ const TestMain = (props: Props) => {
                             questionsAttempt={questionsAttempt.length}
                             totalTimeTaken={totalTimeTaken}
                             subjectWiseChapterScore={subjectWiseChapterScore}
+                            authToken={props.authToken}
                         />
                     </TabsContent>
+
+                    {/* to view the answers */}
                     <TabsContent value="answers" className='w-full'>
                         <TestQuestoinsAndAnswersViewer
                             questions={uquestions}
                         />
                     </TabsContent>
                 </Tabs>
+
+
+
+                // BEFORE SUBMITTING THE ANSWERS
                 : <div className='w-full'>
+
                     {/* timer dialog */}
                     <div className="fixed top-16 right-0 flex flex-col p-1 sm:p-3 md:p-4 bg-white dark:bg-gray-900 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg space-y-1 md:space-y-2">
                         {timeout && (
@@ -314,7 +327,7 @@ const TestMain = (props: Props) => {
                             <span className='font-semibold text-purple-800'>{questionsAttempt.length}/{uquestions.length}</span>
                         </div>
 
-
+                        {/* submit button and its dialog with info */}
                         <Dialog>
                             {!issubmitclicked && (
                                 <DialogTrigger ref={submitref} className="w-full">

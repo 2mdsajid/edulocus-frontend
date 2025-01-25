@@ -12,6 +12,8 @@ export const getDashboardAnalytics = async (userId: string): Promise<{
         if (!authToken || authToken === undefined || authToken === null) {
             return { data: null, message: "User not logged in!" };
         }
+
+        
         const response = await fetch(`${process.env.BACKEND}/tests/get-dashboard-analytics/${userId}`, {
             method: "GET",
             cache: 'no-store',

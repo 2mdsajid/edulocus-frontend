@@ -22,7 +22,7 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
         });
     }
     return constructMetadata({
-        title: `Edulocus | Model Test`,
+        title: `Edulocus | ${testMetadata.name}`,
         description: `${testMetadata.slug} created by ${testMetadata.createdBy} for a comprehensive learning experience.`,
     });
 };

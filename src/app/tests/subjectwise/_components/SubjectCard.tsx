@@ -16,9 +16,9 @@ const SubjectCard = (props: Props) => {
 
     return (
         <div className="p-6 bg-primary dark:bg-purple-900 text-black shadow-lg rounded-lg transition-all hover:shadow-xl hover:scale-105">
-            <div className="flex items-center mb-4">
-                <SubjectIcon className="w-6 h-6 text-purple-600 dark:text-purple-300 mr-2" />
-                <h2 className="text-xl font-semibold tracking-wide capitalize">{name}</h2>
+            <div className="flex items-center mb-2">
+                <SubjectIcon className="w-6 h-6 text-gray-700 dark:text-purple-300 mr-2" />
+                <h2 className="text-xl font-semibold tracking-wide capitalize text-gray-800">{name}</h2>
             </div>
             <div className="flex items-center mb-4">
                 <HelpCircle className="w-5 h-5 text-purple-500 dark:text-purple-400 mr-2" />

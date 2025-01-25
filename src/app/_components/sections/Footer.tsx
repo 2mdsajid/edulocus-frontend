@@ -21,10 +21,10 @@ const Footer = () => {
                                 <FaInstagram className="" />
                                 <span className="sr-only">Instagram</span>
                             </Link>
-                            <Link target='_blank' referrerPolicy='no-referrer' href="https://invite.viber.com/?g2=AQAR1VddClIhRlOy6Xmu3fiA8qWKNPCerYr1fVwVAJPdGlU1%2BgbgtWFTitvm5c1E" className="">
+                            {/* <Link target='_blank' referrerPolicy='no-referrer' href="https://invite.viber.com/?g2=AQAR1VddClIhRlOy6Xmu3fiA8qWKNPCerYr1fVwVAJPdGlU1%2BgbgtWFTitvm5c1E" className="">
                                 <FaViber className="" />
                                 <span className="sr-only">Viber</span>
-                            </Link>
+                            </Link> */}
                         </div>
                         <p>edulocusweb@gmail.com</p>
                     </div>

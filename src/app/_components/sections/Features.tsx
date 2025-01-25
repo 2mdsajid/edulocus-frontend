@@ -35,7 +35,7 @@ const FeatureCard: React.FC<{ feature: typeof FEATURES[0] }> = ({ feature }) => 
             <div className="bg-purple-100 p-4 rounded-full mb-4">
                 {feature.icon}
             </div>
-            <h3 className="text-xl font-bold text-purple-800 mb-2">{feature.title}</h3>
+            <h3 className="text-2xl font-extrabold text-black mb-2">{feature.title}</h3>
             <p className="text-gray-600">{feature.description}</p>
         </div>
     </div>
@@ -45,10 +45,10 @@ const Features: React.FC = () => {
     return (
         <section className="bg-color1 py-16 px-4 md:px-10 lg:px-20 xl:px-32">
             <div className='container mx-auto'>
-                <h2 className='text-4xl mb-4 text-center font-extrabold tracking-wider text-purple-800 font-pt-serif'>
+                <h2 className='text-4xl mb-4 text-center font-extrabold tracking-wider text-gray-700 font-pt-serif'>
                     What We Provide
                 </h2>
-                <p className='text-xl text-center font-normal max-w-3xl mx-auto mb-12 text-gray-600'>
+                <p className='text-xl text-center font-normal max-w-3xl mx-auto mb-12 text-gray-800'>
                     We&apos;re dedicated to simplifying your journey with our comprehensive resources and support.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 place-items-center">

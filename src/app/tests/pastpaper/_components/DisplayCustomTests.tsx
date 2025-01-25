@@ -36,8 +36,8 @@ export default function DisplayCustomTests({ customTestsData }: { customTestsDat
             <Badge
               key={affiliation}
               className={`${selectedAffiliation === affiliation
-                ? 'bg-purple-600 hover:bg-purple-700 text-white'
-                : 'bg-purple-200 hover:bg-purple-300 text-black'
+                ? 'bg-gray-600 hover:bg-gray-700 text-white'
+                : 'bg-gray-200 hover:bg-gray-300 text-black'
                 } transition-colors duration-200 py-1 text-xs cursor-pointer`}
               onClick={() => setSelectedAffiliation(selectedAffiliation === affiliation ? null : affiliation)}
             >
