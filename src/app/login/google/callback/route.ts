@@ -52,7 +52,7 @@ export async function GET(request: Request): Promise<Response> {
 	});
 	if (existingUser === null) {
 		return new Response(null, {
-			status: 500
+			status: 404
 		});
 	}
 	
@@ -64,7 +64,7 @@ export async function GET(request: Request): Promise<Response> {
 	// check if the authToken is valid or null
 	if (authToken === null) {
 		return new Response(null, {
-			status: 500
+			status: 404
 		});
 	}
 	await setAuthTokenCookie(authToken, session.expiresAt);

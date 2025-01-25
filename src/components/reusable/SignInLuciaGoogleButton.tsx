@@ -6,7 +6,7 @@ export default function SignInLuciaGoogleButton() {
   return (
       <Button asChild
         type="submit"
-        className="flex justify-center items-center gap-2 px-6 py-2 w-full bg-black text-white font-medium border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:bg-gray-100 focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 focus:outline-none"
+        className="flex justify-center items-center gap-2 px-6 py-2 w-full bg-black text-white font-medium border border-gray-300 rounded-lg shadow-sm hover:shadow-md hover:bg-gray-800 focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 focus:outline-none"
       >
         <Link href={`/login/google`}>
           <FaGoogle size={20} className="text-white" />  {/* Using the Google icon here */}
