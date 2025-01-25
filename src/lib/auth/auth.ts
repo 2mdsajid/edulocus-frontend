@@ -1,8 +1,11 @@
 "use server";
-import jwt from "jsonwebtoken"
+
+import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { deleteAuthTokenCookie, deleteSessionTokenCookie } from "./lucia-sessions";
 import { TBaseUser, TJWT, TLogInUser, TSignUpUser } from "./schema";
+
+
 
 export const getUserSession = async (): Promise<{
   data: TBaseUser | null;
@@ -27,9 +30,11 @@ export const getUserSession = async (): Promise<{
       const { data, message } = await response.json();
       return { data: null, message }
     }
-
+    
     const { data, message } = await response.json();
-    return { data, message };
+    return { data, message :"user logged in!" }
+    
+
   } catch (error) {
     return { data: null, message: "Some Error Occured while getting user session!" };
   }
@@ -37,7 +42,10 @@ export const getUserSession = async (): Promise<{
 
 export const logOut = async () => {
   const cookieStore = cookies();
-  cookieStore.delete("auth-token");
+	await deleteSessionTokenCookie();
+  await deleteAuthTokenCookie()
+  
+  // await signOut() //from next auth package 
   return
 };
 
@@ -135,6 +143,38 @@ export const handleSignUp = async (
   }
 };
 
+
+export const generateAuthToken = async (
+  userData: TBaseUser,
+): Promise<string | null> => {
+    try {
+    const response = await fetch(
+      `${process.env.BACKEND}/users/generate-auth-token`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      }
+    );
+
+    if(!response.ok){
+      return null
+    }
+
+    const { data: authToken, message: authMessage } = await response.json();
+    if (!authToken) {
+      return null;
+    }
+    return authToken
+
+  } catch (error) {
+    console.log("🚀 ~ error:", error)
+    return null
+  }
+};
+
 // declare module "next-auth" {
 //     interface Session extends DefaultSession {
 //         user?: {
@@ -172,13 +212,13 @@ export const handleSignUp = async (
 //     ],
 //     callbacks: {
 //         async session({ session, user }: any) {
-//             const { id } = user
-//             return session = {
-//                 ...session,
-//                 user: {
-//                     ...session.user,
-//                     id: id,
-//                 }
+// const { id } = user
+// return session = {
+//     ...session,
+//     user: {
+//         ...session.user,
+//         id: id,
+//     }
 //             }
 //         },
 //     },
