@@ -15,7 +15,7 @@ export default function NotFound() {
 
       {/* Description */}
       <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 text-center">
-        Oops! The page you're looking for doesn't exist or has been moved.
+        Oops! The page you&apos;re looking for doesn&apos;t exist or has been moved.
       </p>
 
       {/* Navigation Buttons */}
