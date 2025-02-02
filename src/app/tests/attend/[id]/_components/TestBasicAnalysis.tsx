@@ -17,9 +17,9 @@ const TestBasicAnalysis = (props: Props) => {
     const incorrect_attempts = questions_attempt - corrrect_attempt
 
     const scoreParametersData = [
-        { name: 'correct', value: corrrect_attempt, total: total_questions, fill: getRandomColor() },
-        { name: 'incorrect', value: incorrect_attempts, total: total_questions, fill: getRandomColor() },
-        { name: 'unattempt', value: unattempt_questions, total: total_questions, fill: getRandomColor() },
+        { name: 'correct', value: corrrect_attempt, total: total_questions, fill: '#22c55e' },
+        { name: 'incorrect', value: incorrect_attempts, total: total_questions, fill: '#ef4444' }, 
+        { name: 'unattempt', value: unattempt_questions, total: total_questions, fill: '#6b7280' },
     ]
 
 

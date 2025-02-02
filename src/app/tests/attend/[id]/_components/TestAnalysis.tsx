@@ -6,6 +6,7 @@ import FeedbackComponent from './FeedbackComponent'
 import ContributeCardComponent from './ContributeCardComponent'
 import { TSubjectWiseChapterScores } from '../schema'
 import JoinUsComponent from './JoinUsComponent'
+import JoinTelegramComponent from './JoinTelegramComponent'
 
 type Props = {
     totalQuestions: number
@@ -24,7 +25,6 @@ const TestAnalysis = (props: Props) => {
         subjectWiseChapterScore: chapterwisescore,
         authToken
     } = props
-    console.log("🚀 ~ TestAnalysis ~ authToken:", authToken)
 
     return (
         <div className='w-full space-y-5'>
@@ -37,11 +37,29 @@ const TestAnalysis = (props: Props) => {
                 />
             </div>
 
-            <div>
-                {chapterwisescore
-                    && <SubjectwiseAccuracy
+            <div className="flex flex-col gap-4">
+                {chapterwisescore && Object.keys(chapterwisescore).length > 5 ? (
+                    // Split subjects into two groups if more than 5 subjects
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <SubjectwiseAccuracy 
+                            data={Object.fromEntries(
+                                Object.entries(chapterwisescore)
+                                    .slice(0, Math.ceil(Object.keys(chapterwisescore).length / 2))
+                            )}
+                        />
+                        <SubjectwiseAccuracy
+                            data={Object.fromEntries(
+                                Object.entries(chapterwisescore)
+                                    .slice(Math.ceil(Object.keys(chapterwisescore).length / 2))
+                            )}
+                        />
+                    </div>
+                ) : (
+                    // Show single graph if 5 or fewer subjects
+                    <SubjectwiseAccuracy
                         data={chapterwisescore}
-                    />}
+                    />
+                )}
             </div>
 
 
@@ -62,6 +80,10 @@ const TestAnalysis = (props: Props) => {
                     <JoinUsComponent />
                 </div>
             }
+
+            <div className=" w-full">
+                <JoinTelegramComponent />
+            </div>
 
 
             <div className=" w-full">

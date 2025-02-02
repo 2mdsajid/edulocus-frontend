@@ -31,7 +31,6 @@ type Props = {
 
 export function VariousScoresPieChart(props: Props) {
     const { data: chartData } = props;
-
     const totalScore = React.useMemo(() => {
         return chartData.reduce((acc, curr) => acc + Number(curr['value']), 0); // Sum the values based on the dataKey
     }, [chartData, 'value']);

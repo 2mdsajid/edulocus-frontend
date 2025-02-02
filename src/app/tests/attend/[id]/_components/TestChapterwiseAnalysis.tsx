@@ -1,24 +1,23 @@
 "use client"
 
 import { CardDescription, CardTitle } from '@/components/ui/card'
-import { useState } from 'react'
 import { subjectWiseChapterScore } from '../methods'
 import { TSubjectWiseChapterScores } from '../schema'
 import { ChaptersAccuracyGraph } from './ChaptersAccuracyGraph'
-import { CustomBadge } from './CustomBadge'
 import { SubjectScoreBreakdownGraph } from './SubjectScoreBreakdownGraph'
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
 
 type Props = {
     data: TSubjectWiseChapterScores
 }
 
-
-
 export default function TestChapterwiseAnalysis({ data }: Props) {
     const eachSubjectData = subjectWiseChapterScore(data)
-    const [selectedSubject, setSelectedSubject] = useState(eachSubjectData[0]?.name || '')
-
-    const currentSubject = eachSubjectData.find(subject => subject.name === selectedSubject)
 
     return (
         <div className="w-full mx-auto overflow-x-auto bg-primary p-3 rounded-md shadow-md">
@@ -27,28 +26,100 @@ export default function TestChapterwiseAnalysis({ data }: Props) {
                 <CardDescription className="text-black">More insight to individual subjects</CardDescription>
             </div>
 
-            <div className="flex flex-wrap gap-2 my-4">
-                {eachSubjectData.sort().map((subject) => (
-                    <CustomBadge
-                        key={subject.name}
-                        isSelected={selectedSubject === subject.name}
-                        onClick={() => setSelectedSubject(subject.name)}
-                    >
-                        {subject.name.replace('_', ' ').toUpperCase()}
-                    </CustomBadge>
-                ))}
-            </div>
+            <Accordion type="multiple"  className="w-full [&>*:not(:first-child)]:mt-px">
+                {eachSubjectData.sort().map((subject) => {
+                    // Calculate subject statistics
+                    const totalQuestions = subject.total;
+                    const correctAnswers = subject.correct;
+                    const incorrectAnswers = subject.incorrect;
+                    const unattemptedQuestions = subject.unattempt;
+                    
+                    // Find highest and lowest scoring chapters
+                    const chapterScores = subject.chapterAccuracies.map((data) => ({
+                        name: data.chapter,
+                        accuracy: data.accuracy
+                    }));
+                    
+                    const sortedChapters = [...chapterScores].sort((a, b) => b.accuracy - a.accuracy);
+                    const bestChapters = sortedChapters;
+                    const improveChapters = [...sortedChapters].reverse();
+                    
+                    const allHaveFullAccuracy = chapterScores.every(chapter => chapter.accuracy === 100);
+                    const allHaveZeroAccuracy = chapterScores.every(chapter => chapter.accuracy === 0);
 
-            {currentSubject && (
-                <div className="pt-3 flex flex-col gap-4">
-                    <SubjectScoreBreakdownGraph
-                        data={currentSubject}
-                    />
-                    <ChaptersAccuracyGraph
-                        data={currentSubject.chapterAccuracies}
-                    />
-                </div>
-            )}
+                    const highestChapter = sortedChapters[0];
+                    const lowestChapter = sortedChapters[sortedChapters.length - 1];
+
+                    return (
+                        <AccordionItem key={subject.name} value={subject.name} className="border-b">
+                            <AccordionTrigger className="text-black hover:no-underline">
+                                {subject.name.replace('_', ' ').toUpperCase()}
+                            </AccordionTrigger>
+                            <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                                <div className="flex flex-col gap-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
+                                        <div className="p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
+                                            <h3 className="font-semibold text-lg mb-2">Overview</h3>
+                                            <div className="space-y-2">
+                                                <p>Total Questions: <span className="font-bold">{totalQuestions}</span></p>
+                                                <p>Correct: <span className="font-bold text-green-600">{correctAnswers}</span></p>
+                                                <p>Incorrect: <span className="font-bold text-red-600">{incorrectAnswers}</span></p>
+                                                <p>Unattempted: <span className="font-bold text-yellow-600">{unattemptedQuestions}</span></p>
+                                            </div>
+                                        </div>
+                                        
+                                        {allHaveFullAccuracy ? (
+                                            <div className="p-4 bg-green-50 dark:bg-green-900 rounded-lg">
+                                                <h3 className="font-semibold text-lg mb-2">Best Performance</h3>
+                                                {sortedChapters.map((chapter, i) => (
+                                                    <div key={i}>
+                                                        <p className="font-bold">{chapter.name.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())} - {chapter.accuracy.toFixed(1)}%</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : allHaveZeroAccuracy ? (
+                                            <div className="p-4 bg-red-50 dark:bg-red-900 rounded-lg">
+                                                <h3 className="font-semibold text-lg mb-2">Needs Improvement</h3>
+                                                {sortedChapters.map((chapter, i) => (
+                                                    <div key={i}>
+                                                        <p className="font-bold">{chapter.name.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())} - {chapter.accuracy.toFixed(1)}%</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <div className="p-4 bg-green-50 dark:bg-green-900 rounded-lg">
+                                                    <h3 className="font-semibold text-lg mb-2">Best Performance</h3>
+                                                    {bestChapters.filter(c => c.accuracy === highestChapter.accuracy).map((chapter, i) => (
+                                                        <div key={i}>
+                                                            <p className="font-bold">{chapter.name.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())} - {chapter.accuracy.toFixed(1)}%</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <div className="p-4 bg-red-50 dark:bg-red-900 rounded-lg">
+                                                    <h3 className="font-semibold text-lg mb-2">Needs Improvement</h3>
+                                                    {improveChapters.filter(c => c.accuracy === lowestChapter.accuracy).map((chapter, i) => (
+                                                        <div key={i}>
+                                                            <p className="font-bold">{chapter.name.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())} - {chapter.accuracy.toFixed(1)}%</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+
+                                    <SubjectScoreBreakdownGraph
+                                        data={subject}
+                                    />
+                                    <ChaptersAccuracyGraph
+                                        data={subject.chapterAccuracies}
+                                    />
+                                </div>
+                            </AccordionContent>
+                        </AccordionItem>
+                    )
+                })}
+            </Accordion>
         </div>
     )
 }
