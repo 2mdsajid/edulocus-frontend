@@ -17,7 +17,7 @@ const JoinTelegramComponent = () => {
             </p>
           </div>
           <Button asChild className="bg-color8 hover:bg-color6 font-bold">
-            <Link href="https://t.me/edulocus" target="_blank" rel="noopener noreferrer">
+            <Link href="https://t.me/edulocus_tg" target="_blank" rel="noopener noreferrer">
               Join Channel
               <span className="sr-only">Join Telegram Channel</span>
             </Link>
