@@ -31,6 +31,7 @@ import {
 
 
 export const typeOfTestsAndDescriptionData: TTypeOfTestsAndDescription[] = [
+  { type: 'DAILY_TEST', description: 'Daily test from 4pm to 8pm everyday.', isAvailable: true, icon: Zap },
   { type: 'MODEL', description: 'Mock test to simulate real exam conditions.', isAvailable: true, icon: BarChart },
   { type: 'SUBJECT_WISE', description: 'Test focused on a specific subject.', isAvailable: true, icon: BookOpen },
   { type: 'CHAPTER_WISE', description: 'Test focused on specific chapters.', isAvailable: true, icon: FileText },
