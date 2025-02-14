@@ -23,7 +23,7 @@ const page = async (props: Props) => {
             ) : (
                 <div className="flex justify-center items-center h-[200px] w-full">
                     <div className="border border-gray-300 rounded-lg p-6 shadow-md bg-white">
-                        <h2 className="text-xl font-bold mb-2 text-center">Today's Test Already Finished</h2>
+                        <h2 className="text-xl font-bold mb-2 text-center">Today&apos;s Test Already Finished</h2>
                         <p className="text-sm text-gray-600 text-center">Tests are available from 4 PM to 8 PM every day.</p>
                     </div>
                 </div>
