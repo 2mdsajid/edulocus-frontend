@@ -9,6 +9,9 @@ import RecentTestCard from './_components/RecentTestCard';
 import { SubjectWiseScoreBarGraph } from '@/components/charts/SubjectWiseScoreBarGraph';
 import { VariousScoresPieChart } from '@/components/charts/VariousScoresPieChart';
 import { VariousSubjectScore } from '@/components/charts/VariousSubjectScore';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { AiFillRobot } from 'react-icons/ai';
 
 type Props = {};
 
@@ -50,6 +53,14 @@ const page = async (props: Props) => {
 
     return (
         <div className='w-full bg-color1 mx-auto space-y-5 pt-24 pb-16 px-4 md:px-10 lg:px-20 xl:px-32'>
+
+        <Link href="/dashboard/ai">
+            <Button className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white">
+                <AiFillRobot className="w-6 h-6" />
+                Generate AI Report
+            </Button>
+        </Link>
+            
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
                 <DashboardCard
                     title="Total Tests"

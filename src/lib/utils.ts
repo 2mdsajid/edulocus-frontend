@@ -5,6 +5,9 @@ import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import jwt from 'jsonwebtoken'
 
+import { marked } from 'marked';
+
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -96,3 +99,7 @@ const colors = [
 
 // Helper function to get a random color from the colors array
 export const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
+
+export function markdownToHtml(markdown: string) {
+  return marked(markdown);
+}
