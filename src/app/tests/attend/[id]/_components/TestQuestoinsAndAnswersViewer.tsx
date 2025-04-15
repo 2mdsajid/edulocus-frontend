@@ -1,4 +1,4 @@
-import { TQuestion } from '@/app/tests/_components/schema'
+import { TQuestion } from '@/lib/schema/tests.schema'
 import { QuestionViewer } from '@/components/reusable/QuestionViewer'
 import React from 'react'
 

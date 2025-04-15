@@ -15,9 +15,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { createCustomTest } from "./actions";
 import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
+import { createCustomTest } from "@/lib/actions/tests.actions";
 
 // Define the form schema using Zod
 const formSchema = z.object({

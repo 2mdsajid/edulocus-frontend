@@ -18,8 +18,8 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart";
-import { TScoreParametersData } from "../../app/dashboard/_components/schema";
 import { variousScoreChartConfig } from "./chart-configs";
+import { TScoreParametersData } from "@/lib/schema/users.schema";
 
 // Type for the Props
 type Props = {

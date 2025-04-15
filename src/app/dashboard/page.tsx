@@ -3,7 +3,6 @@ import { ReusableLineChart } from '@/components/reusable/ReusableLineChart';
 import { getUserSession } from '@/lib/auth/auth';
 import { constructMetadata } from '@/lib/data';
 import { redirect } from 'next/navigation';
-import { getDashboardAnalytics } from './_components/actions';
 import DashboardCard from './_components/DashboardCard';
 import RecentTestCard from './_components/RecentTestCard';
 import { SubjectWiseScoreBarGraph } from '@/components/charts/SubjectWiseScoreBarGraph';
@@ -12,6 +11,7 @@ import { VariousSubjectScore } from '@/components/charts/VariousSubjectScore';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { AiFillRobot } from 'react-icons/ai';
+import { getDashboardAnalytics } from '@/lib/actions/users.actions';
 
 type Props = {};
 

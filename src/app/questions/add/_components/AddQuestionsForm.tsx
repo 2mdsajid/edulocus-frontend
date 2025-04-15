@@ -7,13 +7,13 @@ import { Card, CardDescription, CardTitle } from '@/components/ui/card'
 import { Dialog, dialogCloseFunction, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { toast } from '@/hooks/use-toast'
 import React, { useRef, useState } from 'react'
-import { isTopicInSyllabus } from '../../_components/methods'
-import { TPGSyllabus } from '../../_components/schema'
-import { addQuestions, createPastTest } from './actions'
+import { isTopicInSyllabus } from '@/lib/methods/questions.methods'
+import { TPGSyllabus } from '@/lib/schema/questions.schema'
+import { addQuestions, createPastTest } from '@/lib/actions/questions.actions'
 import ChapterInput from './ChapterInput'
-import { isExpectedFileFormat } from './methods'
+import { isExpectedFileFormat } from '@/lib/methods/questions.methods'
+import { TAddQuestion, TAnswer, TExpectedQuestionFormatFromFile, TStreamHierarchy } from '@/lib/schema/questions.schema'
 import QuestionCard from './QuestionCard'
-import { TAddQuestion, TAnswer, TExpectedQuestionFormatFromFile, TStreamHierarchy } from './schema'
 import SubjectInput from './SubjectInput'
 import StreamInput from './StreamInput'
 import CategoryInput from './CategoryInput'
@@ -196,7 +196,7 @@ const AddQuestionsForm = (props: Props) => {
                 title: "Success",
                 description: message,
             })
-            
+
         } else {
             const apiEndPoint = API_END_POINTS[modeOfUpload]
             const { data, message } = await addQuestions(questions, apiEndPoint)

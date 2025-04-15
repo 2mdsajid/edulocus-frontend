@@ -1,5 +1,5 @@
 import ErrorPage from '@/components/reusable/ErrorPage'
-import { getAllTestsByType } from '../_components/actions'
+import { getAllTestsByType } from '@/lib/actions/tests.actions'
 import React from 'react'
 import TestList from './_components/TestsList'
 

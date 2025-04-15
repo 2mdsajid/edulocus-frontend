@@ -1,5 +1,5 @@
 "use client"
-import { TQuestion } from "@/app/tests/_components/schema"
+import { TQuestion } from "@/lib/schema/tests.schema"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {

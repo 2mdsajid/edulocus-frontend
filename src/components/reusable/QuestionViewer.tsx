@@ -1,8 +1,7 @@
 "use client"
 
-import { TBaseOption, TQuestion } from "@/app/tests/_components/schema"
+import { TBaseOption, TQuestion } from "@/lib/schema/tests.schema"
 import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { cn, ParsedElement } from "@/lib/utils"

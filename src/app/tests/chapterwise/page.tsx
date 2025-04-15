@@ -1,8 +1,8 @@
 
 import ErrorPage from '@/components/reusable/ErrorPage'
 import { constructMetadata } from '@/lib/data'
-import { getTotalQuestionsPerSubjectAndChapter } from './_components/actions'
 import ChapterwiseMainPage from './_components/ChapterwiseMainPage'
+import { getTotalQuestionsPerSubjectAndChapter } from '@/lib/actions/questions.actions';
 
 type Props = {}
 

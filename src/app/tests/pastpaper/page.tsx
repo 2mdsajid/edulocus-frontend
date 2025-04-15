@@ -1,8 +1,8 @@
 
 import ErrorPage from '@/components/reusable/ErrorPage'
 import { parseAsString } from 'nuqs/server'
-import { getAllTestsByType } from '../_components/actions'
-import { TBaseCustomTest } from '../_components/schema'
+import { getAllTestsByType } from '@/lib/actions/tests.actions'
+import { TBaseCustomTest } from '@/lib/schema/tests.schema'
 import ChangeCategoryButton from './_components/ChangeCategoryButton'
 import DisplayCustomTests from './_components/DisplayCustomTests'
 

@@ -1,7 +1,7 @@
 'use client'
 
+import { TPGSyllabus } from '@/lib/schema/questions.schema';
 import React, { useState, useEffect } from 'react';
-import { TPGSyllabus } from '../../_components/schema';
 
 type TopicProps = {
   topic: string;

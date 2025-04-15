@@ -1,10 +1,10 @@
 import ErrorPage from "@/components/reusable/ErrorPage"
 import { SearchableResultTable, SearchableResultTableColumns } from "@/components/reusable/SearchableResultTable"
 import { getUserSession } from "@/lib/auth/auth"
-import { getTestMetadata } from "./_components/actions"
 import TestInput from "./_components/TestInput"
 import { Metadata } from "next"
 import { constructMetadata } from "@/lib/data"
+import { getTestMetadata } from "@/lib/actions/tests.actions"
 
 type Props = {
     params: {

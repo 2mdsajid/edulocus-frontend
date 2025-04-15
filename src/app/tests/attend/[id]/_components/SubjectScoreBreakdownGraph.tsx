@@ -17,7 +17,7 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
-import { TIndividualSubjectScores } from "../schema"
+import { TIndividualSubjectScores } from "@/lib/schema/tests.schema"
 
 const chartConfig = {
     correct: {

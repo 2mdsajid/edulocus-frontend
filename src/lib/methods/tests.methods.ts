@@ -1,5 +1,4 @@
-import { TIndividualSubjectScores, TSubjectWiseChapterScores } from "./schema";
-
+import { TIndividualSubjectScores, TSubjectWiseChapterScores } from "@/lib/schema/tests.schema";
 export const chunkArray = (arr: TIndividualSubjectScores[], size: number) => {
     const chunks = [];
     for (let i = 0; i < arr.length; i += size) {

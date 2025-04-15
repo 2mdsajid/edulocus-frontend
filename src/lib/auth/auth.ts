@@ -3,9 +3,17 @@
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { deleteAuthTokenCookie, deleteSessionTokenCookie } from "./lucia-sessions";
-import { TBaseUser, TJWT, TLogInUser, TSignUpUser } from "./schema";
+import { TBaseUser,  TLogInUser, TSignUpUser, TStream } from "@/lib/schema/users.schema";
+import { TJWT } from "@/lib/auth/schema";
 
-
+export const checkStreamForNonLoggedInUser = async () => {
+  const cookieStore = cookies();
+  const stream = cookieStore.get("stream")?.value;
+  if (!stream || stream === undefined || stream === null) {
+    return null;
+  }
+  return stream;
+}
 
 export const getUserSession = async (): Promise<{
   data: TBaseUser | null;

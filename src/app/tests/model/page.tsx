@@ -1,7 +1,7 @@
 import React from 'react'
 import ErrorPage from '@/components/reusable/ErrorPage'
 import TestList from './_components/TestList'
-import { getAllTestsByType } from '../_components/actions'
+import { getAllTestsByType } from '@/lib/actions/tests.actions'
 
 type Props = {
 

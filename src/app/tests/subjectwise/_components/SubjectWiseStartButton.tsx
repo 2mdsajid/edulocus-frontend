@@ -2,10 +2,10 @@
 
 import { Button } from '@/components/ui/button'
 import React, { useState } from 'react'
-import { startSubjectWiseTest } from './actions'
 import { toast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 import { Loader2, PlayCircle } from 'lucide-react'
+import { startSubjectWiseTest } from '@/lib/actions/tests.actions'
 
 type Props = {
     subject: string

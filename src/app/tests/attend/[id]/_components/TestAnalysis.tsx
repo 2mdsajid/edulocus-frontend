@@ -4,7 +4,7 @@ import { SubjectwiseAccuracy } from './SubjectwiseAccuracy'
 import TestChapterwiseScoreTable from './TestChapterwiseAnalysis'
 import FeedbackComponent from './FeedbackComponent'
 import ContributeCardComponent from './ContributeCardComponent'
-import { TSubjectWiseChapterScores } from '../schema'
+import { TSubjectWiseChapterScores } from '@/lib/schema/tests.schema'
 import JoinUsComponent from './JoinUsComponent'
 import JoinTelegramComponent from './JoinTelegramComponent'
 

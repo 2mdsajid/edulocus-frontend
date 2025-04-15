@@ -1,10 +1,17 @@
 import { typeOfTestsAndDescriptionData } from '@/lib/data';
 import TestTypeCard from './_components/TestTypeCard';
+import { getStreamCookieForUnauthenticatedUser } from '@/lib/actions/try.actions';
+import { redirect } from 'next/navigation';
 
 export default async function Page() {
   // Separate the tests into available and upcoming based on isAvailable property
   const availableTests = typeOfTestsAndDescriptionData.filter(test => test.isAvailable);
   const upcomingTests = typeOfTestsAndDescriptionData.filter(test => !test.isAvailable);
+
+  const stream = await getStreamCookieForUnauthenticatedUser();
+  if (!stream || stream === 'null' || stream === 'undefined' || stream === '') {
+    redirect('/try');
+  }
 
   return (
     <div className="w-full">

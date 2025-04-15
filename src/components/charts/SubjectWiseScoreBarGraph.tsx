@@ -17,8 +17,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { TSubjectwiseScoresChartData } from "../../app/dashboard/_components/schema"
 import { subjectChartConfig } from "./chart-configs"
+import { TSubjectwiseScoresChartData } from "@/lib/schema/users.schema"
 
 
 type Props = {

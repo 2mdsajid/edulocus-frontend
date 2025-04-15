@@ -17,10 +17,9 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
-import { TSubjectWiseChapterScores } from "../schema"
+import { TSubjectWiseChapterScores } from "@/lib/schema/tests.schema"
+import { subjectWiseChapterScore } from "@/lib/methods/tests.methods"
 
-import { } from "../schema"
-import { subjectWiseChapterScore } from "../methods"
 
 const chartConfig = {
     accuracy: {

@@ -1,6 +1,6 @@
 import ErrorPage from '@/components/reusable/ErrorPage'
-import { getSyllabus } from '../_components/actions'
 import { RenderSyllabus } from './_components/RenderSyllabus'
+import { getSyllabus } from '@/lib/actions/questions.actions'
 
 type Props = {}
 

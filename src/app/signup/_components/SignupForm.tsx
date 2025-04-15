@@ -5,8 +5,8 @@ import { Input } from '@/components/ui/input'
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from '@/hooks/use-toast'
-import { TBaseUser, TSignUpUser } from '@/lib/auth/schema'
 import { handleSignUp } from '@/lib/auth/auth'
+import { TBaseUser, TSignUpUser } from '@/lib/schema/users.schema'
 
 type Props = {
     user?: TBaseUser
@@ -21,6 +21,7 @@ const SignupForm = () => {
         email: '',
         password: '',
         isSubscribed: false,
+        stream: 'PG',
     })
 
     const onSignup = async (e: React.FormEvent<HTMLFormElement>) => {

@@ -8,7 +8,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { TBaseUser } from '@/lib/auth/schema'
+import { TBaseUser } from '@/lib/schema/users.schema'
 import { navItems, ROLES_HIEARCHY } from '@/lib/data'
 import { getFirstTwoUpperCase } from '@/lib/utils'
 import { LogOut, Menu, X } from 'lucide-react'

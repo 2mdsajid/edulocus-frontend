@@ -5,7 +5,7 @@ import { generateRandomName } from '@/lib/utils'
 import { Metadata } from 'next'
 import TestDetails from './_components/TestDetails'
 import TestMain from './_components/TestMain'
-import { getSingleTestById } from './actions'
+import { getSingleTestById } from '@/lib/actions/tests.actions'
 import { cookies } from 'next/headers'
 
 

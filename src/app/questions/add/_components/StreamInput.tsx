@@ -1,7 +1,6 @@
 import DropDownInput from '@/components/reusable/DropDownInput'
-import { getAllStreams, getAllSubjects } from '../../_components/methods'
-import { TPGSyllabus } from '../../_components/schema'
-import { TStreamHierarchy } from './schema'
+import { getAllStreams } from '@/lib/methods/questions.methods'
+import { TStreamHierarchy } from '@/lib/schema/questions.schema'
 
 
 type Props = {

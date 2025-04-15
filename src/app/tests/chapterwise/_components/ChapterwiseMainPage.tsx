@@ -4,10 +4,10 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import ChapterList from './ChapterList';
-import { TTotalQuestionsPerSubjectAndChapter } from './schema';
 import { Book, Search } from 'lucide-react';
 import { subjectData } from '@/lib/data';
 import DropDownInput from '@/components/reusable/DropDownInput';
+import { TTotalQuestionsPerSubjectAndChapter } from '@/lib/schema/tests.schema';
 
 type Props = {
     data: TTotalQuestionsPerSubjectAndChapter

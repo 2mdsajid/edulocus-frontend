@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import DeleteQuestionButton from './DeleteQuestionButton';
-import { TExpectedQuestionFormatFromFile } from './schema';
+import { TExpectedQuestionFormatFromFile } from '@/lib/schema/questions.schema';
 
 type QuestionCardProps = {
     question: TExpectedQuestionFormatFromFile;

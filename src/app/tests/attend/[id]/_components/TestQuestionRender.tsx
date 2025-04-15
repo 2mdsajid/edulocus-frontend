@@ -1,7 +1,7 @@
-import { TQuestion, TBaseOption } from '@/app/tests/_components/schema'
+import { TQuestion, TBaseOption } from '@/lib/schema/tests.schema'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { TBaseUser } from '@/lib/auth/schema'
+import { TBaseUser } from '@/lib/schema/users.schema'
 import { ParsedElement } from '@/lib/utils'
 
 type Props = {

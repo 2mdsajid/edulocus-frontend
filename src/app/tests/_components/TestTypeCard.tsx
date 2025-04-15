@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { TTypeOfTestsAndDescription } from "./schema"
+import { TTypeOfTestsAndDescription } from "@/lib/schema/tests.schema"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { LockIcon, PlayCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"

@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge"
 import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
-import { TBaseCustomTest } from '../../_components/schema'
+import { TBaseCustomTest } from '@/lib/schema/tests.schema'
 import TestCard from './TestCard'
 
 export default function DisplayCustomTests({ customTestsData }: { customTestsData: TBaseCustomTest[] }) {

@@ -1,7 +1,6 @@
 import ErrorPage from '@/components/reusable/ErrorPage'
 import { getUserSession } from '@/lib/auth/auth'
 import { ROLES_HIEARCHY } from '@/lib/data'
-import { getStreamsHierarchy, getSyllabus } from '../_components/actions'
 import CreateCustomTestForm from './_components/CreateTestForm'
 
 type Props = {}

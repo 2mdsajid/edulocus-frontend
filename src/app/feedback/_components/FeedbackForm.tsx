@@ -17,7 +17,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from "zod"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { createUserFeedback } from "./actions"
+import { createUserFeedback } from "@/lib/actions/users.actions"
 
 type ResponseType = {
     fileKey: string;

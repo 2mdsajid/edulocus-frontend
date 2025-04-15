@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { toast } from '@/hooks/use-toast'
 import React, { useState } from 'react'
-import { startChapterWiseTest } from './actions'
+import { startChapterWiseTest } from '@/lib/actions/tests.actions'
 import { useRouter } from 'next/navigation'
 import { Loader2, PlayCircle } from 'lucide-react'
 

@@ -1,8 +1,6 @@
 "use client"
 
 import { CardDescription, CardTitle } from '@/components/ui/card'
-import { subjectWiseChapterScore } from '../methods'
-import { TSubjectWiseChapterScores } from '../schema'
 import { ChaptersAccuracyGraph } from './ChaptersAccuracyGraph'
 import { SubjectScoreBreakdownGraph } from './SubjectScoreBreakdownGraph'
 import {
@@ -11,6 +9,8 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+import { TSubjectWiseChapterScores } from '@/lib/schema/tests.schema'
+import { subjectWiseChapterScore } from '@/lib/methods/tests.methods'
 
 type Props = {
     data: TSubjectWiseChapterScores

@@ -1,6 +1,6 @@
 import DropDownInput from '@/components/reusable/DropDownInput'
-import { getAffiliationsOfStreamCategory } from '../../_components/methods'
-import { TStreamHierarchy } from './schema'
+import { getAffiliationsOfStreamCategory } from '@/lib/methods/questions.methods'
+import { TStreamHierarchy } from '@/lib/schema/questions.schema'
 
 
 type Props = {

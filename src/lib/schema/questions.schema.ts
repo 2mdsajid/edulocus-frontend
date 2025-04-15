@@ -1,4 +1,12 @@
-import { ANSWER, Option, TQuestion } from "@/app/tests/_components/schema";
+import { ANSWER, Option, QuestionCount, TQuestion } from "./tests.schema";
+
+export type TPGSyllabus = {
+    [key: string]: {
+      marks: number,
+      topics: string[]
+    }
+  }
+
 
 export type PastPaper = {
   category: string | null;
@@ -39,3 +47,6 @@ export type TStreamHierarchy = {
   categories: Category[];
   affiliations?: TAffiliation[];
 };
+
+
+export type TTotalQuestionsPerSubject = Pick<QuestionCount, 'subject' | 'count'>

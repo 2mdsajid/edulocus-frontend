@@ -1,6 +1,6 @@
 import DropDownInput from '@/components/reusable/DropDownInput'
-import { getAllSubjects } from '../../_components/methods'
-import { TPGSyllabus } from '../../_components/schema'
+import { getAllSubjects } from '@/lib/methods/questions.methods'
+import { TPGSyllabus } from '@/lib/schema/questions.schema'
 
 
 type Props = {

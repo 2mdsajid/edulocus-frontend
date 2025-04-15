@@ -1,13 +1,15 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { BookOpen, Calendar, HelpCircle } from 'lucide-react'
+import { TBaseCustomTest } from "@/lib/schema/tests.schema"
+import { Calendar, HelpCircle } from 'lucide-react'
 import Link from 'next/link'
-import { TBaseCustomTest } from '../../_components/schema'
+
+
 type Props = {}
 
 const TestCard = ({ id, name, date, questions, pastPaper }: TBaseCustomTest) => {
 
-    const testName = `${pastPaper?.affiliation}-${pastPaper?.year}`
+    const testName = name || `${pastPaper?.affiliation}-${pastPaper?.year}`
     return (
         <Card className="flex flex-col h-full overflow-hidden transition-all duration-300 ease-in-out hover:shadow-lg hover:scale-105 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 border-gray-200 dark:border-gray-700">
         <CardHeader className="bg-gray-200 dark:bg-gray-700 py-4">

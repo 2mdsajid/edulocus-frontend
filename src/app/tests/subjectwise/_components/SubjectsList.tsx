@@ -1,5 +1,5 @@
 import React from 'react'
-import { TTotalQuestionsPerSubject } from './schema'
+import { TTotalQuestionsPerSubject } from '@/lib/schema/questions.schema'
 import SubjectCard from './SubjectCard'
 
 type Props = {

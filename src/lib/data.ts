@@ -10,7 +10,6 @@ export const ROLES_HIEARCHY = {
 
 
 // different types of tests ----------------------------------------------------------------
-import { TTypeOfTestsAndDescription } from "@/app/tests/_components/schema";
 import {
   BarChart,
   Book,
@@ -103,6 +102,7 @@ import {
   Sparkles,
   Trophy
 } from "lucide-react";
+import { TTypeOfTestsAndDescription } from "./schema/tests.schema";
 
 export type TMembershipFeatures = {
   FeatureIcon: LucideIcon,

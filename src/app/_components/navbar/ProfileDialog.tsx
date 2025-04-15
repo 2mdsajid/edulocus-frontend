@@ -1,23 +1,17 @@
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger
-} from "@/components/ui/dialog"
-import Link from 'next/link'
-import { useState } from 'react'
-import { FcGoogle } from 'react-icons/fc'
-import { SiCoinmarketcap } from 'react-icons/si'
-import { CgProfile } from 'react-icons/cg'
-import { BiLogOutCircle } from 'react-icons/bi'
 import { logOut } from '@/lib/auth/auth'
 import { ROLES_HIEARCHY } from '@/lib/data'
-import { TBaseUser } from '@/lib/auth/schema'
+import { TBaseUser } from '@/lib/schema/users.schema'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { BiLogOutCircle } from 'react-icons/bi'
+import { CgProfile } from 'react-icons/cg'
+
 
 type Props = {
   user: TBaseUser | null
 }
+
 
 const ProfileDialog = (props: Props) => {
 

@@ -1,7 +1,7 @@
 
 import ErrorPage from '@/components/reusable/ErrorPage'
 import { constructMetadata } from '@/lib/data'
-import { getTotalQuestionsPerSubject } from './_components/actions'
+import { getTotalQuestionsPerSubject } from '@/lib/actions/questions.actions'
 import SubjectsList from './_components/SubjectsList'
 
 type Props = {}

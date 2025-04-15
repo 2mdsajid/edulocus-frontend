@@ -2,7 +2,8 @@ import { encodeBase32, encodeHexLowerCase } from "@oslojs/encoding";
 import { sha256 } from "@oslojs/crypto/sha2";
 import { cookies } from "next/headers";
 import { cache } from "react";
-import {  LuciaSession, LuciaSessionValidationResult, TBaseUser, TLuciaGoogleAuth } from "./schema";
+import { TBaseUser } from "@/lib/schema/users.schema";
+import { LuciaSession, LuciaSessionValidationResult, TLuciaGoogleAuth } from "@/lib/auth/schema";
 
 //  make this function -- send a request to backend server to get the user data with that payload 
 export async function getUserFromGoogleId(userData:TLuciaGoogleAuth): Promise<{

@@ -1,17 +1,16 @@
 'use client'
 
-import { TQuestion, TUserAns } from '@/app/tests/_components/schema';
 import SubmitButton from '@/components/reusable/SubmitButton';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TBaseUser } from '@/lib/auth/schema';
+import { TBaseUser } from '@/lib/schema/users.schema';
 import { categorizeQuestionsBySubject } from '@/lib/utils';
 import { CheckCircle, Send } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { sendTestAnalytic, sendUserScore } from '../actions';
-import { TCreateTestAnalytic, TCreateTestQuestionAnswer, TSaveUserScore, TSubjectWiseChapterScores } from '../schema';
+import { sendTestAnalytic, sendUserScore } from '@/lib/actions/tests.actions';
+import { TCreateTestAnalytic, TCreateTestQuestionAnswer, TQuestion, TSaveUserScore, TSubjectWiseChapterScores } from '@/lib/schema/tests.schema';
 import TestAnalysis from './TestAnalysis';
 import TestQuestionRender from './TestQuestionRender';
 import TestQuestoinsAndAnswersViewer from './TestQuestoinsAndAnswersViewer';
