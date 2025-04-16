@@ -1,6 +1,17 @@
 import { LucideIcon } from "lucide-react";
-
+import { TStream } from "./users.schema";
+import { TBaseImages } from "./questions.schema";
 export type ANSWER = 'a' | 'b' | 'c' | 'd'
+export type Images = {
+    a: string | null;
+    b: string | null;
+    c: string | null;
+    d: string | null;
+    questionId: string;
+    qn: string | null;
+    exp: string | null;
+}
+
 export type Option = {
     questionId: string;
     a: string;
@@ -16,6 +27,7 @@ export type Question = {
     subject: string;
     chapter: string;
     unit: string;
+    stream: TStream;
     category: string;
     difficulty: string;
     attempt: number;
@@ -89,6 +101,7 @@ export type TUserAns = {
 
 export type TQuestion = TBaseQuestion & {
     options: TBaseOption,
+    images?: TBaseImages,
     uans?: string
     timetaken?: number
 }
@@ -137,6 +150,7 @@ export type TCreateCustomTestData = {
     name: string;
     slug: string;
     limit: number;
+    stream: TStream;
 };
 
 
