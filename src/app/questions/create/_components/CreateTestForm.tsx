@@ -18,19 +18,25 @@ import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { createCustomTest } from "@/lib/actions/tests.actions";
-
+import { TStream } from "@/lib/schema/users.schema";
 // Define the form schema using Zod
 const formSchema = z.object({
+    stream: z.string().min(1, "Stream must be provided"),
     name: z.string().min(1, "Test name must be provided"),
     slug: z.string().min(1, "Slug must be provided"),
     limit: z.enum(["50", "100", "150", "200"]),
 });
 
-export default function CreateCustomTestForm() {
+type Props = {
+    streams: TStream[]
+}
+
+export default function CreateCustomTestForm(props: Props) {
     const { toast } = useToast();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            stream: props.streams[0],
             name: "",
             slug: "",
             limit: "50", // Default limit
@@ -59,6 +65,7 @@ export default function CreateCustomTestForm() {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             const { data, message } = await createCustomTest({
+                stream: values.stream as TStream,
                 name: values.name,
                 slug: values.slug,
                 limit: Number(values.limit),
@@ -89,6 +96,30 @@ export default function CreateCustomTestForm() {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                    control={form.control}
+                    name="stream"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Stream</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select stream" />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    {props.streams.map((stream) => (
+                                        <SelectItem key={stream} value={stream}>
+                                            {stream}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
                 <FormField
                     control={form.control}
                     name="name"

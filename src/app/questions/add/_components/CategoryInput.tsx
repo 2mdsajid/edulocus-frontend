@@ -1,11 +1,12 @@
 import DropDownInput from '@/components/reusable/DropDownInput'
 import { getCategoriesOfStream } from '@/lib/methods/questions.methods'
 import { TStreamHierarchy } from '@/lib/schema/questions.schema'
+import { TStream } from '@/lib/schema/users.schema'
 
 
 type Props = {
     streamHierarchy: TStreamHierarchy[]
-    stream: string
+    stream: TStream
     category: string | null
     onChange: (value: string) => void
 }

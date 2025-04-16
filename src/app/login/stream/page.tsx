@@ -14,7 +14,10 @@ const page = async (props: Props) => {
         redirect('/login')
     }
 
-    const stream = user?.stream
+    if(user.isCompleted) {
+        await setUserStream(user.stream)
+        redirect('/dashboard')
+    }
 
     const { data: streams, message: streamsMessage } = await getAllStreams()
     if (!streams || streams.length === 0) {
@@ -22,15 +25,10 @@ const page = async (props: Props) => {
     }
 
 
-    if (stream && streams.includes(stream)) {
-        redirect('/dashboard')
-    }
-
-
     return (
-        <div className='min-h-screen bg-background flex items-center justify-center p-8 py-12'>
-            <h1 className='text-2xl font-bold'>Select Stream</h1>
-            <div className='flex flex-col gap-4'>
+        <div className='min-h-screen bg-background flex flex-col items-center justify-center p-8 py-12'>
+            <h1 className='text-2xl font-bold mb-5'>Select A Stream</h1>
+            <div className='flex gap-4'>
                 {streams?.map((stream) => (
                     <SetUserStreamButton key={stream} stream={stream} />
                 ))}

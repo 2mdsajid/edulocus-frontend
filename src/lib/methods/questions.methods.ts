@@ -1,4 +1,5 @@
 import { TPGSyllabus, TStreamHierarchy } from "@/lib/schema/questions.schema";
+import { TStream } from "../schema/users.schema";
 
 // 1. Get a list of all subjects
 export function getAllSubjects(syllabus: TPGSyllabus): string[] {
@@ -35,12 +36,12 @@ export const isTopicInSyllabus = (
 
 
 // Get all stream names
-export function getAllStreams(STREAM_HIERARCHY: TStreamHierarchy[]): string[] {
+export function getAllStreams(STREAM_HIERARCHY: TStreamHierarchy[]): TStream[] {
     return STREAM_HIERARCHY.map(stream => stream.name);
 }
 
 // Get categories of the given stream
-export function getCategoriesOfStream(STREAM_HIERARCHY: TStreamHierarchy[], streamName: string): string[] | null {
+export function getCategoriesOfStream(STREAM_HIERARCHY: TStreamHierarchy[], streamName: TStream): string[] | null {
     const stream = STREAM_HIERARCHY.find(s => s.name === streamName);
     return stream ? stream.categories.map(category => category.name) : null;
 }

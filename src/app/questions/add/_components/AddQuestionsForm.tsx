@@ -5,20 +5,19 @@ import ReusableLInk from '@/components/reusable/ReusableLink'
 import SubmitButton from '@/components/reusable/SubmitButton'
 import { Card, CardDescription, CardTitle } from '@/components/ui/card'
 import { Dialog, dialogCloseFunction, DialogContent, DialogTrigger } from '@/components/ui/dialog'
-import { toast } from '@/hooks/use-toast'
-import React, { useRef, useState } from 'react'
-import { isTopicInSyllabus } from '@/lib/methods/questions.methods'
-import { TPGSyllabus } from '@/lib/schema/questions.schema'
-import { addQuestions, createPastTest } from '@/lib/actions/questions.actions'
-import ChapterInput from './ChapterInput'
-import { isExpectedFileFormat } from '@/lib/methods/questions.methods'
-import { TAddQuestion, TAnswer, TExpectedQuestionFormatFromFile, TStreamHierarchy } from '@/lib/schema/questions.schema'
-import QuestionCard from './QuestionCard'
-import SubjectInput from './SubjectInput'
-import StreamInput from './StreamInput'
-import CategoryInput from './CategoryInput'
-import AffiliationInput from './AffiliationInput'
 import { Input } from '@/components/ui/input'
+import { toast } from '@/hooks/use-toast'
+import { addQuestions, createPastTest } from '@/lib/actions/questions.actions'
+import { isExpectedFileFormat, isTopicInSyllabus } from '@/lib/methods/questions.methods'
+import { TAddQuestion, TAnswer, TExpectedQuestionFormatFromFile, TStreamHierarchy } from '@/lib/schema/questions.schema'
+import React, { useRef, useState } from 'react'
+import AffiliationInput from './AffiliationInput'
+import CategoryInput from './CategoryInput'
+import ChapterInput from './ChapterInput'
+import QuestionCard from './QuestionCard'
+import StreamInput from './StreamInput'
+import SubjectInput from './SubjectInput'
+import { TStream } from '@/lib/schema/users.schema'
 
 const API_END_POINTS = {
     SAME_SUBJECT: "add-multiple-question-for-same-subject-and-chapter",
@@ -29,7 +28,8 @@ const API_END_POINTS = {
 type TApiEndPointsKeys = keyof typeof API_END_POINTS;
 
 type Props = {
-    syllabus: TPGSyllabus
+    stream: TStream
+    syllabus: TSyllabus
     streamHirearchy: TStreamHierarchy[]
 }
 
@@ -41,7 +41,7 @@ const AddQuestionsForm = (props: Props) => {
 
     // for past questions only -----
     const [isPastQuestion, setIsPastQuestion] = useState<boolean | null>(null);
-    const [stream, setStream] = useState(props.streamHirearchy[0].name)
+    const [stream, setStream] = useState<TStream>(props.stream)
     const [category, setCategory] = useState<string | null>(null);
     const [year, setYear] = useState(2007)
     const [affiliation, setAffiliation] = useState<string | null>(null)
@@ -166,10 +166,14 @@ const AddQuestionsForm = (props: Props) => {
             explanation: q.exp || '',
             subject: modeOfUpload === "SAME_SUBJECT" ? subject : q.subject || "",
             chapter: modeOfUpload === "SAME_SUBJECT" ? chapter : q.chapter || "",
-            unit: "",
+            unit: q.unit || "",
+            stream: props.stream,
+            images: q.images ,
             difficulty: q.difficulty || 'm',
             options: q.options,
         }));
+
+        console.log(questions)
 
 
         // sending the past paper data to another endpoint to avoid adding qustion conflicts
@@ -268,7 +272,7 @@ const AddQuestionsForm = (props: Props) => {
                         <StreamInput
                             streamHierarchy={props.streamHirearchy}
                             stream={stream}
-                            onChange={(value) => setStream(value)}
+                            onChange={(value) => setStream(value as TStream)}
                         />
 
                         {stream

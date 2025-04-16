@@ -3,13 +3,14 @@
 import { TAddQuestion, TCreatePastTestData, TPGSyllabus, TStreamHierarchy, TTotalQuestionsPerSubject } from "@/lib/schema/questions.schema";
 import { cookies } from "next/headers";
 import { TTotalQuestionsPerSubjectAndChapter } from "../schema/tests.schema";
+import { TStream } from "../schema/users.schema";
 
-export const getSyllabus = async (): Promise<{
-    data: TPGSyllabus | null;
+export const getSyllabus = async (stream: TStream): Promise<{
+    data: TSyllabus | null;
     message: string;
 }> => {
     try {
-        const response = await fetch(`${process.env.BACKEND}/questions/get-syllabus`, {
+        const response = await fetch(`${process.env.BACKEND}/questions/get-syllabus?stream=${stream}`, {
             method: "GET",
             cache: 'no-store',
             headers: {
@@ -149,11 +150,20 @@ export const getTotalQuestionsPerSubjectAndChapter = async (): Promise<{
     message: string;
 }> => {
     try {
-        const response = await fetch(`${process.env.BACKEND}/questions/get-total-questions-per-subject-and-chapter`, {
+
+        const cookieStore = cookies();
+        const stream = cookieStore.get("stream")?.value;
+
+        if (!stream) {
+            return { data: null, message: "Stream Not Specified" };
+        }
+
+        const response = await fetch(`${process.env.BACKEND}/questions/get-total-questions-per-subject-and-chapter?stream=${stream}`, {
             method: "GET",
             cache: 'no-store',
             headers: {
                 "Content-Type": "application/json",
+                "stream": stream
             },
         });
 
@@ -176,11 +186,20 @@ export const getTotalQuestionsPerSubject = async (): Promise<{
     message: string;
 }> => {
     try {
-        const response = await fetch(`${process.env.BACKEND}/questions/get-total-questions-per-subject`, {
+
+        const cookieStore = cookies();
+        const stream = cookieStore.get("stream")?.value;
+
+        if (!stream) {
+            return { data: null, message: "Stream Not Specified" };
+        }
+
+        const response = await fetch(`${process.env.BACKEND}/questions/get-total-questions-per-subject?stream=${stream}`, {
             method: "GET",
             cache: 'no-store',
             headers: {
                 "Content-Type": "application/json",
+                "stream": stream
             },
         });
 

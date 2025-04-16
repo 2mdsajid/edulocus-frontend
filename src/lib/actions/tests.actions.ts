@@ -55,11 +55,21 @@ export const getAllTestsByType = async (type: TTypeOfTest): Promise<{
     message: string;
 }> => {
     try {
+
+        const cookieStore = cookies()
+        const stream = cookieStore.get('stream')?.value
+
+        if (!stream) {
+            return { data: null, message: "Stream not found!" }
+        }
+
+
         const response = await fetch(`${process.env.BACKEND}/tests/get-tests-by-type/${type}`, {
             method: "GET",
             cache: 'no-store',
             headers: {
                 "Content-Type": "application/json",
+                "stream": stream,
             },
         });
 
@@ -87,16 +97,23 @@ export const startSubjectWiseTest = async (subject: string, type: TTypeOfTest): 
         const cookieStore = cookies()
         const authToken = cookieStore.get('auth-token')?.value
 
+        const stream = cookieStore.get('stream')?.value
+
+        if (!stream) {
+            return { data: null, message: "Stream not found!" }
+        }
+
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/tests/create-custom-tests-by-users?subject=${subject}`, {
             method: "POST",
             cache: 'no-store',
             headers: {
                 "Content-Type": "application/json",
-                "authorization": "Bearer " + authToken
+                "authorization": "Bearer " + authToken,
+                "stream": stream
             },
             body: JSON.stringify({
                 name: `${subject} test`,
-                type: type
+                type: type,
             })
         });
 
@@ -123,12 +140,19 @@ export const startChapterWiseTest = async (subject: string, chapter: string, typ
         const cookieStore = cookies()
         const authToken = cookieStore.get('auth-token')?.value
 
+        const stream = cookieStore.get('stream')?.value
+
+        if (!stream) {
+            return { data: null, message: "Stream not found!" }
+        }
+
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/tests/create-custom-tests-by-users?subject=${subject}&chapter=${chapter}`, {
             method: "POST",
             cache: 'no-store',
             headers: {
                 "Content-Type": "application/json",
-                "authorization": "Bearer " + authToken
+                "authorization": "Bearer " + authToken,
+                "stream": stream
             },
             body: JSON.stringify({
                 name: `${chapter} of ${subject} test`,
@@ -170,6 +194,7 @@ export const createCustomTest = async (
           Authorization: "Bearer " + authToken,
         },
         body: JSON.stringify({
+          stream: data.stream,
           name: data.name,
           slug: data.slug,
         }),

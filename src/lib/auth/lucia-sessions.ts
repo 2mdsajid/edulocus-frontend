@@ -53,6 +53,17 @@ export function setAuthTokenCookie(token: string, expiresAt: Date): void {
 	});
 }
 
+export function setStreamCookie(stream: string, expiresAt: Date): void {
+	cookies().set("stream", stream, {
+		httpOnly: true,
+		path: "/",
+		secure: process.env.NODE_ENV === "production",
+		sameSite: "lax",
+		expires: expiresAt
+	});
+}
+
+
 export function deleteSessionTokenCookie(): void {
 	cookies().set("session", "", {
 		httpOnly: true,
@@ -65,6 +76,16 @@ export function deleteSessionTokenCookie(): void {
 
 export function deleteAuthTokenCookie(): void {
 	cookies().set("auth-token", "", {
+		httpOnly: true,
+		path: "/",
+		secure: process.env.NODE_ENV === "production",
+		sameSite: "lax",
+		maxAge: 0
+	});
+}
+
+export function deleteStreamCookie(): void {
+	cookies().set("stream", "", {
 		httpOnly: true,
 		path: "/",
 		secure: process.env.NODE_ENV === "production",

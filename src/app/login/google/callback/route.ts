@@ -1,4 +1,4 @@
-import { generateSessionToken, createSession, setSessionTokenCookie, setAuthTokenCookie } from "@/lib/auth/lucia-sessions";
+import { generateSessionToken, createSession, setSessionTokenCookie, setAuthTokenCookie, setStreamCookie } from "@/lib/auth/lucia-sessions";
 import { cookies } from "next/headers";
 import { decodeIdToken } from "arctic";
 
@@ -50,6 +50,8 @@ export async function GET(request: Request): Promise<Response> {
 		name: username,
 		image: image
 	});
+
+
 	if (existingUser === null) {
 		return new Response(null, {
 			status: 404
@@ -60,14 +62,26 @@ export async function GET(request: Request): Promise<Response> {
 	const session = await createSession(sessionToken, existingUser.id);
 	await setSessionTokenCookie(sessionToken, session.expiresAt);
 
-	const authToken = await generateAuthToken(existingUser);
 	// check if the authToken is valid or null
+	const authToken = await generateAuthToken(existingUser);
 	if (authToken === null) {
 		return new Response(null, {
 			status: 404
 		});
 	}
+
 	await setAuthTokenCookie(authToken, session.expiresAt);
+
+	if(existingUser.isCompleted) {
+		await setStreamCookie(existingUser.stream, new Date(Date.now() + 1000 * 60 * 60 * 24 * 365));
+		return new Response(null, {
+			status: 302,
+			headers: {
+				Location: "/dashboard"
+			}
+		});
+	}
+	
 	return new Response(null, {
 		status: 302,
 		headers: {

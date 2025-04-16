@@ -21,8 +21,14 @@ const QuestionCard = ({
     return (
         <Card className="px-3 py-5 relative bg-accent3 dark:bg-dark-accent3">
             <div>
-                <Label htmlFor="question" className="absolute top-[0.7rem] left-5 dark:bg-gray-800 text-xs">
-                    {index}
+                <Label htmlFor="question" className="absolute top-[0.2rem] left-5 flex gap-2 dark:bg-gray-800 text-xs">
+                    {index} )
+                    {(question.chapter || question.subject) && (
+                        <div className="flex gap-2 text-xs text-gray-600 dark:text-gray-400">
+                            {question.subject && <p><span className="font-semibold">Subject:</span> {question.subject}</p>}
+                            {question.chapter && <p><span className="font-semibold">Chapter:</span> {question.chapter}</p>}
+                        </div>
+                    )}
                 </Label>
                 <div className="w-full flex flex-col gap-4 text-sm">
                     <div className="w-full">
@@ -55,6 +61,7 @@ const QuestionCard = ({
                         dropdownMenu={['a', 'b', 'c', 'd']}
                         onChange={(value: string) => editQuestion(value, 'ans', index)}
                     />
+
                     <div className="w-full grid gap-2">
                         <Textarea
                             rows={1}

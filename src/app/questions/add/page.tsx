@@ -3,8 +3,14 @@ import { getUserSession } from '@/lib/auth/auth'
 import { ROLES_HIEARCHY } from '@/lib/data'
 import { getStreamsHierarchy, getSyllabus } from '@/lib/actions/questions.actions'
 import AddQuestionsForm from './_components/AddQuestionsForm'
+import { TStream } from '@/lib/schema/users.schema'
+import { getAllStreams } from '@/lib/methods/questions.methods'
 
-type Props = {}
+type Props = {
+  searchParams: {
+    stream: TStream
+  }
+}
 
 const page = async (props: Props) => {
   const { data: user, message: userAuthMessage } = await getUserSession()
@@ -18,7 +24,12 @@ const page = async (props: Props) => {
     return <ErrorPage errorMessage={streamHirearchyMessage} />
   }
 
-  const { data: syllabus, message: syllabusMessage } = await getSyllabus()
+  const stream = props.searchParams.stream.toUpperCase() as TStream
+  if (!stream || !getAllStreams(streamHirearchy).includes(stream)) {
+    return <ErrorPage errorMessage='Invalid Stream Parameter' />
+  }
+
+  const { data: syllabus, message: syllabusMessage } = await getSyllabus(stream)
   if (!syllabus) {
     return <ErrorPage errorMessage={syllabusMessage} />
   }
@@ -26,6 +37,7 @@ const page = async (props: Props) => {
   return (
     <div>
       <AddQuestionsForm
+        stream={stream}
         syllabus={syllabus}
         streamHirearchy={streamHirearchy}
       />

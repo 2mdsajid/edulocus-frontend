@@ -10,6 +10,19 @@ type TypeResponseQuestions = {
 
 type STREAM = "PG" | "UG"
 
+
+type TSyllabus = {
+  [key: string]: { //this is the chapter name
+    marks: number, //this is the marks of the chapter
+    topics: string[] //this is the topics in the chapter
+  }
+}
+
+type TSyllabusCombined = {
+  [key: string]: TSyllabus //this is the subject name
+}
+
+
 // typs of tests
 type TTypeOfTest = "MODEL"
     | "SUBJECT_WISE"

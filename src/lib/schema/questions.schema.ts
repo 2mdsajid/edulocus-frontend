@@ -1,4 +1,5 @@
-import { ANSWER, Option, QuestionCount, TQuestion } from "./tests.schema";
+import { ANSWER, Images, Option, QuestionCount, TQuestion } from "./tests.schema";
+import { TStream } from "./users.schema";
 
 export type TPGSyllabus = {
     [key: string]: {
@@ -21,6 +22,7 @@ export type TBaseOption = Omit<Option, 'questionId'>
 export type TKeyOption = keyof TBaseOption
 export type TAnswer = ANSWER
 export type TAddQuestion = Omit<TQuestion, 'id'>
+export type TBaseImages = Omit<Images, 'questionId'>
 
 export type TExpectedQuestionFormatFromFile = {
   qn: string,
@@ -28,8 +30,10 @@ export type TExpectedQuestionFormatFromFile = {
   ans: string
   chapter?: string
   subject?: string
+  unit?: string
   difficulty?: string
   exp?: string
+  images?: TBaseImages
 }
 
 // export type TField = keyof TExpectedQuestionFormatFromFile
@@ -43,7 +47,7 @@ export type Category = {
   affiliations: TAffiliation[];
 };
 export type TStreamHierarchy = {
-  name: string;
+  name: TStream;
   categories: Category[];
   affiliations?: TAffiliation[];
 };

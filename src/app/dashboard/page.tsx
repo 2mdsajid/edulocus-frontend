@@ -27,6 +27,10 @@ const page = async (props: Props) => {
         redirect('/login')
     }
 
+    if(!user.isCompleted) {
+        redirect('/login/stream')
+    }
+
 
     const {
         data: dashboardAnalyticsData,

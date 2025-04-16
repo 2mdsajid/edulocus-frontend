@@ -6,7 +6,7 @@ type Props = {}
 
 const page = async (props: Props) => {
 
-  const { data: syllabus, message: syllabusMessage } = await getSyllabus()
+  const { data: syllabus, message: syllabusMessage } = await getSyllabus("PG")
   if (!syllabus) {
     return <ErrorPage errorMessage={syllabusMessage} />
   }

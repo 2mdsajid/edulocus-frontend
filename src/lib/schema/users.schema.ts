@@ -1,4 +1,4 @@
-export type TStream = "PG" | "UG" | "LOKSEWA" | "IOE"
+export type TStream = "PG" | "UG" 
 
 export type TUserRole = "USER" | "ADMIN" | "SUPERADMIN" | "MODERATOR" | "SAJID";
 export type User = {
@@ -21,7 +21,6 @@ export type User = {
 
 export type TBaseUser = Omit<User,
     'password' |
-    'isCompleted' |
     'ip' |
     'key' |
     'tokensUsed' |

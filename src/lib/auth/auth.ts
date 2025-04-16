@@ -2,9 +2,10 @@
 
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { deleteAuthTokenCookie, deleteSessionTokenCookie } from "./lucia-sessions";
+import { deleteAuthTokenCookie, deleteSessionTokenCookie, deleteStreamCookie } from "./lucia-sessions";
 import { TBaseUser,  TLogInUser, TSignUpUser, TStream } from "@/lib/schema/users.schema";
 import { TJWT } from "@/lib/auth/schema";
+import { redirect } from "next/navigation";
 
 export const checkStreamForNonLoggedInUser = async () => {
   const cookieStore = cookies();
@@ -52,7 +53,9 @@ export const logOut = async () => {
   const cookieStore = cookies();
 	await deleteSessionTokenCookie();
   await deleteAuthTokenCookie()
-  
+  await deleteStreamCookie()
+
+  redirect('/')
   // await signOut() //from next auth package 
   return
 };

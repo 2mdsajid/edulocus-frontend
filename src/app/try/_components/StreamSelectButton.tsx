@@ -36,7 +36,7 @@ const StreamSelectButton = (props: Props) => {
                     Loading...
                 </div>
             ) : (
-                props.stream.toUpperCase().replace(/-/g, ' ')
+                `CEE-${props.stream.toUpperCase().replace(/-/g, ' ')}`
             )}
         </Button>
     )

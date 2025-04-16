@@ -2,6 +2,7 @@
 
 import { TCreateUserFeedback, TCreateSubscriptionRequest, TDashboardAnalyticData } from "@/lib/schema/users.schema";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const createUserFeedback = async (formData: TCreateUserFeedback): Promise<{
     data: string | null;
@@ -123,7 +124,8 @@ export const getDashboardAnalytics = async (userId: string): Promise<{
         const authToken = cookieStore.get("auth-token")?.value;
         const stream = cookieStore.get("stream")?.value;
 
-        if (stream || stream === undefined || stream === null) {
+        if (!stream || stream === undefined || stream === null) {
+            redirect('/login/stream')
             return { data: null, message: "Stream not found!" };
         }
 
