@@ -10,7 +10,7 @@ const LandingPage = (props: Props) => {
         <div className="min-h-[100vh] bg-gradient-to-b from-color1 to-color1  bg-blur-lg gap-5 flex flex-col lg:flex-row items-start lg:items-start justify-start pt-32 pb-16 md:pt-40 px-4 md:px-10 lg:px-20 xl:px-32">
             {/* Text section */}
             <div className="lg:w-1/2 text-center lg:text-left mb-8 lg:mb-0 space-y-12">
-                <span className="block font-bold tracking-wider -mb-10 text-left">PG/MD/MS Entrance Exams</span>
+                <span className="block font-bold tracking-wider -mb-10 text-left">CEE Based Entrance Exams</span>
                 <h1 className="mb-6 text-4xl text-left font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
                     Welcome To{" "}
                     <span className="text-color7">EduLocus</span>

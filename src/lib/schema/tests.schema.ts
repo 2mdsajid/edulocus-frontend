@@ -57,7 +57,8 @@ export type CustomTest = {
 
 export type TPastPaper = {
     category: string | null;
-    stream: STREAM;
+    stream: TStream;
+    isUnlocked: boolean;
     year: number;
     affiliation: string | null;
     customTestId: string;
@@ -132,7 +133,7 @@ export type TBaseUserScore = Pick<UserScore, 'username' | 'totalScore'>
 export type TTypeOfTestsAndDescription = {
     type: TTypeOfTest;
     description: string;
-    isAvailable: boolean;
+    isAvailableTo: TStream[]; // for which stream is the test available to
     icon: LucideIcon;
 }
 

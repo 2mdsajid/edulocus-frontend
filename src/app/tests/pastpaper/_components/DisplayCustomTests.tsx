@@ -28,6 +28,8 @@ export default function DisplayCustomTests({ customTestsData }: { customTestsDat
       (test: TBaseCustomTest) => test.pastPaper?.affiliation === selectedAffiliation
     )
     : filteredCategoryWiseTests
+
+
   return (
     <div className="container mx-auto p-4">
       {uniqueAffiliations.length > 0 && (
@@ -47,10 +49,38 @@ export default function DisplayCustomTests({ customTestsData }: { customTestsDat
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {(displayedTests.length > 0 ? displayedTests : filteredCategoryWiseTests).map(test => (
-          <TestCard key={test.id} {...test} />
-        ))}
+
+      <div className="space-y-8">
+        {/* Unlocked Tests Section */}
+        {(displayedTests.length > 0 ? displayedTests : filteredCategoryWiseTests)
+          .filter(test => test.pastPaper?.isUnlocked).length > 0 && (
+            <div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {(displayedTests.length > 0 ? displayedTests : filteredCategoryWiseTests)
+                  .filter(test => test.pastPaper?.isUnlocked)
+                  .map(test => (
+                    <TestCard key={test.id} {...test} />
+                  ))}
+              </div>
+            </div>
+          )}
+
+        {/* Locked Tests Section */}
+        {(displayedTests.length > 0 ? displayedTests : filteredCategoryWiseTests)
+          .filter(test => !test.pastPaper?.isUnlocked).length > 0 && (
+            <div>
+              <h2 className="flex flex-col gap-1 text-2xl font-bold tracking-wide text-black dark:text-gray-300 mb-4">
+                Locked Tests <span className="text-sm text-gray-600">( For members only. Become a member. <a href="/membership" className="underline">Click Here</a> )</span>
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {(displayedTests.length > 0 ? displayedTests : filteredCategoryWiseTests)
+                  .filter(test => !test.pastPaper?.isUnlocked)
+                  .map(test => (
+                    <TestCard key={test.id} {...test} />
+                  ))}
+              </div>
+            </div>
+          )}
       </div>
     </div>
   )

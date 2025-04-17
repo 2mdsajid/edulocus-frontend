@@ -13,7 +13,7 @@ const CounterSection = () => {
                 </p>
                 <div className='flex justify-center flex-col md:space-x-7 md:flex-row'>
                     <ScrollCounter value={70000} title='Questions' />
-                    <ScrollCounter value={40000} title='Solutions' />
+                    <ScrollCounter value={45000} title='Solutions' />
                     <ScrollCounter value={20} title='Scholars' />
                 </div>
             </div>

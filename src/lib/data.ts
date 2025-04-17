@@ -1,5 +1,10 @@
 import { Metadata } from "next";
 
+export const MEMBERSHIP_PRICE = {
+  UG: 159,
+  PG: 299
+}
+
 export const ROLES_HIEARCHY = {
   SAJID: ['SAJID'],
   ADMIN: ['ADMIN', 'SAJID'],
@@ -30,23 +35,108 @@ import {
 
 
 export const typeOfTestsAndDescriptionData: TTypeOfTestsAndDescription[] = [
-  { type: 'DAILY_TEST', description: 'Daily test from 4pm to 8pm everyday.', isAvailable: true, icon: Zap },
-  { type: 'MODEL', description: 'Mock test to simulate real exam conditions.', isAvailable: true, icon: BarChart },
-  { type: 'SUBJECT_WISE', description: 'Test focused on a specific subject.', isAvailable: true, icon: BookOpen },
-  { type: 'CHAPTER_WISE', description: 'Test focused on specific chapters.', isAvailable: true, icon: FileText },
-  { type: 'TOPIC_WISE', description: 'Test focused on a particular topic.', isAvailable: false, icon: Tag },
-  { type: 'CUSTOM', description: 'Custom test created by the user.', isAvailable: false, icon: Wrench },
-  { type: 'UNIT_WISE', description: 'Test focused on a specific unit.', isAvailable: false, icon: Folder },
-  { type: 'DIFFICULTY_BASED', description: 'Test based on difficulty level.', isAvailable: false, icon: Sliders },
-  { type: 'RANDOM', description: 'Randomly selected questions for variety.', isAvailable: false, icon: Shuffle },
-  { type: 'FLASH', description: 'Quick test with fast results.', isAvailable: false, icon: Zap },
-  { type: 'AI_GENERATED', description: 'AI-generated test tailored to your needs.', isAvailable: false, icon: Cpu },
-  { type: 'PERFORMANCE_ANALYZER', description: 'Test designed to assess performance.', isAvailable: false, icon: TrendingUp },
-  { type: 'PBQ_BASED', description: 'Test focused on practical-based questions (PBQ).', isAvailable: false, icon: Puzzle },
-  { type: 'THEORY_BASED', description: 'Test focused on theoretical questions.', isAvailable: false, icon: Book },
-  { type: 'REVISION', description: 'Test for reviewing learned material.', isAvailable: false, icon: RefreshCcw },
-  { type: 'RETAKE', description: 'Test retake for improving previous scores.', isAvailable: false, icon: Repeat },
-  { type: 'PAST_PAPER', description: 'Test retake for improving previous scores.', isAvailable: true, icon: Repeat }
+  {
+    type: 'DAILY_TEST',
+    description: 'Daily test from 4pm to 8pm everyday.',
+    isAvailableTo: ['PG'],
+    icon: Zap
+  },
+  {
+    type: 'MODEL',
+    description: 'Mock test to simulate real exam conditions.',
+    isAvailableTo: ['UG','PG'],
+    icon: BarChart
+  },
+  {
+    type: 'SUBJECT_WISE',
+    description: 'Test focused on a specific subject.',
+    isAvailableTo: ['UG','PG'],
+    icon: BookOpen
+  },
+  {
+    type: 'CHAPTER_WISE',
+    description: 'Test focused on specific chapters.',
+    isAvailableTo: ['UG','PG'],
+    icon: FileText
+  },
+  {
+    type: 'TOPIC_WISE',
+    description: 'Test focused on a particular topic.',
+    isAvailableTo: [],
+    icon: Tag
+  },
+  {
+    type: 'CUSTOM',
+    description: 'Custom test created by the user.',
+    isAvailableTo: [],
+    icon: Wrench
+  },
+  {
+    type: 'UNIT_WISE',
+    description: 'Test focused on a specific unit.',
+    isAvailableTo: [],
+    icon: Folder
+  },
+  {
+    type: 'DIFFICULTY_BASED',
+    description: 'Test based on difficulty level.',
+    isAvailableTo: [],
+    icon: Sliders
+  },
+  {
+    type: 'RANDOM',
+    description: 'Randomly selected questions for variety.',
+    isAvailableTo: [],
+    icon: Shuffle
+  },
+  {
+    type: 'FLASH',
+    description: 'Quick test with fast results.',
+    isAvailableTo: [],
+    icon: Zap
+  },
+  {
+    type: 'AI_GENERATED',
+    description: 'AI-generated test tailored to your needs.',
+    isAvailableTo: [],
+    icon: Cpu
+  },
+  {
+    type: 'PERFORMANCE_ANALYZER',
+    description: 'Test designed to assess performance.',
+    isAvailableTo: [],
+    icon: TrendingUp
+  },
+  {
+    type: 'PBQ_BASED',
+    description: 'Test focused on practical-based questions (PBQ).',
+    isAvailableTo: [],
+    icon: Puzzle
+  },
+  {
+    type: 'THEORY_BASED',
+    description: 'Test focused on theoretical questions.',
+    isAvailableTo: [],
+    icon: Book
+  },
+  {
+    type: 'REVISION',
+    description: 'Test for reviewing learned material.',
+    isAvailableTo: [],
+    icon: RefreshCcw
+  },
+  {
+    type: 'RETAKE',
+    description: 'Test retake for improving previous scores.',
+    isAvailableTo: [],
+    icon: Repeat
+  },
+  {
+    type: 'PAST_PAPER',
+    description: 'Test retake for improving previous scores.',
+    isAvailableTo: ['UG','PG'],
+    icon: Repeat
+  }
 ]
 
 
@@ -109,57 +199,38 @@ export type TMembershipFeatures = {
   title: string,
   description: string
 }
-
 export const membershipFeatures: TMembershipFeatures[] = [
   {
-    FeatureIcon: Gauge,
-    title: "Accessible Dashboard",
+    FeatureIcon: Calendar,
+    title: "Access to All Past Papers",
     description:
-      "Get quick and easy access to all your insights and tools in one user-friendly dashboard, designed to make your journey smoother and more productive.",
-  },
-  {
-    FeatureIcon: BarChart3,
-    title: "Detailed Test Analysis",
-    description:
-      "Analyze each test in-depth with a breakdown of your performance, so you know exactly where you excel and where you can improve.",
-  },
-  {
-    FeatureIcon: BookOpen,
-    title: "Unlimited Access to All Tests",
-    description:
-      "Practice without limits! Access an extensive library of tests that cover every topic and difficulty level to ensure you're fully prepapurple.",
+      "Prepare smarter by practicing with all past exam papers. Understand trends, question patterns, and improve your accuracy with real examples.",
   },
   {
     FeatureIcon: Rocket,
     title: "Early Access to New Features",
     description:
-      "Be the first to try out our latest features! Premium members get priority access to tools and updates designed to give you a competitive edge.",
-  },
-  {
-    FeatureIcon: Trophy,
-    title: "Exclusive Content from Top Achievers",
-    description:
-      "Gain insights directly from top scorers! Access unique study guides, tips, and techniques from those who've been at the top.",
-  },
-  {
-    FeatureIcon: Sparkles,
-    title: "AI-Based Test & Topic Recommendations",
-    description:
-      "Let our AI guide you! Receive personalized recommendations for tests, chapters, and topics to focus on, based on your unique learning profile.",
+      "Be the first to explore new tools and updates! Premium members unlock early access to everything new we build.",
   },
   {
     FeatureIcon: Brain,
-    title: "Intelligent Analysis",
+    title: "Advanced AI-Based Analysis",
     description:
-      "Our AI-driven insights help you understand your strengths and weaknesses on a deeper level, making it easier to target your improvement areas.",
+      "Unlock deeper insights with more powerful AI analysis. Understand your learning patterns and target your weaknesses with precision.",
   },
   {
-    FeatureIcon: Calendar,
-    title: "All Past Year Questions",
+    FeatureIcon: BookOpen,
+    title: "No Limit on Test Questions",
     description:
-      "Prepare with confidence by accessing all past questions, helping you understand patterns and trends in the exams and tests.",
+      "Practice as much as you want! Get unlimited access to all questions without any caps or restrictions.",
   },
-]
+  {
+    FeatureIcon: Sparkles,
+    title: "Smart AI-Based Recommendations",
+    description:
+      "Let our AI suggest the right tests and topics tailored to your progress, strengths, and areas that need improvement.",
+  },
+];
 
 // export const NAV_LINKS: NAVLINKS[] = [
 //   {
@@ -183,10 +254,10 @@ export const membershipFeatures: TMembershipFeatures[] = [
 // ];
 
 export const navItems = [
-    { name: 'Home', href: '/' },
-    { name: 'Tests', href: '/tests' },
-    { name: 'Membership', href: '/membership' },
-    { name: 'Dhasboard', href: '/dashboard' },
+  { name: 'Home', href: '/' },
+  { name: 'Tests', href: '/tests' },
+  { name: 'Membership', href: '/membership' },
+  { name: 'Dhasboard', href: '/dashboard' },
 ]
 
 

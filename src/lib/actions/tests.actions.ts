@@ -203,10 +203,12 @@ export const createCustomTest = async (
 
     if (!response.ok) {
       const { message } = await response.json();
+      console.log(message)
       return { data: null, message };
     }
 
     const { data: responseData, message } = await response.json();
+    console.log(responseData)
     return { data: responseData, message };
   } catch (error) {
     console.error("Error creating custom test:", error);

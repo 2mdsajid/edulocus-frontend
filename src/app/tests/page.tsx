@@ -2,16 +2,19 @@ import { typeOfTestsAndDescriptionData } from '@/lib/data';
 import TestTypeCard from './_components/TestTypeCard';
 import { getStreamCookieForUnauthenticatedUser } from '@/lib/actions/try.actions';
 import { redirect } from 'next/navigation';
+import { TStream } from '@/lib/schema/users.schema';
 
 export default async function Page() {
-  // Separate the tests into available and upcoming based on isAvailable property
-  const availableTests = typeOfTestsAndDescriptionData.filter(test => test.isAvailable);
-  const upcomingTests = typeOfTestsAndDescriptionData.filter(test => !test.isAvailable);
 
-  const stream = await getStreamCookieForUnauthenticatedUser();
-  if (!stream || stream === 'null' || stream === 'undefined' || stream === '') {
+  // getting the stream from the cookie -- to render the ones needed
+  const stream = await getStreamCookieForUnauthenticatedUser() as TStream;
+  if (!stream) {
     redirect('/try');
   }
+  // Separate the tests into available and upcoming based on isAvailable property
+  const availableTests = typeOfTestsAndDescriptionData.filter(test => test.isAvailableTo.includes(stream));
+  const upcomingTests = typeOfTestsAndDescriptionData.filter(test => !test.isAvailableTo.includes(stream));
+
 
   return (
     <div className="w-full">
@@ -26,10 +29,8 @@ export default async function Page() {
             {availableTests.map(testType => (
               <TestTypeCard
                 key={testType.type}
-                type={testType.type}
-                description={testType.description}
-                icon={testType.icon}
-                isAvailable={testType.isAvailable}
+                card={testType}
+                isAvailable={true}
               />
             ))}
           </div>
@@ -44,10 +45,8 @@ export default async function Page() {
             {upcomingTests.map(testType => (
               <TestTypeCard
                 key={testType.type}
-                type={testType.type}
-                description={testType.description}
-                icon={testType.icon}
-                isAvailable={testType.isAvailable}
+                card={testType}
+                isAvailable={false}
               />
             ))}
           </div>

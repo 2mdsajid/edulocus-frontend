@@ -20,8 +20,8 @@ const features = [
   },
   {
     icon: <Monitor className="w-8 h-8 text-color8" />,
-    title: "Simulations",
-    description: "Realistic exam simulations for better preparation"
+    title: "AI",
+    description: "AI Features to help you learn better and faster"
   }
 ]
 

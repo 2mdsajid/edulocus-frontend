@@ -1,10 +1,18 @@
 import Link from "next/link"
 import { TTypeOfTestsAndDescription } from "@/lib/schema/tests.schema"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { LockIcon, PlayCircle } from "lucide-react"
+import { Icon, LockIcon, PlayCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { getStreamCookieForUnauthenticatedUser } from "@/lib/actions/try.actions"
+import { TStream } from "@/lib/schema/users.schema"
 
-const TestTypeCard = ({ type, description, icon: Icon, isAvailable }: TTypeOfTestsAndDescription) => {
+type Props = {
+  card: TTypeOfTestsAndDescription
+  isAvailable: boolean
+}
+
+const TestTypeCard = async ({ card, isAvailable }: Props) => {
+  const { type, description, icon: Icon, isAvailableTo } = card;
   return (
     <Link href={`/tests/${type.toLowerCase().replace(/_/g, '')}`} className="block">
       <Card className={`overflow-hidden ${isAvailable ? 'bg-primary' : 'bg-gray-100'}`}>

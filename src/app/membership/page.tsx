@@ -1,6 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { constructMetadata, membershipFeatures } from "@/lib/data";
+import { constructMetadata, MEMBERSHIP_PRICE, membershipFeatures } from "@/lib/data";
+import { getStreamCookieForUnauthenticatedUser } from "@/lib/actions/try.actions";
+import { redirect } from "next/navigation";
+import { TStream } from "@/lib/schema/users.schema";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
@@ -9,7 +12,9 @@ export const metadata = constructMetadata({
     description: 'EduLocus membership details for premium users to have extra features than normal users'
 });
 
-const page = () => {
+const page = async () => {
+    const stream = await getStreamCookieForUnauthenticatedUser() as TStream;
+
     return (
         <div className="flex min-h-screen flex-col bg-gradient-to-br from-bg1 to-bg2 pt-20">
             <section className="container mx-auto px-4 md:px-10 lg:px-20 xl:px-32 py-16 text-center">
@@ -22,7 +27,7 @@ const page = () => {
                 </p>
                 <Button asChild size="lg" className="rounded-full">
                     <Link href={'/membership/register'}>
-                        Join Membership Today @299 / month <ChevronRight className="ml-2 h-4 w-4" />
+                        Join Membership Today @{MEMBERSHIP_PRICE[stream]} / month <ChevronRight className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
             </section>
@@ -72,7 +77,7 @@ const page = () => {
                     </p>
                     <Button asChild size="lg" variant="secondary" className="rounded-full">
                         <Link href={'/membership/register'}>
-                            Get Started Now @299 / month <ChevronRight className="ml-2 h-4 w-4" />
+                            Get Started Now @{MEMBERSHIP_PRICE[stream]} / month <ChevronRight className="ml-2 h-4 w-4" />
                         </Link>
                     </Button>
                 </div>
