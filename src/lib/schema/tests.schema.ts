@@ -159,11 +159,10 @@ export type TCreateCustomTestData = {
 export type TSingleCustomTestWithQuestions = Pick<CustomTest,
     'id' |
     'name' |
-    'slug' |
-    'questions'
+    'slug' 
 > & {
     createdBy: string,
-    fetchedQuestions: TQuestion[]
+    questions: TQuestion[]
 }
 
 // TO STORE USER ANSWER AND THE QUESTION IDS

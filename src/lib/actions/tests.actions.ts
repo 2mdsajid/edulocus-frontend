@@ -2,7 +2,7 @@
 
 
 import { cookies } from "next/headers";
-import { TBaseCustomTest, TTypeOfTestsAndDescription, TTotalQuestionsPerSubjectAndChapter, TCreateCustomTestData, TBaseUserScore, TSingleCustomTestWithQuestions, TCreateTestAnalytic, TSaveUserScore, TCustomTestMetadata } from "../schema/tests.schema";
+import { TBaseCustomTest, TTypeOfTestsAndDescription, TTotalQuestionsPerSubjectAndChapter, TCreateCustomTestData, TBaseUserScore, TSingleCustomTestWithQuestions, TCreateTestAnalytic, TSaveUserScore, TCustomTestMetadata, TQuestion, TBaseQuestion } from "../schema/tests.schema";
 
 export const getAllTests = async (): Promise<{
     data: TBaseCustomTest[] | null;
@@ -318,5 +318,47 @@ export const getTestMetadata = async (testid: string): Promise<{
         return { data, message };
     } catch (error) {
         return { data: null, message: "Some Error Occured while fetching test metadata!" };
+    }
+};
+
+
+
+
+
+export const updateTestQuestions = async (testid: string, questionIds: string[]): Promise<{
+    data: string | null;    
+    message: string;
+}> => {
+    try {
+
+        const cookieStore = cookies();
+        const authToken = cookieStore.get("auth-token")?.value;
+    
+        if (!authToken) {
+          return { data: null, message: "User not logged in!" };
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/tests/update-test-questions/${testid}`, {
+            method: "POST",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + authToken,
+            },
+            body: JSON.stringify({
+                questionIds
+            })
+        })
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+        
+    } catch (error) {
+        return { data: null, message: "Some Error Occured while updating test questions!" };
     }
 };

@@ -19,6 +19,8 @@ import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { createCustomTest } from "@/lib/actions/tests.actions";
 import { TStream } from "@/lib/schema/users.schema";
+import { useRouter } from "next/navigation";
+
 // Define the form schema using Zod
 const formSchema = z.object({
     stream: z.string().min(1, "Stream must be provided"),
@@ -33,6 +35,7 @@ type Props = {
 
 export default function CreateCustomTestForm(props: Props) {
     const { toast } = useToast();
+    const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -72,20 +75,21 @@ export default function CreateCustomTestForm(props: Props) {
             });
 
             if (!data) {
-                toast({
+                return toast({
                     variant: "destructive",
                     title: "Error",
                     description: message,
                 });
             } else {
-                toast({
+                router.push(`/questions/create/${data}`);
+                return toast({
                     variant: "success",
                     title: "Success",
                     description: message,
                 });
             }
         } catch (error) {
-            toast({
+            return toast({
                 variant: "destructive",
                 title: "Error",
                 description: "An unexpected error occurred.",

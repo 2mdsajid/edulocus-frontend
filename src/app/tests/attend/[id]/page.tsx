@@ -65,7 +65,7 @@ const page = async (props: Props) => {
             <TestMain
                 id={test.id}
                 testName={test.name}
-                questions={test.fetchedQuestions}
+                questions={test.questions}
                 userid={user?.id as string}
                 username={username}
                 sharableTestUrl={testUrl}

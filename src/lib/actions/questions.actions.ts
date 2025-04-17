@@ -1,8 +1,8 @@
 'use server'
 
-import { TAddQuestion, TCreatePastTestData, TPGSyllabus, TStreamHierarchy, TTotalQuestionsPerSubject } from "@/lib/schema/questions.schema";
+import { TAddQuestion, TBaseOption, TCreatePastTestData, TPGSyllabus, TStreamHierarchy, TTotalQuestionsPerSubject } from "@/lib/schema/questions.schema";
 import { cookies } from "next/headers";
-import { TTotalQuestionsPerSubjectAndChapter } from "../schema/tests.schema";
+import { TBaseQuestion, TQuestion, TTotalQuestionsPerSubjectAndChapter } from "../schema/tests.schema";
 import { TStream } from "../schema/users.schema";
 
 export const getSyllabus = async (stream: TStream): Promise<{
@@ -214,3 +214,41 @@ export const getTotalQuestionsPerSubject = async (): Promise<{
         return { data: null, message: "Some Error Occured while fetching all tests!" };
     }
 };
+
+
+export const  getQuestionsBySubject = async (subject: string): Promise<{
+    data: TQuestion[] | null;
+    message: string;
+}> => {
+    try {
+
+        const cookieStore = cookies();
+        const authToken = cookieStore.get("auth-token")?.value;
+
+        if (!authToken) {
+            return { data: null, message: "User not logged in!" };
+        }
+
+        const response = await fetch(`${process.env.BACKEND}/questions/get-questions-by-subject?subject=${subject}`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + authToken,
+            },
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+        
+    } catch (error) {
+        return { data: null, message: "Some Error Occured while fetching questions by subject!" };
+    }
+};
+
+
