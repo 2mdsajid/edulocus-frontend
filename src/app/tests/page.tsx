@@ -7,13 +7,16 @@ import { TStream } from '@/lib/schema/users.schema';
 export default async function Page() {
 
   // getting the stream from the cookie -- to render the ones needed
-  const stream = await getStreamCookieForUnauthenticatedUser() as TStream;
-  if (!stream) {
+  const stream = await getStreamCookieForUnauthenticatedUser() 
+  const upperCaseStream = stream?.toUpperCase() as TStream;
+  if (!upperCaseStream) {
     redirect('/try');
   }
+
+  
   // Separate the tests into available and upcoming based on isAvailable property
-  const availableTests = typeOfTestsAndDescriptionData.filter(test => test.isAvailableTo.includes(stream));
-  const upcomingTests = typeOfTestsAndDescriptionData.filter(test => !test.isAvailableTo.includes(stream));
+  const availableTests = typeOfTestsAndDescriptionData.filter(test => test.isAvailableTo.includes(upperCaseStream));
+  const upcomingTests = typeOfTestsAndDescriptionData.filter(test => !test.isAvailableTo.includes(upperCaseStream));
 
 
   return (
