@@ -43,6 +43,17 @@ export const createTodayDateId = () => {
   return dateid;
 };
 
+export const extractBodyContent = (htmlString?: string) => {
+  if (!htmlString) return null;
+  
+  // Remove the doctype, html, head tags and just get the body content
+  const bodyContent = htmlString
+    .replace(/<!DOCTYPE html>|<\/?html>|<\/?head>|<\/?body>/gi, '')
+    .trim();
+  
+  return bodyContent;
+};
+
 
 export const ParsedElement = (str?: string) => {
   const newstr = str;

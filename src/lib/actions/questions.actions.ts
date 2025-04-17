@@ -252,3 +252,32 @@ export const  getQuestionsBySubject = async (subject: string): Promise<{
 };
 
 
+
+export const reportQuestion = async (questionId: string, description: string): Promise<{
+    data: string | null;
+    message: string;
+}> => {
+    try {
+
+        const response = await fetch(`${process.env.BACKEND}/questions/report-question/${questionId}`, {
+            method: "POST",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                description
+            })
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occured while reporting the question!" };
+    }
+}

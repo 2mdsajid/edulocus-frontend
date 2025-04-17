@@ -3,6 +3,7 @@ import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { TBaseUser } from '@/lib/schema/users.schema'
 import { ParsedElement } from '@/lib/utils'
+import QuestionReportDialog from '@/components/reusable/QuestionReportDialog'
 
 type Props = {
   question: TQuestion
@@ -20,6 +21,7 @@ const TestQuestionRender = (props: Props) => {
         <div className="qn text-md flex items-start text-lg font-semibold text-gray-800 dark:text-gray-200">
           <p>{ParsedElement(`Q.${index + 1}&nbsp;&nbsp;  ${question.question}`)}</p>
         </div>
+        <QuestionReportDialog questionId={question.id} />
       </div>
 
       <RadioGroup
