@@ -6,9 +6,10 @@ import { setStreamCookieForUnauthenticatedUser } from '@/lib/actions/try.actions
 import { TStream } from '@/lib/schema/users.schema'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import { STREAM_DETAILS } from '@/lib/data'
 
 type Props = {
-    stream: TStream // cee-ug or cee-pg
+    stream: TStream // "PG" | "UG"
 }
 
 
@@ -30,7 +31,7 @@ const SetUserStreamButton = (props: Props) => {
         <Button        
             onClick={handleClick}
             disabled={isLoading}
-            className="p-12 text-2xl gap-3 bg-white dark:bg-white text-accent dark:text-accent font-semibold tracking-wider shadow-lg transition-all duration-300 hover:shadow-xl hover:bg-white hover:translate-y-[-2px]"
+            className="p-6 md:p-12 text-lg md:text-2xl gap-3 bg-white dark:bg-white text-accent dark:text-accent font-semibold tracking-wider shadow-lg transition-all duration-300 hover:shadow-xl hover:bg-white hover:translate-y-[-2px] flex flex-col items-center"
         >
             {isLoading ? (
                 <div className="flex items-center gap-2">
@@ -38,7 +39,10 @@ const SetUserStreamButton = (props: Props) => {
                     Loading...
                 </div>
             ) : (
-                props.stream.toUpperCase().replace(/-/g, ' ')
+                <>
+                    <div className="text-center">{STREAM_DETAILS[props.stream.toLowerCase() as "pg" | "ug"].title}</div>
+                    <div className="text-sm text-gray-500 text-center">{STREAM_DETAILS[props.stream.toLowerCase() as "pg" | "ug"].desc}</div>
+                </>
             )}
         </Button>
     )

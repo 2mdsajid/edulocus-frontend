@@ -33,6 +33,17 @@ import {
   Zap
 } from 'lucide-react';
 
+export const STREAM_DETAILS = {
+  pg:{
+    title : 'PG',
+    desc:'NMCLE, CEE PG, USMLE'
+  },
+  ug:{
+    title:'UG',
+    desc:'CEE UG, NURSING, NEET'
+  }
+}
+
 
 export const typeOfTestsAndDescriptionData: TTypeOfTestsAndDescription[] = [
   {

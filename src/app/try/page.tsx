@@ -1,7 +1,3 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import Link from "next/link";
-import { BiLogoTelegram, BiSolidLogInCircle } from "react-icons/bi";
 import StreamSelectButton from "./_components/StreamSelectButton";
 type Props = {}
 
