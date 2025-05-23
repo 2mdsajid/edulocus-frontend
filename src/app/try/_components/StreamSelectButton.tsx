@@ -29,7 +29,7 @@ const StreamSelectButton = (props: Props) => {
         <Button        
             onClick={handleClick}
             disabled={isLoading}
-            className="p-6 md:p-12 text-lg md:text-2xl gap-3 bg-white dark:bg-white text-accent dark:text-accent font-semibold tracking-wider shadow-lg transition-all duration-300 hover:shadow-xl hover:bg-white hover:translate-y-[-2px] flex flex-col items-center"
+            className="w-fit h-fit p-6 md:p-12 text-lg md:text-2xl gap-3 bg-white dark:bg-white text-accent dark:text-accent font-semibold tracking-wider shadow-lg transition-all duration-300 hover:shadow-xl hover:bg-white hover:translate-y-[-2px] flex flex-col items-center"
         >
             {isLoading ? (
                 <div className="flex items-center gap-2">
@@ -37,10 +37,10 @@ const StreamSelectButton = (props: Props) => {
                     Loading...
                 </div>
             ) : (
-                <>
+                <div className='flex flex-col items-center gap-2 h-full'>
                     <div className="text-center">{STREAM_DETAILS[props.stream].title}</div>
                     <div className="text-sm text-gray-500 text-center">{STREAM_DETAILS[props.stream].desc}</div>
-                </>
+                </div>
             )}
         </Button>
     )

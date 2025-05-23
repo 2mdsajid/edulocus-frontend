@@ -10,10 +10,10 @@ const AiReportRender = ({ markdownText }: Props) => {
   const cleanedText = markdownText.replace(/^```html|```$/g, '').trim();
 
   // Convert the cleaned Markdown to HTML
-  const html = markdownToHtml(cleanedText);
+  const html =  markdownToHtml(cleanedText);
 
   return (
-    <div className="ai-report max-w-3xl" dangerouslySetInnerHTML={{ __html: html }} />
+    <div className="ai-report max-w-3xl" dangerouslySetInnerHTML={{ __html: html as any }} />
     
   );
 };

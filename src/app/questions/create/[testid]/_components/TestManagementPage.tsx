@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { getQuestionsBySubject } from '@/lib/actions/questions.actions'
 import { TQuestion, TSingleCustomTestWithQuestions } from '@/lib/schema/tests.schema'
 import SaveChangesDialog from './SaveChangesDialog'
+import GenerateTestPDF from "./GenerateTestPDF"
 type Props = {
     test: TSingleCustomTestWithQuestions
     subjects: string[]
@@ -176,6 +177,10 @@ const TestManagementPage = (props: Props) => {
                 <h2 className="text-xl font-semibold">
                     {selectedSubject} - questions ({test?.questions.filter(question => question.subject === selectedSubject).length})
                 </h2>
+                <GenerateTestPDF
+                    questions={test.questions}
+                    testName={test.name}
+                />
 
                 {test?.questions.length === 0 ? (
                     <p>No questions available for this subject.</p>

@@ -45,15 +45,16 @@ export const QuestionViewer = (props: Props) => {
             // }
             setIsGenerating(true)
             const { data, message } = await getGeminiExplanation(question)
-            if (!data) {
+            if (!data || data === '' || data === null) {
                 toast({
                     title: "Error",
                     description: message || "Could not generate explanation",
                     variant: "destructive",
                 })
+                return
             }
             setCurrentExplanation(data || "Could not generate explanation")
-            toast({
+            return toast({
                 title: "Explanation generated",
                 description: "AI has provided an explanation for this question",
             })

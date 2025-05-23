@@ -297,6 +297,7 @@ const TestMain = (props: Props) => {
                     {/* to view the answers */}
                     <TabsContent value="answers" className='w-full'>
                         <TestQuestoinsAndAnswersViewer
+                            testName={props.testName}
                             questions={uquestions}
                         />
                     </TabsContent>

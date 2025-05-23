@@ -39,6 +39,7 @@ const Footer = () => {
                     <h1 className='text-2xl font-semibold'>Useful Links</h1>
                     <Link className='hover:underline' href={'/feedback'} >Contact</Link>
                     <Link className='hover:underline' href={'/membership'} >Membership</Link>
+                    <Link className='hover:underline' href={'/try'} >Change Stream</Link>
                 </div>
                 {/* <div className='w-[70%] md:w-max mx-auto flex flex-col items-center md:items-start mb-10 md:mb-0'>
                     <h1 className='text-2xl font-semibold'>Recommended</h1>
