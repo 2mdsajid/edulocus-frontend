@@ -1,10 +1,11 @@
 import ErrorPage from '@/components/reusable/ErrorPage'
 import { getSingleTestById, getTestBasicScores } from '@/lib/actions/tests.actions'
-import { getUserSession, isUserSajid, isUserSubscribed } from '@/lib/auth/auth'
+import { getUserSession } from '@/lib/auth/auth'
 import { constructMetadata } from '@/lib/data'
 import { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import ReTestMain from './_components/ReTestMain'
+import { isUserSajid, isUserSubscribed } from '@/lib/utils'
 
 
 
@@ -37,9 +38,10 @@ const page = async (props: Props) => {
 
     const { data: user, message: userAuthMessage } = await getUserSession()
 
-    if (!user || !isUserSubscribed(user)) {
-        return <ErrorPage errorMessage='Only Subscribed Members Can Re-Take The Tests' />
+    if (!user || (!isUserSubscribed(user) && !isUserSajid(user))) {
+        return <ErrorPage errorMessage='Only Subscribed Members or Authorized Users Can Re-Take This Test.' />;
     }
+
 
     const testid = props.params.id
     const { data: test, message } = await getSingleTestById(testid)
@@ -48,7 +50,7 @@ const page = async (props: Props) => {
     }
 
     const { data: previousScore, message: scoreMessage } = await getTestBasicScores(testid)
-    if(!previousScore ){
+    if (!previousScore) {
         return <ErrorPage errorMessage='Please attent the test first' />
     }
 

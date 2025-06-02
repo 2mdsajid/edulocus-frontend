@@ -34,11 +34,7 @@ const ErrorPage = (props: Props) => {
                     </div>
                 ) : (
                     <>
-                        {/* Descriptive Text for User */}
-                        <p className="text-gray-500 text-md mb-8 max-w-sm mx-auto">
-                            We&apos;re sorry for the inconvenience. Please try one of the options below.
-                        </p>
-
+                        
                         {/* Buttons (only rendered if no children are passed) */}
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Button

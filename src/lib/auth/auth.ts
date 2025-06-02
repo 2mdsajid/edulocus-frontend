@@ -188,63 +188,6 @@ export const generateAuthToken = async (
 
 
 
-// utils to check various user stats
-export const isUserAdmin = async (user: TBaseUser | null) => {
-  try {
-    if (!user) {
-      return false;
-    }
-    return user.role === 'ADMIN';
-  } catch (error) {
-    return false;
-  }
-};
-
-export const isUserModerator = async (user: TBaseUser | null) => {
-  try {
-    if (!user) {
-      return false;
-    }
-    return user.role === 'MODERATOR';
-  } catch (error) {
-    return false;
-  }
-};
-
-export const isUserSuperAdmin = async (user: TBaseUser | null) => {
-  try {
-    if (!user) {
-      return false;
-    }
-    return user.role === 'SUPERADMIN';
-  } catch (error) {
-    return false;
-  }
-};
-
-export const isUserSajid = async (user: TBaseUser | null) => {
-  try {
-    if (!user) {
-      return false;
-    }
-    return user.role === 'SAJID';
-  } catch (error) {
-    return false;
-  }
-};
-
-export const isUserSubscribed = async (user: TBaseUser | null) => {
-  try {
-    if (!user) {
-      return false;
-    }
-    return user.isSubscribed === true;
-  } catch (error) {
-    return false;
-  }
-};
-
-
 // declare module "next-auth" {
 //     interface Session extends DefaultSession {
 //         user?: {

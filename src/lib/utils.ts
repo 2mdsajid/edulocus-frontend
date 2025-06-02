@@ -6,6 +6,7 @@ import { twMerge } from "tailwind-merge"
 import jwt from 'jsonwebtoken'
 
 import { marked } from 'marked';
+import { TBaseUser } from './schema/users.schema';
 
 
 export function cn(...inputs: ClassValue[]) {
@@ -114,3 +115,43 @@ export const getRandomColor = () => colors[Math.floor(Math.random() * colors.len
 export function markdownToHtml(markdown: string) {
   return marked(markdown);
 }
+
+
+
+// utils to check various user stats
+export const isUserAdmin = (user: TBaseUser | null) => {
+  if (!user) {
+    return false;
+  }
+  return user.role === 'ADMIN';
+};
+
+export const isUserModerator = (user: TBaseUser | null) => {
+  if (!user) {
+    return false;
+  }
+  return user.role === 'MODERATOR';
+};
+
+export const isUserSuperAdmin = (user: TBaseUser | null) => {
+  if (!user) {
+    return false;
+  }
+  return user.role === 'SUPERADMIN';
+};
+
+export const isUserSajid = (user: TBaseUser | null) => {
+  if (!user) {
+    return false;
+  }
+  return user.role === 'SAJID';
+};
+
+export const isUserSubscribed = (user: TBaseUser | null) => {
+  if (!user) {
+    return false;
+  }
+  console.log(user)
+  return user.isSubscribed === true;
+
+};
