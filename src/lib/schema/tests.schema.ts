@@ -219,6 +219,8 @@ export type TScoreBreakdown = {
     unattempt: number;
 }
 
+
+
 export type TIndividualSubjectScores = {
     name: string;
     chapterAccuracies: TChapterAccuracy[];

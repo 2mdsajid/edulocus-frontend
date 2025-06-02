@@ -1,10 +1,5 @@
 import { Metadata } from "next";
 
-export const MEMBERSHIP_PRICE = {
-  UG: 159,
-  PG: 299
-}
-
 export const ROLES_HIEARCHY = {
   SAJID: ['SAJID'],
   ADMIN: ['ADMIN', 'SAJID'],
@@ -35,10 +30,12 @@ import {
 
 export const STREAM_DETAILS = {
   pg:{
+    price: 299,
     title : 'PG',
     desc:'NMCLE, CEE PG, USMLE'
   },
   ug:{
+    price: 159,
     title:'UG',
     desc:'CEE UG, NURSING, NEET'
   }
@@ -363,8 +360,8 @@ export const FAQ_QUESTIONS = [
 
 
 export function constructMetadata({
-  title = "Edulocus - an online education platform for PG students",
-  description = "Edulocus is an educational website offering variety of MCQs for PG/MD/MS Examinations",
+  title = "Edulocus - an online education platform ",
+  description = "Edulocus is an educational website offering variety of MCQs for PG/MD/MS/NMCLE/UG/NURSING/NEET Examinations",
   image = "/thumbnail.jpg",
   icons = "/favicon.ico",
   noIndex = false

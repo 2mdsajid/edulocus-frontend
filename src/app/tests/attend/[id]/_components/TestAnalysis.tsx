@@ -1,12 +1,12 @@
 import React from 'react'
-import TestBasicAnalysis from './TestBasicAnalysis'
-import { SubjectwiseAccuracy } from './SubjectwiseAccuracy'
-import TestChapterwiseScoreTable from './TestChapterwiseAnalysis'
-import FeedbackComponent from './FeedbackComponent'
-import ContributeCardComponent from './ContributeCardComponent'
+import TestBasicAnalysis from '@/components/reusable/tests/TestBasicAnalysis'
+import { SubjectwiseAccuracy } from '@/components/reusable/tests/SubjectwiseAccuracy'
+import TestChapterwiseScoreTable from '@/components/reusable/tests/TestChapterwiseAnalysis'
+import FeedbackComponent from '@/components/reusable/links/FeedbackComponent'
+import ContributeCardComponent from '@/components/reusable/links/ContributeCardComponent'
 import { TSubjectWiseChapterScores } from '@/lib/schema/tests.schema'
-import JoinUsComponent from './JoinUsComponent'
-import JoinTelegramComponent from './JoinTelegramComponent'
+import JoinUsComponent from '@/components/reusable/links/JoinUsComponent'
+import JoinTelegramComponent from '@/components/reusable/links/JoinTelegramComponent'
 
 type Props = {
     totalQuestions: number
@@ -41,7 +41,7 @@ const TestAnalysis = (props: Props) => {
                 {chapterwisescore && Object.keys(chapterwisescore).length > 5 ? (
                     // Split subjects into two groups if more than 5 subjects
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <SubjectwiseAccuracy 
+                        <SubjectwiseAccuracy
                             data={Object.fromEntries(
                                 Object.entries(chapterwisescore)
                                     .slice(0, Math.ceil(Object.keys(chapterwisescore).length / 2))
@@ -75,7 +75,7 @@ const TestAnalysis = (props: Props) => {
             {(!authToken
                 || authToken === ''
                 || authToken === undefined
-                || authToken === 'undefined') && 
+                || authToken === 'undefined') &&
                 <div className=" w-full">
                     <JoinUsComponent />
                 </div>

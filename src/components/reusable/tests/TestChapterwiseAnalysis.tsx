@@ -1,8 +1,6 @@
 "use client"
 
 import { CardDescription, CardTitle } from '@/components/ui/card'
-import { ChaptersAccuracyGraph } from './ChaptersAccuracyGraph'
-import { SubjectScoreBreakdownGraph } from './SubjectScoreBreakdownGraph'
 import {
     Accordion,
     AccordionContent,
@@ -11,6 +9,8 @@ import {
 } from "@/components/ui/accordion"
 import { TSubjectWiseChapterScores } from '@/lib/schema/tests.schema'
 import { subjectWiseChapterScore } from '@/lib/methods/tests.methods'
+import { SubjectScoreBreakdownGraph } from './SubjectScoreBreakdownGraph'
+import { ChaptersAccuracyGraph } from '@/app/tests/attend/[id]/_components/ChaptersAccuracyGraph'
 
 type Props = {
     data: TSubjectWiseChapterScores
@@ -20,30 +20,29 @@ export default function TestChapterwiseAnalysis({ data }: Props) {
     const eachSubjectData = subjectWiseChapterScore(data)
 
     return (
-        <div className="w-full mx-auto overflow-x-auto bg-primary p-3 rounded-md shadow-md">
-            <div className='space-y-1 py-3'>
-                <CardTitle className="text-black">Individual Subjects</CardTitle>
-                <CardDescription className="text-black">More insight to individual subjects</CardDescription>
-            </div>
+        <div className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl p-8 mt-10 border-t-8 border-purple-500">
+            <h2 className="text-3xl font-bold text-purple-700 mb-6 text-center">
+                Individual Subjects
+            </h2>
 
-            <Accordion type="multiple"  className="w-full [&>*:not(:first-child)]:mt-px">
+            <Accordion type="multiple" className="w-full [&>*:not(:first-child)]:mt-px">
                 {eachSubjectData.sort().map((subject) => {
                     // Calculate subject statistics
                     const totalQuestions = subject.total;
                     const correctAnswers = subject.correct;
                     const incorrectAnswers = subject.incorrect;
                     const unattemptedQuestions = subject.unattempt;
-                    
+
                     // Find highest and lowest scoring chapters
                     const chapterScores = subject.chapterAccuracies.map((data) => ({
                         name: data.chapter,
                         accuracy: data.accuracy
                     }));
-                    
+
                     const sortedChapters = [...chapterScores].sort((a, b) => b.accuracy - a.accuracy);
                     const bestChapters = sortedChapters;
                     const improveChapters = [...sortedChapters].reverse();
-                    
+
                     const allHaveFullAccuracy = chapterScores.every(chapter => chapter.accuracy === 100);
                     const allHaveZeroAccuracy = chapterScores.every(chapter => chapter.accuracy === 0);
 
@@ -67,7 +66,7 @@ export default function TestChapterwiseAnalysis({ data }: Props) {
                                                 <p>Unattempted: <span className="font-bold text-yellow-600">{unattemptedQuestions}</span></p>
                                             </div>
                                         </div>
-                                        
+
                                         {allHaveFullAccuracy ? (
                                             <div className="p-4 bg-green-50 dark:bg-green-900 rounded-lg">
                                                 <h3 className="font-semibold text-lg mb-2">Best Performance</h3>

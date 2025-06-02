@@ -1,33 +1,33 @@
 'use client'
 
+import { QuestionViewer } from '@/components/reusable/QuestionViewer';
 import SubmitButton from '@/components/reusable/SubmitButton';
+import TestQuestionRender from '@/components/reusable/tests/TestQuestionRender';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { sendTestAnalytic } from '@/lib/actions/tests.actions';
+import { TCreateTestAnalytic, TCreateTestQuestionAnswer, TQuestion, TScoreBreakdown, TSubjectWiseChapterScores } from '@/lib/schema/tests.schema';
 import { TBaseUser } from '@/lib/schema/users.schema';
 import { categorizeQuestionsBySubject } from '@/lib/utils';
 import { CheckCircle, Send } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { sendTestAnalytic, sendUserScore } from '@/lib/actions/tests.actions';
-import { TCreateTestAnalytic, TCreateTestQuestionAnswer, TQuestion, TSaveUserScore, TSubjectWiseChapterScores } from '@/lib/schema/tests.schema';
-import TestAnalysis from './TestAnalysis';
-import TestQuestionRender from '@/components/reusable/tests/TestQuestionRender';
-import TestQuestoinsAndAnswersViewer from './TestQuestoinsAndAnswersViewer';
-import TestTimer2 from '@/components/reusable/tests/TestTimer2';
+import TestTimer2 from '../../../../../components/reusable/tests/TestTimer2';
+import ReTestAnalysis from './ReTestAnalysis';
+import ReTestQuestionsViewer from './ReTestQuestionsViewer';
 
 type Props = {
     id: string;
     questions: TQuestion[],
     testName: string;
     userid: string
-    username: string;
-    sharableTestUrl: string
     user: TBaseUser | null
+    previousScore: TScoreBreakdown
     authToken?: string
 }
 
-const TestMain = (props: Props) => {
+const ReTestMain = (props: Props) => {
     const router = useRouter()
 
     const submitref = useRef<HTMLButtonElement | null>(null)
@@ -35,7 +35,7 @@ const TestMain = (props: Props) => {
     const TIME_PER_QUESTION = 54000
     const NEGATIVEMARK = 0.25
 
-    const { id: testid, user } = props
+    const { id: testid, user, previousScore } = props
 
     const [timeout, setTimeout] = useState(0)
     const [currentcountdown, setCurrentCountdown] = useState(0)
@@ -49,15 +49,11 @@ const TestMain = (props: Props) => {
     const [categorizedQuestions, setCategorizedQuestions] = useState(categorizeQuestionsBySubject(props.questions));
     const SUBJECTS = Object.keys(categorizedQuestions)
 
-    // const [currentindex, setCurrentIndex] = useState(0)
-    // const [selectedSubject, setSelectedSubject] = useState(SUBJECTS[0])
-
     // questions parameters -- time, ans bla bla bla bla bla bla bla bla bla
     const [questionsAttempt, setQuesitionsAttempt] = useState<string[]>([])
     const [correctAttempt, setCorrectAttempt] = useState<string[]>([])
     const [subjectWiseChapterScore, setSubjectWiseChapterScore] = useState<TSubjectWiseChapterScores>({})
     const [totalTimeTaken, setTotalTimeTaken] = useState(0)
-
 
 
     // states for submitting tests
@@ -164,28 +160,6 @@ const TestMain = (props: Props) => {
             }
         }
 
-        // to store the score for leaderboard
-        const userScore: TSaveUserScore = {
-            customTestId: props.id,
-            username: props.username,
-            totalScore: score
-        }
-
-        const {
-            data: saveUserScoreResponseData,
-            message: saveUserScoreMessage
-        } = await sendUserScore(userScore)
-        // comment out later on --- debugging only
-        // if (!saveUserScoreResponseData || saveUserScoreResponseData === undefined) {
-        //     toast({
-        //         variant: 'destructive',
-        //         description: saveUserScoreMessage
-        //     })
-        // }
-        // toast({
-        //     variant: 'success',
-        //     description: saveUserScoreMessage
-        // })
 
 
         // test analytics for storing for all users -- premium previousle
@@ -199,17 +173,7 @@ const TestMain = (props: Props) => {
                 data: sendTestAnalyticResponseData,
                 message: sendTestAnalyticResponseMessage
             } = await sendTestAnalytic(test_analytic)
-            // comment out later on--- debugging only
-            // if (!sendTestAnalyticResponseData) {
-            //     toast({
-            //         variant: 'destructive',
-            //         description: sendTestAnalyticResponseMessage
-            //     })
-            // }
-            // toast({
-            //     variant: 'success',
-            //     description: sendTestAnalyticResponseMessage
-            // })
+
         }
 
         setIsAnswerReady(true)
@@ -244,65 +208,31 @@ const TestMain = (props: Props) => {
     };
 
 
-    // THIS WILL HIGHLIGHT THE CURRENT SUBJECT WHEN SUBJECT WISE TEST IS GOING ON
-    // useEffect(() => {
-    //     const handleScroll = () => {
-    //         const subjects = document.querySelectorAll('.subject'); // Adjust the class selector accordingly
-    //         let subjectInView = '';
-    //         subjects.forEach((subject) => {
-    //             const rect = subject.getBoundingClientRect();
-    //             if (rect.top <= window.innerHeight && rect.bottom >= 0) {
-    //                 subjectInView = subject.id;
-    //             }
-    //         })
-    //         setSelectedSubject(subjectInView);
-    //     };
-    //     window.addEventListener('scroll', handleScroll);
-    //     return () => {
-    //         window.removeEventListener('scroll', handleScroll);
-    //     };
-    // }, []);
-
-
     // THIS WILL SET INITIAL QUESTIONS TO A NEW VARIABLE TO RENDER AND ADD ANSWERS -- UANS
     useEffect(() => {
         setUquestions(props.questions)
         setTimeout(TIME_PER_QUESTION * props.questions.length)
         setCountTop(TIME_PER_QUESTION * props.questions.length)
-        // checkAns()
     }, [])
 
     return (
         <div className='w-full'>
             {istestsubmitted
-
-
                 // AFTER SUBMITTING THE ANSWERS
-                ? <Tabs defaultValue="analysis" className="w-full my-5">
-                    <TabsList className='bg-none bg-primary dark:bg-dark-primary mb-3 sticky top-16 z-100'>
-                        <TabsTrigger className='text-xl font-semibold' value="analysis">Analysis</TabsTrigger>
-                        <TabsTrigger className='text-xl font-semibold' value="answers">Answers</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="analysis" className='w-full'>
-                        <TestAnalysis
-                            totalQuestions={uquestions.length}
-                            correctAttempt={correctAttempt.length}
-                            questionsAttempt={questionsAttempt.length}
-                            totalTimeTaken={totalTimeTaken}
-                            subjectWiseChapterScore={subjectWiseChapterScore}
-                            authToken={props.authToken}
-                        />
-                    </TabsContent>
-
-                    {/* to view the answers */}
-                    <TabsContent value="answers" className='w-full'>
-                        <TestQuestoinsAndAnswersViewer
-                            testName={props.testName}
-                            questions={uquestions}
-                        />
-                    </TabsContent>
-                </Tabs>
-
+                ? <div className='flex flex-col gap-5'>
+                    <ReTestAnalysis
+                        newCorrectAttempt={correctAttempt.length}
+                        newQuestionsAttempt={questionsAttempt.length}
+                        newTotalTimeTaken={totalTimeTaken}
+                        totalQuestions={uquestions.length}
+                        correctAttempt={previousScore.correct}
+                        questionsAttempt={previousScore.total - previousScore.unattempt}
+                        totalTimeTaken={totalTimeTaken}
+                        subjectWiseChapterScore={subjectWiseChapterScore}
+                        authToken={props.authToken}
+                    />
+                    <ReTestQuestionsViewer questions={uquestions} />
+                </div>
 
 
                 // BEFORE SUBMITTING THE ANSWERS
@@ -395,7 +325,7 @@ const TestMain = (props: Props) => {
     )
 }
 
-export default TestMain
+export default ReTestMain
 
 
 

@@ -13,14 +13,6 @@ const TestQuestoinsAndAnswersViewer = (props: Props) => {
   const { questions, testName } = props
   return (
     <div className={`w-full flex flex-col gap-4 `}>
-      {/* <div className="flex gap-2">
-          <PDFDownloadButton 
-            questions={questions} 
-            testName={testName} 
-            compact={true} 
-          />
-        </div> */}
-
       <GenerateTestPDF
         questions={questions}
         testName={testName}

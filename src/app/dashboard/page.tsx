@@ -27,7 +27,7 @@ const page = async (props: Props) => {
         redirect('/login')
     }
 
-    if(!user.isCompleted) {
+    if (!user.isCompleted) {
         redirect('/login/stream')
     }
 
@@ -58,13 +58,13 @@ const page = async (props: Props) => {
     return (
         <div className='w-full bg-color1 mx-auto space-y-5 pt-24 pb-16 px-4 md:px-10 lg:px-20 xl:px-32'>
 
-        <Link href="/dashboard/ai">
-            <Button className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white">
-                <AiFillRobot className="w-6 h-6" />
-                Generate AI Report
-            </Button>
-        </Link>
-            
+            <Link href="/dashboard/ai">
+                <Button className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white">
+                    <AiFillRobot className="w-6 h-6" />
+                    Generate AI Report
+                </Button>
+            </Link>
+
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
                 <DashboardCard
                     title="Total Tests"
@@ -82,7 +82,7 @@ const page = async (props: Props) => {
                 />
                 <DashboardCard
                     title="Average Score Per Test"
-                    value={`${averageScorePerTest}%`}
+                    value={`${Math.round(averageScorePerTest/10)}`}
                     badgeText="Score/Test"
                     className="bg-green-500 text-white"
                     badgeClassName="bg-secondary text-success-foreground"
@@ -123,15 +123,18 @@ const page = async (props: Props) => {
             </div>
 
             {/* recent tests */}
-            <div className='w-full'>
-                <h2 className="text-2xl font-bold mb-4">Recent Tests</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className='w-full '>
+                <h2 className="text-3xl font-bold text-gray-800 mb-6 mt-20 border-b-2 pb-3">Your Recent Test Activity</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {recentTests.length > 0 ? (
                         recentTests.map((test) => (
                             <RecentTestCard key={test.id} {...test} />
                         ))
                     ) : (
-                        <p className="text-gray-500">No recent tests found.</p>
+                        <div className="col-span-full flex flex-col items-center justify-center p-8 text-gray-500 bg-gray-50 rounded-lg">
+                            <p className="text-lg mb-2">No recent tests found.</p>
+                            <p className="text-md">Time to challenge yourself with a new test!</p>
+                        </div>
                     )}
                 </div>
             </div>

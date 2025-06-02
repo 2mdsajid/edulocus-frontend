@@ -1,5 +1,5 @@
 import { Check, CheckSquare, Clock, Star, Watch, X } from 'lucide-react';
-import TestStatCard from './TestStatCard';
+import TestStatCard from '../../../app/tests/attend/[id]/_components/TestStatCard';
 import { getRandomColor } from '@/lib/utils';
 import { VariousScoresPieChart } from '@/components/charts/VariousScoresPieChart';
 
@@ -18,7 +18,7 @@ const TestBasicAnalysis = (props: Props) => {
 
     const scoreParametersData = [
         { name: 'correct', value: corrrect_attempt, total: total_questions, fill: '#22c55e' },
-        { name: 'incorrect', value: incorrect_attempts, total: total_questions, fill: '#ef4444' }, 
+        { name: 'incorrect', value: incorrect_attempts, total: total_questions, fill: '#ef4444' },
         { name: 'unattempt', value: unattempt_questions, total: total_questions, fill: '#6b7280' },
     ]
 

@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { constructMetadata, MEMBERSHIP_PRICE, membershipFeatures } from "@/lib/data";
 import { getStreamCookieForUnauthenticatedUser } from "@/lib/actions/try.actions";
-import { redirect } from "next/navigation";
+import { constructMetadata, membershipFeatures } from "@/lib/data";
 import { TStream } from "@/lib/schema/users.schema";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -13,7 +12,7 @@ export const metadata = constructMetadata({
 });
 
 const page = async () => {
-    const stream = await getStreamCookieForUnauthenticatedUser() as TStream;
+    const stream = await getStreamCookieForUnauthenticatedUser() as TStream || 'UG'
 
     return (
         <div className="flex min-h-screen flex-col bg-gradient-to-br from-bg1 to-bg2 pt-20">
@@ -27,7 +26,7 @@ const page = async () => {
                 </p>
                 <Button asChild size="lg" className="rounded-full">
                     <Link href={'/membership/register'}>
-                        Join Membership Today @{MEMBERSHIP_PRICE[stream]} / month <ChevronRight className="ml-2 h-4 w-4" />
+                        Join Membership Today  <ChevronRight className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
             </section>
@@ -77,7 +76,7 @@ const page = async () => {
                     </p>
                     <Button asChild size="lg" variant="secondary" className="rounded-full">
                         <Link href={'/membership/register'}>
-                            Get Started Now @{MEMBERSHIP_PRICE[stream]} / month <ChevronRight className="ml-2 h-4 w-4" />
+                            Get Started Now <ChevronRight className="ml-2 h-4 w-4" />
                         </Link>
                     </Button>
                 </div>

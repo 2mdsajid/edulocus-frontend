@@ -2,7 +2,7 @@
 
 
 import { cookies } from "next/headers";
-import { TBaseCustomTest, TTypeOfTestsAndDescription, TTotalQuestionsPerSubjectAndChapter, TCreateCustomTestData, TBaseUserScore, TSingleCustomTestWithQuestions, TCreateTestAnalytic, TSaveUserScore, TCustomTestMetadata, TQuestion, TBaseQuestion } from "../schema/tests.schema";
+import { TBaseCustomTest, TTypeOfTestsAndDescription, TTotalQuestionsPerSubjectAndChapter, TCreateCustomTestData, TBaseUserScore, TSingleCustomTestWithQuestions, TCreateTestAnalytic, TSaveUserScore, TCustomTestMetadata, TQuestion, TBaseQuestion, TScoreBreakdown } from "../schema/tests.schema";
 
 export const getAllTests = async (): Promise<{
     data: TBaseCustomTest[] | null;
@@ -242,6 +242,32 @@ export const getSingleTestById = async (testid: string): Promise<{
         return { data: null, message: "Some Error Occured while fetching all tests!" };
     }
 };
+
+
+export const getTestBasicScores = async (testid: string): Promise<{
+    data: TScoreBreakdown | null,
+    message: string
+}> =>{
+    try {
+        const response = await fetch(`${process.env.BACKEND}/tests/get-test-basic-scores/${testid}`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occured while fetching all tests!" };
+    }
+}
 
 export const sendTestAnalytic = async (testData: TCreateTestAnalytic): Promise<{
     data: ShadcnToast | null;

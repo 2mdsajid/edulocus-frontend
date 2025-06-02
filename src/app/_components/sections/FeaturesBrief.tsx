@@ -1,27 +1,37 @@
 import React from 'react'
 import Image from 'next/image'
-import { Book, TrendingUp, Calendar, Monitor } from 'lucide-react'
+import { Book, TrendingUp, Calendar, Monitor, ClipboardList, FileText } from 'lucide-react'
 
 const features = [
+  // {
+  //   icon: <Book className="w-8 h-8 text-color8" />,
+  //   title: "Modules",
+  //   description: "Structured learning paths tailored to your goals"
+  // },
   {
-    icon: <Book className="w-8 h-8 text-color8" />,
-    title: "Modules",
-    description: "Structured learning paths tailored to your goals"
+    title: 'Different Tests',
+    icon: <ClipboardList className="w-10 h-10 text-purple-600" />,
+    description: 'You can attend different tests for improvement!',
+  },
+  {
+    title: 'Solution Sets',
+    icon: <FileText className="w-10 h-10 text-purple-600" />,
+    description: 'You can view and download solution sets after each test!',
   },
   {
     icon: <TrendingUp className="w-8 h-8 text-color8" />,
     title: "Progress",
-    description: "Track your improvement with detailed analytics"
+    description: "Track your improvement with detailed AI based analytics!"
   },
-  {
-    icon: <Calendar className="w-8 h-8 text-color8" />,
-    title: "Plans",
-    description: "Customized study plans to fit your schedule"
-  },
+  // {
+  //   icon: <Calendar className="w-8 h-8 text-color8" />,
+  //   title: "Plans",
+  //   description: "Customized study plans to fit your schedule"
+  // },
   {
     icon: <Monitor className="w-8 h-8 text-color8" />,
     title: "AI",
-    description: "AI Features to help you learn better and faster"
+    description: "Many AI Features to help you learn better and faster!"
   }
 ]
 

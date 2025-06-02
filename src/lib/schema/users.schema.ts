@@ -65,6 +65,7 @@ type SubscriptionRequest = {
     email: string;
     createdAt: Date;
     phone: string;
+    stream:TStream;
 }
 
 export type TCreateSubscriptionRequest = Omit<SubscriptionRequest, 'id' | 'createdAt'>

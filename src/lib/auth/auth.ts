@@ -3,7 +3,7 @@
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { deleteAuthTokenCookie, deleteSessionTokenCookie, deleteStreamCookie } from "./lucia-sessions";
-import { TBaseUser,  TLogInUser, TSignUpUser, TStream } from "@/lib/schema/users.schema";
+import { TBaseUser, TLogInUser, TSignUpUser, TStream } from "@/lib/schema/users.schema";
 import { TJWT } from "@/lib/auth/schema";
 import { redirect } from "next/navigation";
 
@@ -39,10 +39,10 @@ export const getUserSession = async (): Promise<{
       const { data, message } = await response.json();
       return { data: null, message }
     }
-    
+
     const { data, message } = await response.json();
-    return { data, message :"user logged in!" }
-    
+    return { data, message: "user logged in!" }
+
 
   } catch (error) {
     return { data: null, message: "Some Error Occured while getting user session!" };
@@ -51,7 +51,7 @@ export const getUserSession = async (): Promise<{
 
 export const logOut = async () => {
   const cookieStore = cookies();
-	await deleteSessionTokenCookie();
+  await deleteSessionTokenCookie();
   await deleteAuthTokenCookie()
   await deleteStreamCookie()
 
@@ -158,7 +158,7 @@ export const handleSignUp = async (
 export const generateAuthToken = async (
   userData: TBaseUser,
 ): Promise<string | null> => {
-    try {
+  try {
     const response = await fetch(
       `${process.env.BACKEND}/users/generate-auth-token`,
       {
@@ -170,7 +170,7 @@ export const generateAuthToken = async (
       }
     );
 
-    if(!response.ok){
+    if (!response.ok) {
       return null
     }
 
@@ -185,6 +185,65 @@ export const generateAuthToken = async (
     return null
   }
 };
+
+
+
+// utils to check various user stats
+export const isUserAdmin = async (user: TBaseUser | null) => {
+  try {
+    if (!user) {
+      return false;
+    }
+    return user.role === 'ADMIN';
+  } catch (error) {
+    return false;
+  }
+};
+
+export const isUserModerator = async (user: TBaseUser | null) => {
+  try {
+    if (!user) {
+      return false;
+    }
+    return user.role === 'MODERATOR';
+  } catch (error) {
+    return false;
+  }
+};
+
+export const isUserSuperAdmin = async (user: TBaseUser | null) => {
+  try {
+    if (!user) {
+      return false;
+    }
+    return user.role === 'SUPERADMIN';
+  } catch (error) {
+    return false;
+  }
+};
+
+export const isUserSajid = async (user: TBaseUser | null) => {
+  try {
+    if (!user) {
+      return false;
+    }
+    return user.role === 'SAJID';
+  } catch (error) {
+    return false;
+  }
+};
+
+export const isUserSubscribed = async (user: TBaseUser | null) => {
+  try {
+    if (!user) {
+      return false;
+    }
+    return user.isSubscribed === true;
+  } catch (error) {
+    return false;
+  }
+};
+
 
 // declare module "next-auth" {
 //     interface Session extends DefaultSession {

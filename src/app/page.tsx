@@ -19,7 +19,7 @@ export default function Home() {
     <div>
       <LandingPage />
       <FeaturesBrief />
-      <Features />
+      {/* <Features /> */}
       <StreamSection /> 
       <CounterSection />
       <ProductFeatures />
