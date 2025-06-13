@@ -52,6 +52,7 @@ export type CustomTest = {
     usersConnected: string[];
     keysUsed: string[];
     date: Date;
+    stream: TStream;
     questions: string[];
 }
 
@@ -120,8 +121,11 @@ export type TBaseCustomTest = Pick<CustomTest,
     'id' |
     'name' |
     'date' |
-    'questions'
+    'archive' |
+    'questions' |
+    'stream'
 > & {
+    creator?: string,
     pastPaper: TBasePastPaper | null
 }
 
@@ -152,6 +156,7 @@ export type TCreateCustomTestData = {
     slug: string;
     limit: number;
     stream: TStream;
+    gid: string | null
 };
 
 
@@ -160,7 +165,8 @@ export type TCreateCustomTestData = {
 export type TSingleCustomTestWithQuestions = Pick<CustomTest,
     'id' |
     'name' |
-    'slug' 
+    'slug' |
+    'stream'
 > & {
     createdBy: string,
     questions: TQuestion[]
@@ -235,7 +241,7 @@ export type TCustomTestMetadata = Pick<CustomTest,
     'date' |
     'archive' |
     'id' |
-    'usersConnected' 
+    'usersConnected'
 > & {
     createdBy: string,
     questionsCount: number

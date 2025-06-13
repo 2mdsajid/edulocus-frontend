@@ -117,6 +117,27 @@ export function markdownToHtml(markdown: string) {
 }
 
 
+export const formatDateTimeString = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  });
+};
+
+// Helper function for date formatting (can be moved to a shared utility if preferred)
+export const formatDateTimeDate = (dateString: Date) => {
+  if (!dateString) return 'N/A';
+  try {
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  } catch (e) {
+    console.error("Invalid date string provided to formatDate:", dateString, e);
+    return 'Invalid Date';
+  }
+};
+
 
 // utils to check various user stats
 export const isUserAdmin = (user: TBaseUser | null) => {

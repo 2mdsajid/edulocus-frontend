@@ -1,8 +1,5 @@
 "use client"; // Ensure this is a client component
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -15,11 +12,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect } from "react";
-import { Loader2 } from "lucide-react";
-import { createCustomTest } from "@/lib/actions/tests.actions";
+import { createCustomTestMetaData } from "@/lib/actions/tests.actions";
 import { TStream } from "@/lib/schema/users.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 // Define the form schema using Zod
 const formSchema = z.object({
@@ -31,6 +31,7 @@ const formSchema = z.object({
 
 type Props = {
     streams: TStream[]
+    gid: string | null
 }
 
 export default function CreateCustomTestForm(props: Props) {
@@ -67,32 +68,42 @@ export default function CreateCustomTestForm(props: Props) {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            const { data, message } = await createCustomTest({
+            // Show loading toast
+            toast({
+                title: "Creating test...",
+                description: "Please wait while we create your test.",
+            });
+
+            // Create test and get response
+            const { data: testId, message } = await createCustomTestMetaData({
                 stream: values.stream as TStream,
                 name: values.name,
                 slug: values.slug,
                 limit: Number(values.limit),
+                gid: props.gid
             });
 
-            if (!data) {
-                return toast({
-                    variant: "destructive",
-                    title: "Error",
-                    description: message,
-                });
-            } else {
-                router.push(`/questions/create/${data}`);
-                return toast({
-                    variant: "success",
-                    title: "Success",
-                    description: message,
+            if (!testId) {
+                toast({
+                    title: "Creation Failed",
+                    description: message || "Failed to create test",
+                    variant: "destructive"
                 });
             }
+
+            toast({
+                title: "Creation Success",
+                description: message || "Created Test",
+                variant: "success"
+            });
+
+            // Redirect to create questions page with test ID
+            router.push(`/questions/create/${testId}`);
         } catch (error) {
             return toast({
                 variant: "destructive",
                 title: "Error",
-                description: "An unexpected error occurred.",
+                description: error instanceof Error ? error.message : "An unexpected error occurred.",
             });
         }
     };
@@ -185,7 +196,8 @@ export default function CreateCustomTestForm(props: Props) {
                     ) : (
                         "Create Test"
                     )}
-                </Button>      </form>
+                </Button>
+            </form>
         </Form>
     );
 }

@@ -24,6 +24,35 @@ export const getAllTests = async (): Promise<{
 };
 
 
+export const getAllTestsCreatedByUser = async (): Promise<{
+    data: TBaseCustomTest[] | null;
+    message: string;
+}> => {
+    try {
+        const cookieStore = cookies();
+        const authToken = cookieStore.get("auth-token")?.value;
+    
+        if (!authToken) {
+          return { data: null, message: "User not logged in!" };
+        }
+
+        
+        const response = await fetch(`${process.env.BACKEND}/tests/get-all-tests-created-by-user`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": "Bearer " + authToken,
+            },
+        });
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occured while fetching all tests!" };
+    }
+};
+
+
 export const getTypesOfTests = async (): Promise<{
     data: TTypeOfTestsAndDescription[] | null;
     message: string;
@@ -48,6 +77,41 @@ export const getTypesOfTests = async (): Promise<{
         return { data: null, message: "Some Error Occured while fetching all tests!" };
     }
 };
+
+export const getLiveTests = async (date: string): Promise<{
+    data: TBaseCustomTest[] | null;
+    message: string;
+}> => {
+    try {
+        const cookieStore = cookies()
+        const stream = cookieStore.get('stream')?.value
+
+        if (!stream) {
+            return { data: null, message: "Stream not found!" }
+        }
+
+        const response = await fetch(`${process.env.BACKEND}/tests/get-daily-tests/${date}`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "stream": stream,
+            },
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+        
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        console.log("🚀 ~ getLiveTest ~ error:", error)
+        return { data: null, message: "Some Error Occured while fetching live test!" };
+    }
+};
+
 
 
 export const getAllTestsByType = async (type: TTypeOfTest): Promise<{
@@ -174,7 +238,7 @@ export const startChapterWiseTest = async (subject: string, chapter: string, typ
 
 
 
-export const createCustomTest = async (
+export const createCustomTestMetaData = async (
   data: TCreateCustomTestData
 ): Promise<{ data: string | null; message: string }> => {
   try {
@@ -184,9 +248,9 @@ export const createCustomTest = async (
     if (!authToken) {
       return { data: null, message: "User not logged in!" };
     }
-
+console.log(data)
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND}/tests/create-custom-tests?limit=${data.limit}`,
+      `${process.env.NEXT_PUBLIC_BACKEND}/tests/create-custom-test-metadata?limit=${data.limit}&gid=${data.gid}`,
       {
         method: "POST",
         headers: {

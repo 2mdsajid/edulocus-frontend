@@ -12,11 +12,13 @@ export const ROLES_HIEARCHY = {
 // different types of tests ----------------------------------------------------------------
 import {
   BarChart,
+  BarChart2,
   Book,
   BookOpen,
   Cpu,
   FileText, FlaskConical, // Alternative for Tools
   Folder,
+  Lightbulb,
   Puzzle,
   RefreshCcw,
   Repeat,
@@ -48,6 +50,12 @@ export const typeOfTestsAndDescriptionData: TTypeOfTestsAndDescription[] = [
     description: 'Daily test from 4pm to 8pm everyday.',
     isAvailableTo: ['PG'],
     icon: Zap
+  },
+  {
+    type: 'PAST_PAPER',
+    description: 'Collection of past papers from various exams.',
+    isAvailableTo: ['UG','PG'],
+    icon: Repeat
   },
   {
     type: 'MODEL',
@@ -139,12 +147,7 @@ export const typeOfTestsAndDescriptionData: TTypeOfTestsAndDescription[] = [
     isAvailableTo: [],
     icon: Repeat
   },
-  {
-    type: 'PAST_PAPER',
-    description: 'Test retake for improving previous scores.',
-    isAvailableTo: ['UG','PG'],
-    icon: Repeat
-  }
+
 ]
 
 
@@ -356,6 +359,33 @@ export const FAQ_QUESTIONS = [
     answer: "Our question bank is continuously updated by our team of expert educators. We add new questions weekly and revise existing ones based on the latest exam patterns and trends.",
   },
 ]
+
+
+
+// group features
+// Define features for the "What you get?" section, similar to membershipFeatures
+export const GROUP_FEATURES = [
+  {
+      Icon: Users,
+      title: "Dedicated Workspaces",
+      description: "Admins can effortlessly create dedicated group workspaces, tailored for teams, classes, or study cohorts.",
+  },
+  {
+      Icon: Lightbulb,
+      title: "User Management",
+      description: "Admins have full control to add and remove users, ensuring the right members are always in the right group.",
+  },
+  {
+      Icon: BarChart2,
+      title: "Progress Monitoring",
+      description: "Admins and moderators can closely monitor user progress within their groups, identifying strengths and areas for improvement.",
+  },
+  {
+      Icon: FileText,
+      title: "Custom Test Creation",
+      description: "Admins can create and assign custom tests directly within groups, providing tailored assessments for their members.",
+  },
+];
 
 
 

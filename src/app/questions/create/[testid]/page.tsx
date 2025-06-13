@@ -2,6 +2,7 @@ import { getSingleTestById } from '@/lib/actions/tests.actions'
 import ErrorPage from '@/components/reusable/ErrorPage'
 import React from 'react'
 import TestManagementPage from './_components/TestManagementPage'
+import { getSubjects } from '@/lib/actions/questions.actions'
 
 type Props = {
     params: {
@@ -15,16 +16,20 @@ const page = async (props: Props) => {
         return <ErrorPage errorMessage={testMessage} />
     }
 
-    const subjects = test.questions.map(question => question.subject);
-    const uniqueSubjects = Array.from(new Set(subjects));
+    const {data:subjects, message} =await getSubjects(test.stream);
+    if(!subjects || subjects.length == 0){
+        return <ErrorPage errorMessage={message || 'No Subjects Found'} />
+    }
 
-    // console.log(uniqueSubjects)
+
+
+    // console.log(uniqueSubjects) 
     // console.log(test.questions).
 
 
     return (
         <div>
-            <TestManagementPage test={test} subjects={uniqueSubjects} />
+            <TestManagementPage test={test} subjects={subjects} />
         </div>
     )
 }

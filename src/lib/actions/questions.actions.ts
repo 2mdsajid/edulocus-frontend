@@ -247,6 +247,7 @@ export const  getQuestionsBySubject = async (subject: string): Promise<{
         return { data, message };
         
     } catch (error) {
+        console.log(error)
         return { data: null, message: "Some Error Occured while fetching questions by subject!" };
     }
 };
@@ -281,3 +282,29 @@ export const reportQuestion = async (questionId: string, description: string): P
         return { data: null, message: "Some Error Occured while reporting the question!" };
     }
 }
+
+
+export const getSubjects = async (stream: TStream): Promise<{
+    data: string[] | null;
+    message: string;
+}> => {
+    try {
+        const response = await fetch(`${process.env.BACKEND}/questions/get-subjects?stream=${stream}`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occured while fetching subjects!" };
+    }
+};

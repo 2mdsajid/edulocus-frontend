@@ -1,4 +1,5 @@
 import AboutUs from "./_components/sections/AboutUs";
+import CollaboartionSection from "./_components/sections/CollaboartionSection";
 import CounterSection from "./_components/sections/CounterSection";
 import FAQSection from "./_components/sections/FAQSection";
 import Features from "./_components/sections/Features";
@@ -21,10 +22,11 @@ export default function Home() {
       <FeaturesBrief />
       {/* <Features /> */}
       <StreamSection /> 
-      <CounterSection />
+      {/* <CounterSection /> */}
       <ProductFeatures />
       {/* <ContactSection /> */}
-      <FAQSection />
+      {/* <FAQSection /> */}
+      <CollaboartionSection />
       <AboutUs />
       <Footer />
     </div>

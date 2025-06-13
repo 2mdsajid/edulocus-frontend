@@ -1,12 +1,22 @@
 import { google } from "@/lib/auth/lucia-auth";
 import { generateState, generateCodeVerifier } from "arctic";
 import { cookies } from "next/headers";
+import { NextRequest } from "next/server";
 
-export async function GET(): Promise<Response> {
+export async function GET(request:NextRequest): Promise<Response> {
 	const state = generateState();
 	const codeVerifier = generateCodeVerifier();
+
+	const urlParams = request.nextUrl.searchParams;
+    const redirectTo = urlParams.get("ru");
+
+
 	const url = google.createAuthorizationURL(state, codeVerifier, ["openid", "profile","email"]);
 
+	if (redirectTo) {
+        url.searchParams.set("state", `${state}:${encodeURIComponent(redirectTo)}`); // Combine state and redirect URL
+    }
+	
 	const cookieStore = await cookies();
 	cookieStore.set("google_oauth_state", state, {
 		path: "/",
