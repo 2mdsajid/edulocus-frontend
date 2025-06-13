@@ -6,8 +6,14 @@ import NoLiveTestsPage from './_components/NoLiveTestError'
 
 type Props = {}
 
+export const metadata = {
+  title: "Edulocus | Live Tests",
+  description: "Participate in live tests conducted by Edulocus"
+}
+
+
 const page = async (props: Props) => {
-    await new Promise(resolve => setTimeout(resolve, 10000));
+    // await new Promise(resolve => setTimeout(resolve, 10000));
     const today = new Date();
     const currentHour = today.getHours(); // Get the current hour (0-23)
 

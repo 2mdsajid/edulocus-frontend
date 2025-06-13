@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { constructMetadata } from "@/lib/data";
 import { ChevronRight, BookOpen, Clock, Lightbulb, MessageSquare, MonitorPlay, Users, Zap } from "lucide-react"; // Importing more icons for features
 import Image from "next/image";
 import Link from "next/link";
@@ -51,6 +52,11 @@ const hlEduroomFeatures = [
         description: "Monitor your performance through advanced online tools and analytics to identify strengths and weaknesses.",
     },
 ];
+
+export const metadata = constructMetadata({
+    title: 'EduLocus | HL Eduroom',
+    description: 'EduLocus and H.L.-Eduroom collaboration - A strategic partnership offering comprehensive MBBS entrance preparation resources, expert tutoring, and innovative learning solutions for aspiring medical students.'
+}) 
 
 const page  = () => {
     return (

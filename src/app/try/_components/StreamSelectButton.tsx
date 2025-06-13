@@ -2,14 +2,14 @@
 
 import { Button } from '@/components/ui/button'
 import { setStreamCookieForUnauthenticatedUser } from '@/lib/actions/try.actions'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation' // Import useSearchParams
 import React from 'react'
 import { STREAM_DETAILS } from '@/lib/data'
 
 type Props = {
     stream: "pg" | "ug"
+    ru: string
 }
-
 
 const StreamSelectButton = (props: Props) => {
     const router = useRouter();
@@ -19,14 +19,19 @@ const StreamSelectButton = (props: Props) => {
         setIsLoading(true);
         try {
             await setStreamCookieForUnauthenticatedUser(props.stream);
-            router.push(`/tests`);
+
+            if (props.ru) {
+                router.push(props.ru); // Redirect back to the original page
+            } else {
+                router.push(`/tests`); // Fallback if no redirectBack URL is found
+            }
         } finally {
             setIsLoading(false);
         }
     };
-    
+
     return (
-        <Button        
+        <Button
             onClick={handleClick}
             disabled={isLoading}
             className="w-fit h-fit p-6 md:p-12 text-lg md:text-2xl gap-3 bg-white dark:bg-white text-accent dark:text-accent font-semibold tracking-wider shadow-lg transition-all duration-300 hover:shadow-xl hover:bg-white hover:translate-y-[-2px] flex flex-col items-center"

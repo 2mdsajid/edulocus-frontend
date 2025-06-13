@@ -14,8 +14,8 @@ const StreamSection = () => {
                 </p>
                 <div className="flex flex-col gap-10 items-center bg-gradient-to-b from-color1 to-color1 bg-blur-lg ">
                     <div className=" grid grid-cols-1 md:grid-cols-2 justify-center gap-8 px-4">
-                        <StreamSelectButton stream="ug" />
-                        <StreamSelectButton stream="pg" />
+                        <StreamSelectButton stream="ug" ru="/"  />
+                        <StreamSelectButton stream="pg" ru="/" />
                     </div>
                 </div>
             </div>
