@@ -46,6 +46,8 @@ const page = async (props: Props) => {
     if (!testMetadata) {
         return <ErrorPage errorMessage={message} />
     }
+
+    console.log(testMetadata)
     const rankedUsers = [...testMetadata.usersAttended]
         .sort((a, b) => b.totalScore - a.totalScore) // Sort by score (descending)
         .map((user, index) => ({
@@ -73,9 +75,14 @@ const page = async (props: Props) => {
                     </div>
                 </div>
 
-                <div className="relative">
-                    <TestInput testid={testMetadata.id} />
-                </div>
+                {testMetadata.archive
+                    ? <div className="text-center p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                        <p className="text-gray-600 dark:text-gray-400">This test is no longer available</p>
+                      </div>
+                    : <div className="relative">
+                        <TestInput testid={testMetadata.id} />
+                      </div>
+                }
             </div>
 
             <div className="w-full md:w-[60%] bg-primary  h-fit p-4 rounded-lg shadow border">

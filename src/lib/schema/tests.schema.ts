@@ -166,7 +166,8 @@ export type TSingleCustomTestWithQuestions = Pick<CustomTest,
     'id' |
     'name' |
     'slug' |
-    'stream'
+    'stream' |
+    'archive'
 > & {
     createdBy: string,
     questions: TQuestion[]

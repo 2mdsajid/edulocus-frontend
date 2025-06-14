@@ -1,4 +1,7 @@
-import { CardDescription } from "@/components/ui/card"; // Import CardDescription for consistency
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { CardDescription } from "@/components/ui/card";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -7,8 +10,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { TGroupDetail } from "@/lib/schema/groups.schema"; // Import TGroupDetail to access customTests type
+import { disableTestAction } from "@/lib/actions/tests.actions";
+import { TGroupDetail } from "@/lib/schema/groups.schema";
 import { formatDateTimeDate } from "@/lib/utils";
+import { Eye, MoreHorizontal, Pencil } from "lucide-react";
 
 type Props = {
   tests: TGroupDetail['customTests'];
@@ -40,9 +45,10 @@ export const GroupTestsTable = ({ tests, groupId }: Props) => {
       <Table className="min-w-full divide-y divide-gray-200">
         <TableHeader className="bg-gray-100">
           <TableRow>
-            <TableHead className="w-[40%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Name</TableHead>
-            <TableHead className="w-[30%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created On</TableHead>
-            <TableHead className="w-[30%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</TableHead>
+            <TableHead className="w-[35%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Name</TableHead>
+            <TableHead className="w-[25%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created On</TableHead>
+            <TableHead className="w-[20%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</TableHead>
+            <TableHead className="w-[20%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Disable</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="bg-white divide-y divide-gray-200">
@@ -52,26 +58,66 @@ export const GroupTestsTable = ({ tests, groupId }: Props) => {
                 {test.name}
               </TableCell>
               <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {/* Using the locally defined formatDate function */}
                 {formatDateTimeDate(test.date)}
               </TableCell>
               <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <div className="flex space-x-2">
-                  <a
-                    target="_blank"
-                    href={`/questions/create/${test.id}`}
-                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-                  >
-                    Edit
-                  </a>
-                  <a
-                    target="_blank"
-                    href={`/tests/view/${test.id}`}
-                    className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
-                  >
-                    View
-                  </a>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-8 w-8 p-0">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem>
+                        <a
+                          target="_blank"
+                          href={`/questions/create/${test.id}`}
+                          className="flex items-center"
+                        >
+                          <Pencil className="mr-2 h-4 w-4" />
+                          Edit
+                        </a>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <a
+                          target="_blank"
+                          href={`/tests/view/${test.id}`}
+                          className="flex items-center"
+                        >
+                          <Eye className="mr-2 h-4 w-4" />
+                          View
+                        </a>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
+              </TableCell>
+              <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive" size="sm">
+                      Disable Test
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This will disable the test and prevent users from accessing it.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => disableTestAction(test.id)}
+                        className="bg-red-600 hover:bg-red-700"
+                      >
+                        Disable
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </TableCell>
             </TableRow>
           ))}

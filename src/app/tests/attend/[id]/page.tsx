@@ -45,8 +45,8 @@ const page = async (props: Props) => {
 
     const testid = props.params.id
     const { data: test, message } = await getSingleTestById(testid)
-    if (!test) {
-        return <ErrorPage errorMessage={message} />
+    if (!test || test.archive) {
+        return <ErrorPage errorMessage={'Test Not Available'} />
     }
 
     const { username } = props.searchParams || generateRandomName()

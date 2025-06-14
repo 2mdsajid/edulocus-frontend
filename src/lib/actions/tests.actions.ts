@@ -454,3 +454,41 @@ export const updateTestQuestions = async (testid: string, questionIds: string[])
         return { data: null, message: "Some Error Occured while updating test questions!" };
     }
 };
+
+
+
+export const disableTestAction = async (testId: string): Promise<{
+    data: string | null;
+    message: string;
+}> => {
+    try {
+        const cookieStore = cookies();
+        const authToken = cookieStore.get("auth-token")?.value;
+    
+        if (!authToken) {
+            return { data: null, message: "User not logged in!" };
+        }
+
+        console.log(testId)
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/tests/archive-test/${testId}`, {
+            method: "POST",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + authToken,
+            }
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+        
+    } catch (error) {
+        return { data: null, message: "Some Error Occured while disabling test!" };
+    }
+};
