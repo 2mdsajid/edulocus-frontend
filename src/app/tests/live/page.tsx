@@ -18,13 +18,13 @@ const page = async (props: Props) => {
     const currentHour = today.getHours(); // Get the current hour (0-23)
 
     // Define the live test time window
-    const startTime = 16; // 4 PM
-    const endTime = 20;   // 8 PM
+    // const startTime = 16; // 4 PM
+    // const endTime = 20;   // 8 PM
 
     // Check if the current time is outside the live test window
-    if (currentHour < startTime || currentHour >= endTime) {
-        return <NoLiveTestsPage />;
-    }
+    // if (currentHour < startTime || currentHour >= endTime) {
+    //     return <NoLiveTestsPage />;
+    // }
 
     const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     
