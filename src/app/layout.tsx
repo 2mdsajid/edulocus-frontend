@@ -35,7 +35,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* <script defer src="https://cloud.umami.is/script.js" data-website-id="5af07f51-10cb-41b3-9998-d456214b0eab"></script> */}
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="5af07f51-10cb-41b3-9998-d456214b0eab"></script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
