@@ -3,6 +3,8 @@ import ErrorPage from "@/components/reusable/ErrorPage";
 import { getGroupById } from "@/lib/actions/group.actions"; // Your action to fetch group data
 import { GroupDetail } from "./_components/GroupDetail"; // Import the new component
 import { constructMetadata } from "@/lib/data"; // Assuming you have this utility for metadata
+import { getUserSession } from "@/lib/auth/auth";
+import { redirect } from "next/navigation";
 
 type Props = {
   params: {
@@ -29,6 +31,12 @@ export async function generateMetadata({ params }: Props) {
 
 
 const page = async ({ params }: Props) => {
+
+  const { data: user, message: authMessage } = await getUserSession()
+    if (!user || !user.googleId || !user.id) {
+        redirect('/login?ru=/group')
+    } 
+
   const id = params.id;
   const { data: groupData, message: groupDataMessage } = await getGroupById(id);
 
@@ -39,7 +47,9 @@ const page = async ({ params }: Props) => {
   // Render the GroupDetail component with the fetched data
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50 "> {/* Add consistent background and padding for navbar */}
-      <GroupDetail group={groupData} />
+      <GroupDetail 
+      user={user}
+      group={groupData} />
     </div>
   );
 };

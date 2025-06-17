@@ -267,7 +267,7 @@ export const membershipFeatures: TMembershipFeatures[] = [
 export const navItems = [
   { name: 'Home', href: '/' },
   { name: 'Tests', href: '/tests' },
-  { name: 'Membership', href: '/membership' },
+  // { name: 'Membership', href: '/membership' },
   { name: 'Dhasboard', href: '/dashboard' },
 ]
 

@@ -1,5 +1,8 @@
+import { getUserSession } from "@/lib/auth/auth";
 import { CreateGroupForm } from "./_components/CreateGroupForm"; // Adjust path if necessary
-import { constructMetadata } from "@/lib/data"; // Assuming this utility exists
+import { constructMetadata, ROLES_HIEARCHY } from "@/lib/data"; // Assuming this utility exists
+import { redirect } from "next/navigation";
+import ErrorPage from "@/components/reusable/ErrorPage";
 
 export const metadata = constructMetadata({
     title: 'EduLocus | Create Group',
@@ -7,6 +10,15 @@ export const metadata = constructMetadata({
 });
 
 const page = async () => { 
+
+    const { data: user, message: authMessage } = await getUserSession()
+    if (!user || !user.googleId || !user.id) {
+        redirect('/login?ru=/group')
+    } 
+    
+    if(!ROLES_HIEARCHY.MODERATOR.includes(user.role)){
+        return <ErrorPage errorMessage="You Have No Access To This Page!" />
+    }
 
     return (
         // Apply consistent background gradient and top padding (pt-20 for navbar clearance)

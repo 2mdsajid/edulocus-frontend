@@ -16,15 +16,6 @@ export const metadata = constructMetadata({
 
 
 const layout = async (props: Props) => {
-
-    const { data: user, message: authMessage } = await getUserSession()
-    if (!user || !user.googleId || !user.id) {
-        redirect('/login?ru=/group')
-    } 
-    
-    if(!ROLES_HIEARCHY.MODERATOR.includes(user.role)){
-        return <ErrorPage errorMessage="You Have No Access To This Page!" />
-    }
     
     return (
         <div className='min-h-screen w-full bg-color1 dark:bg-dark-primary pt-20 pb-10 px-4 md:px-10 lg:px-20 xl:px-32'>

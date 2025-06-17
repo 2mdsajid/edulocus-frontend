@@ -52,7 +52,8 @@ const page = async (props: Props) => {
         averageScorePerQuestion,
         recentTests,
         dailyTestProgressChartData,
-        subjectWiseScoreChartData
+        subjectWiseScoreChartData,
+        groupData,
     } = dashboardAnalyticsData;
 
     return (
@@ -64,6 +65,7 @@ const page = async (props: Props) => {
                     Generate AI Report
                 </Button>
             </Link>
+
 
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
                 <DashboardCard
@@ -82,7 +84,7 @@ const page = async (props: Props) => {
                 />
                 <DashboardCard
                     title="Average Score Per Test"
-                    value={`${Math.round(averageScorePerTest/10)}`}
+                    value={`${Math.round(averageScorePerTest / 10)}`}
                     badgeText="Score/Test"
                     className="bg-green-500 text-white"
                     badgeClassName="bg-secondary text-success-foreground"
@@ -121,6 +123,25 @@ const page = async (props: Props) => {
                     />
                 </div>
             </div>
+
+            {/* Group Data */}
+            {groupData && groupData.length > 0 && (
+                <div className='w-full'>
+                    <h2 className="text-3xl font-bold text-gray-800 mb-6 border-b-2 pb-3">Your Groups</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        {groupData.map((group) => (
+                            <div key={group.id} className="bg-white p-6 rounded-lg shadow-md border">
+                                <h3 className="text-xl font-semibold text-gray-800 mb-4">{group.name}</h3>
+                                <Link href={`/group/view/${group.id}`}>
+                                    <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
+                                        View Group
+                                    </Button>
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* recent tests */}
             <div className='w-full '>

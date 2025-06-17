@@ -2,8 +2,17 @@ import ErrorPage from "@/components/reusable/ErrorPage";
 import { getAllGroupsByModerator } from "@/lib/actions/group.actions"; // Corrected import to the action
 import { Separator } from "@/components/ui/separator"; // For a nice visual separation
 import { SingleGroupCard } from "./_components/SingleGroupCard";
+import { getUserSession } from "@/lib/auth/auth";
+import { redirect } from "next/navigation";
 
-const ModeratorGroupsPage = async () => { // Renamed 'page' to 'ModeratorGroupsPage' for clarity
+const ModeratorGroupsPage = async () => { 
+
+  const { data: user, message: authMessage } = await getUserSession()
+    if (!user || !user.googleId || !user.id) {
+        redirect('/login?ru=/group')
+    } 
+
+
   const { data: groups, message } = await getAllGroupsByModerator();
   if (!groups || groups.length === 0) {
     return <ErrorPage errorMessage={message || "No groups found or an error occurred."} />;

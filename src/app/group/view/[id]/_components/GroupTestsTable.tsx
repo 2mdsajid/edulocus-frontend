@@ -11,16 +11,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { disableTestAction } from "@/lib/actions/tests.actions";
+import { ROLES_HIEARCHY } from "@/lib/data";
 import { TGroupDetail } from "@/lib/schema/groups.schema";
+import { TBaseUser } from "@/lib/schema/users.schema";
 import { formatDateTimeDate } from "@/lib/utils";
 import { Eye, MoreHorizontal, Pencil } from "lucide-react";
 
 type Props = {
+  user: TBaseUser
   tests: TGroupDetail['customTests'];
   groupId: string;
 };
 
-export const GroupTestsTable = ({ tests, groupId }: Props) => {
+export const GroupTestsTable = ({ user, tests, groupId }: Props) => {
   if (tests.length === 0) {
     return (
       <div className="p-6 text-center text-gray-500 rounded-lg shadow-inner bg-gray-50">
@@ -69,16 +72,19 @@ export const GroupTestsTable = ({ tests, groupId }: Props) => {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>
-                        <a
-                          target="_blank"
-                          href={`/questions/create/${test.id}`}
-                          className="flex items-center"
-                        >
-                          <Pencil className="mr-2 h-4 w-4" />
-                          Edit
-                        </a>
-                      </DropdownMenuItem>
+
+                      {/* only moderators can edit test */}
+                      {ROLES_HIEARCHY.MODERATOR.includes(user.role)
+                        && <DropdownMenuItem>
+                          <a
+                            target="_blank"
+                            href={`/questions/create/${test.id}`}
+                            className="flex items-center"
+                          >
+                            <Pencil className="mr-2 h-4 w-4" />
+                            Edit
+                          </a>
+                        </DropdownMenuItem>}
                       <DropdownMenuItem>
                         <a
                           target="_blank"
@@ -93,32 +99,35 @@ export const GroupTestsTable = ({ tests, groupId }: Props) => {
                   </DropdownMenu>
                 </div>
               </TableCell>
-              <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="destructive" size="sm">
-                      Disable Test
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This will disable the test and prevent users from accessing it.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={() => disableTestAction(test.id)}
-                        className="bg-red-600 hover:bg-red-700"
-                      >
-                        Disable
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </TableCell>
+
+              {/* only moderators can disable test */}
+              {ROLES_HIEARCHY.MODERATOR.includes(user.role)
+                && <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="destructive" size="sm">
+                        Disable Test
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This will disable the test and prevent users from accessing it.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => disableTestAction(test.id)}
+                          className="bg-red-600 hover:bg-red-700"
+                        >
+                          Disable
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </TableCell>}
             </TableRow>
           ))}
         </TableBody>

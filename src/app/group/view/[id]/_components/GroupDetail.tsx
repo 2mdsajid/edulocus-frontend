@@ -11,12 +11,15 @@ import { GroupMembersTable } from "./UserTable"; // Assuming UserTable is GroupM
 import { GroupTestsTable } from "./GroupTestsTable";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { TBaseUser } from "@/lib/schema/users.schema";
+import { ROLES_HIEARCHY } from "@/lib/data";
 
 type GroupDetailProps = {
+  user: TBaseUser
   group: TGroupDetail;
 };
 
-export const GroupDetail = ({ group }: GroupDetailProps) => {
+export const GroupDetail = ({ user, group }: GroupDetailProps) => {
   const [activeTab, setActiveTab] = useState<'members' | 'tests'>('members'); // State to manage active tab
 
   return (
@@ -50,19 +53,21 @@ export const GroupDetail = ({ group }: GroupDetailProps) => {
             </>
           )}
 
-          <div className="mb-4">
-            <AddGroupMember
-              groupId={group.id}
-            />
-            <Button
-              className="bg-purple-600 hover:bg-purple-700 text-white ml-2"
-              asChild
-            >
-              <a target="_blank" href={`/questions/create?gid=${group.id}`}>
-                <Plus className="mr-2 h-4 w-4" /> Add Test
-              </a>
-            </Button>
-          </div>
+          {/* this will restrict roles in group page */}
+          {ROLES_HIEARCHY.MODERATOR.includes(user.role)
+            && <div className="mb-4">
+              <AddGroupMember
+                groupId={group.id}
+              />
+              <Button
+                className="bg-purple-600 hover:bg-purple-700 text-white ml-2"
+                asChild
+              >
+                <a target="_blank" href={`/questions/create?gid=${group.id}`}>
+                  <Plus className="mr-2 h-4 w-4" /> Add Test
+                </a>
+              </Button>
+            </div>}
 
           <div className="flex items-center text-gray-600 text-sm">
             <span className="font-medium mr-2">Slug:</span>
@@ -73,45 +78,64 @@ export const GroupDetail = ({ group }: GroupDetailProps) => {
         </CardContent>
       </Card>
 
-      {/* Group Members and Tests Section */}
-      <Card className="shadow-lg rounded-lg border-none">
-        <CardHeader className="p-6 md:p-8 pb-0">
-          <div className="flex border-b border-gray-200">
-            <button
-              className={`pb-3 px-4 text-lg font-semibold ${activeTab === 'members'
-                ? 'text-indigo-600 border-b-2 border-indigo-600'
-                : 'text-gray-500 hover:text-gray-700'
-                }`}
-              onClick={() => setActiveTab('members')}
-            >
-              Members ({group.members.length})
-            </button>
-            <button
-              className={`pb-3 px-4 text-lg font-semibold ${activeTab === 'tests'
-                ? 'text-indigo-600 border-b-2 border-indigo-600'
-                : 'text-gray-500 hover:text-gray-700'
-                }`}
-              onClick={() => setActiveTab('tests')}
-            >
+      {ROLES_HIEARCHY.MODERATOR.includes(user.role) ? (
+        /* Group Members and Tests Section */
+        <Card className="shadow-lg rounded-lg border-none">
+          <CardHeader className="p-6 md:p-8 pb-0">
+            <div className="flex border-b border-gray-200">
+              <button
+                className={`pb-3 px-4 text-lg font-semibold ${activeTab === 'members'
+                  ? 'text-indigo-600 border-b-2 border-indigo-600'
+                  : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                onClick={() => setActiveTab('members')}
+              >
+                Members ({group.members.length})
+              </button>
+              <button
+                className={`pb-3 px-4 text-lg font-semibold ${activeTab === 'tests'
+                  ? 'text-indigo-600 border-b-2 border-indigo-600'
+                  : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                onClick={() => setActiveTab('tests')}
+              >
+                Tests ({group.customTests.length})
+              </button>
+            </div>
+          </CardHeader>
+          <CardContent className="p-0">
+            {activeTab === 'members' ? (
+              <GroupMembersTable
+                groupId={group.id}
+                members={group.members}
+                onRemoveMember={removeGroupMember}
+              />
+            ) : (
+              <GroupTestsTable
+                user={user}
+                groupId={group.id}
+                tests={group.customTests}
+              />
+            )}
+          </CardContent>
+        </Card>
+      ) : (
+        /* Tests Only Section for Non-Moderators */
+        <Card className="shadow-lg rounded-lg border-none">
+          <CardHeader className="p-6 md:p-8">
+            <CardTitle className="text-xl font-semibold text-gray-900">
               Tests ({group.customTests.length})
-            </button>
-          </div>
-        </CardHeader>
-        <CardContent className="p-0">
-          {activeTab === 'members' ? (
-            <GroupMembersTable
-              groupId={group.id}
-              members={group.members}
-              onRemoveMember={removeGroupMember}
-            />
-          ) : (
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
             <GroupTestsTable
+              user={user}
               groupId={group.id}
               tests={group.customTests}
             />
-          )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
