@@ -1,8 +1,7 @@
-import { getSingleTestById } from '@/lib/actions/tests.actions'
 import ErrorPage from '@/components/reusable/ErrorPage'
-import React from 'react'
+import { getSyllabus } from '@/lib/actions/questions.actions'
+import { getSingleTestById } from '@/lib/actions/tests.actions'
 import TestManagementPage from './_components/TestManagementPage'
-import { getSubjects } from '@/lib/actions/questions.actions'
 
 type Props = {
     params: {
@@ -16,9 +15,9 @@ const page = async (props: Props) => {
         return <ErrorPage errorMessage={testMessage} />
     }
 
-    const {data:subjects, message} =await getSubjects(test.stream);
-    if(!subjects || subjects.length == 0){
-        return <ErrorPage errorMessage={message || 'No Subjects Found'} />
+    const {data:syllabus, message} =await getSyllabus(test.stream);
+    if(!syllabus){
+        return <ErrorPage errorMessage={message || 'No Syllabus Found'} />
     }
 
 
@@ -29,7 +28,7 @@ const page = async (props: Props) => {
 
     return (
         <div>
-            <TestManagementPage test={test} subjects={subjects} />
+            <TestManagementPage test={test} syllabus={syllabus} />
         </div>
     )
 }

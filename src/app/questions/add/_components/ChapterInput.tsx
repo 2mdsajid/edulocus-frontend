@@ -1,5 +1,5 @@
 import DropDownInput from '@/components/reusable/DropDownInput'
-import { getTopicsBySubject } from '@/lib/methods/questions.methods'
+import { getAllTopicsBySubject } from '@/lib/methods/questions.methods'
 import { TPGSyllabus } from '@/lib/schema/questions.schema'
 
 
@@ -11,7 +11,7 @@ type Props = {
 }
 
 const ChapterInput = (props: Props) => {
-    const chapters = getTopicsBySubject(props.syllabus, props.subject)
+    const chapters = getAllTopicsBySubject(props.syllabus, props.subject)
     return <DropDownInput
         category='chapter'
         value={props.chapter || 'chapter'}

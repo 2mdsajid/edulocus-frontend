@@ -171,7 +171,7 @@ export const getTotalQuestionsPerSubjectAndChapter = async (): Promise<{
             const { data, message } = await response.json();
             return { data: null, message }
         }
-        
+
         const { data, message } = await response.json();
         return { data, message };
     } catch (error) {
@@ -216,7 +216,7 @@ export const getTotalQuestionsPerSubject = async (): Promise<{
 };
 
 
-export const  getQuestionsBySubject = async (subject: string): Promise<{
+export const getQuestionsBySubject = async (subject: string): Promise<{
     data: TQuestion[] | null;
     message: string;
 }> => {
@@ -245,7 +245,7 @@ export const  getQuestionsBySubject = async (subject: string): Promise<{
 
         const { data, message } = await response.json();
         return { data, message };
-        
+
     } catch (error) {
         console.log(error)
         return { data: null, message: "Some Error Occured while fetching questions by subject!" };
@@ -306,5 +306,66 @@ export const getSubjects = async (stream: TStream): Promise<{
         return { data, message };
     } catch (error) {
         return { data: null, message: "Some Error Occured while fetching subjects!" };
+    }
+};
+
+
+export const getChaptersBySubject = async (stream: TStream, subject: string): Promise<{
+    data: string[] | null;
+    message: string;
+}> => {
+    try {
+        const response = await fetch(`${process.env.BACKEND}/questions/get-chapters-by-subject?stream=${stream}&subject=${subject}`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occured while fetching chapters!" };
+    }
+};
+
+
+
+export const addSingleQuestion = async (questionData: Omit<TQuestion, 'id'>): Promise<{
+    data: string | null;
+    message: string;
+}> => {
+    try {
+        const cookieStore = await cookies();
+        const token = cookieStore.get('auth-token')?.value;
+
+        if (!token) {
+            return { data: null, message: "Authentication token not found!" };
+        }
+        const response = await fetch(`${process.env.BACKEND}/questions/add-single-question`, {
+            method: "POST",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify(questionData)
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occurred while adding the question!" };
     }
 };
