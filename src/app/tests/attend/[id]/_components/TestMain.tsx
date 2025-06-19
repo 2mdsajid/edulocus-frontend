@@ -282,9 +282,7 @@ const TestMain = (props: Props) => {
 
     return (
         <div className='w-full'>
-            {true
-
-
+            {istestsubmitted
                 // AFTER SUBMITTING THE ANSWERS
                 ? <Tabs defaultValue="analysis" className="w-full my-5">
                     <TabsList className='bg-none bg-primary dark:bg-dark-primary mb-3 sticky top-16 z-100'>
