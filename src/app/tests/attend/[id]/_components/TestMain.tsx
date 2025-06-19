@@ -1,20 +1,26 @@
 'use client'
 
+import ContributeCardComponent from '@/components/reusable/links/ContributeCardComponent';
+import FeedbackComponent from '@/components/reusable/links/FeedbackComponent';
+import JoinTelegramComponent from '@/components/reusable/links/JoinTelegramComponent';
+import JoinUsComponent from '@/components/reusable/links/JoinUsComponent';
 import SubmitButton from '@/components/reusable/SubmitButton';
+import TestBasicAnalysis from '@/components/reusable/tests/TestBasicAnalysis';
+import TestQuestionRender from '@/components/reusable/tests/TestQuestionRender';
+import TestTimer2 from '@/components/reusable/tests/TestTimer2';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { sendTestAnalytic, sendUserScore } from '@/lib/actions/tests.actions';
+import { TCreateTestAnalytic, TCreateTestQuestionAnswer, TQuestion, TSaveUserScore, TSubjectWiseChapterScores } from '@/lib/schema/tests.schema';
 import { TBaseUser } from '@/lib/schema/users.schema';
 import { categorizeQuestionsBySubject } from '@/lib/utils';
 import { CheckCircle, Send } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { sendTestAnalytic, sendUserScore } from '@/lib/actions/tests.actions';
-import { TCreateTestAnalytic, TCreateTestQuestionAnswer, TQuestion, TSaveUserScore, TSubjectWiseChapterScores } from '@/lib/schema/tests.schema';
 import TestAnalysis from './TestAnalysis';
-import TestQuestionRender from '@/components/reusable/tests/TestQuestionRender';
 import TestQuestoinsAndAnswersViewer from './TestQuestoinsAndAnswersViewer';
-import TestTimer2 from '@/components/reusable/tests/TestTimer2';
+
 
 type Props = {
     id: string;
@@ -31,6 +37,8 @@ const TestMain = (props: Props) => {
     const router = useRouter()
 
     const submitref = useRef<HTMLButtonElement | null>(null)
+
+    const {authToken} = props
 
     const TIME_PER_QUESTION = 54000
     const NEGATIVEMARK = 0.25
@@ -274,16 +282,55 @@ const TestMain = (props: Props) => {
 
     return (
         <div className='w-full'>
-            {istestsubmitted
+            {true
 
 
                 // AFTER SUBMITTING THE ANSWERS
                 ? <Tabs defaultValue="analysis" className="w-full my-5">
                     <TabsList className='bg-none bg-primary dark:bg-dark-primary mb-3 sticky top-16 z-100'>
                         <TabsTrigger className='text-xl font-semibold' value="analysis">Analysis</TabsTrigger>
-                        <TabsTrigger className='text-xl font-semibold' value="answers">Answers</TabsTrigger>
+                        <TabsTrigger className='text-xl font-semibold' value="ai-analysis">AI Analysis</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="analysis" className='w-full'>
+                    <TabsContent value="analysis" className='w-full space-y-5'>
+                        <TestBasicAnalysis
+                            total_questions={totalTimeTaken}
+                            corrrect_attempt={correctAttempt.length}
+                            questions_attempt={questionsAttempt.length}
+                            total_timetaken={totalTimeTaken}
+                        />
+
+                        <TestQuestoinsAndAnswersViewer
+                            testName={props.testName}
+                            questions={uquestions}
+                        />
+
+                        {/* ask users to login when they are not logged in */}
+                        {(!authToken
+                            || authToken === ''
+                            || authToken === undefined
+                            || authToken === 'undefined') &&
+                            <div className=" w-full">
+                                <JoinUsComponent />
+                            </div>
+                        }
+
+                        <div className=" w-full">
+                            <JoinTelegramComponent />
+                        </div>
+
+
+                        {/* <div className=" w-full">
+                            <FeedbackComponent />
+                        </div>
+
+                        <div className=" w-full">
+                            <ContributeCardComponent />
+                        </div> */}
+
+                    </TabsContent>
+
+                    {/* to view the answers */}
+                    <TabsContent value="ai-analysis" className='w-full'>
                         <TestAnalysis
                             totalQuestions={uquestions.length}
                             correctAttempt={correctAttempt.length}
@@ -291,14 +338,6 @@ const TestMain = (props: Props) => {
                             totalTimeTaken={totalTimeTaken}
                             subjectWiseChapterScore={subjectWiseChapterScore}
                             authToken={props.authToken}
-                        />
-                    </TabsContent>
-
-                    {/* to view the answers */}
-                    <TabsContent value="answers" className='w-full'>
-                        <TestQuestoinsAndAnswersViewer
-                            testName={props.testName}
-                            questions={uquestions}
                         />
                     </TabsContent>
                 </Tabs>

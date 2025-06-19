@@ -51,7 +51,8 @@ export const GroupTestsTable = ({ user, tests, groupId }: Props) => {
             <TableHead className="w-[35%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Name</TableHead>
             <TableHead className="w-[25%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created On</TableHead>
             <TableHead className="w-[20%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</TableHead>
-            <TableHead className="w-[20%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Disable</TableHead>
+            {ROLES_HIEARCHY.MODERATOR.includes(user.role)
+              && <TableHead className="w-[20%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Disable</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody className="bg-white divide-y divide-gray-200">

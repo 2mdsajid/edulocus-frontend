@@ -28,14 +28,14 @@ const TestAnalysis = (props: Props) => {
 
     return (
         <div className='w-full space-y-5'>
-            <div className='space-y-3'>
+            {/* <div className='space-y-3'>
                 <TestBasicAnalysis
                     total_questions={totalQuestions}
                     corrrect_attempt={correctAttempt}
                     questions_attempt={questionsAttempt}
                     total_timetaken={totalTimeTaken}
                 />
-            </div>
+            </div> */}
 
             <div className="flex flex-col gap-4">
                 {chapterwisescore && Object.keys(chapterwisescore).length > 5 ? (
@@ -71,28 +71,7 @@ const TestAnalysis = (props: Props) => {
                 </div>
             }
 
-            {/* ask users to login when they are not logged in */}
-            {(!authToken
-                || authToken === ''
-                || authToken === undefined
-                || authToken === 'undefined') &&
-                <div className=" w-full">
-                    <JoinUsComponent />
-                </div>
-            }
-
-            <div className=" w-full">
-                <JoinTelegramComponent />
-            </div>
-
-
-            <div className=" w-full">
-                <FeedbackComponent />
-            </div>
-
-            <div className=" w-full">
-                <ContributeCardComponent />
-            </div>
+           
 
         </div>
     )

@@ -92,11 +92,13 @@ export async function GET(request: Request): Promise<Response> {
 
 
 	if (existingUser === null) {
+		console.log(existingUser)
 		return new Response(null, {
 			status: 404,
 			headers: {
                 "Location": "/login?error=user_not_found" // Redirect to login with specific error
             }
+
 		});
 	}
 

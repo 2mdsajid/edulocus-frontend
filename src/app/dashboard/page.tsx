@@ -41,6 +41,7 @@ const page = async (props: Props) => {
         return <ErrorPage errorMessage={dashboardAnalyticsMessage} />;
     }
 
+
     const {
         totalTests,
         totalQuestionsAttempt,
