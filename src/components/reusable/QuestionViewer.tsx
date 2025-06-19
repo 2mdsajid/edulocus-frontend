@@ -71,7 +71,7 @@ export const QuestionViewer = (props: Props) => {
     }
 
     return (
-        <Card className="w-full bg-primary ">
+        <Card className="w-full bg-primary border ">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className=" text-lg font-bold">Question {index + 1}</CardTitle>
                 <div className="flex items-center space-x-2">

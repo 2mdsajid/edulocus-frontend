@@ -20,21 +20,21 @@ type Props = {
 const TestQuestoinsAndAnswersViewer = (props: Props) => {
     const { questions, testName } = props
     return (
-        <Card className="w-full bg-white shadow-2xl p-8 mt-10 rounded-2xl border-t-8 border-purple-500"> {/* Applied the new styling here */}
+        <Card className="w-full bg-white shadow-2xl px-2 py-4  mt-10 rounded-2xl border-t-8 border-purple-500"> {/* Applied the new styling here */}
             <Accordion type="single" collapsible className="w-full">
                 {/* Removed border-b from AccordionItem to remove the line below the trigger */}
                 <AccordionItem value="test-details">
                     <AccordionTrigger className="text-black hover:no-underline text-lg font-bold">
                         Click To View Answers
                     </AccordionTrigger>
-                    <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                    <AccordionContent className="p-0 overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                         <div className="flex flex-col gap-4 mt-4">
                             <GenerateTestPDF
                                 questions={questions}
                                 testName={testName}
                             />
                             {questions && questions.map((question, index) => (
-                                <div key={index} className='h-fit'>
+                                <div key={index} className='h-full w-full'>
                                     <QuestionViewer index={index} question={question} />
                                 </div>
                             ))}
