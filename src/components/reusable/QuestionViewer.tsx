@@ -11,6 +11,7 @@ import { useState } from "react"
 import { Loader2 } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
 import { getGeminiExplanation } from "@/lib/actions/google.actions"
+import { TBaseImages } from "@/lib/schema/questions.schema"
 type Props = {
     question: TQuestion
     index: number
@@ -85,7 +86,14 @@ export const QuestionViewer = (props: Props) => {
                 </div>
             </CardHeader>
             <CardContent className="pt-4">
-                <div className="text-md font-medium mb-4">{question.question}</div>
+                <div className="text-md font-medium mb-4">{ParsedElement(question.question)}</div>
+                {question.images?.qn && (
+                    <img 
+                        src={question.images.qn} 
+                        alt="Question Image" 
+                        className="max-w-full h-auto mb-4 rounded-lg"
+                    />
+                )}
                 <div className="space-y-1">
                     {['a', 'b', 'c', 'd'].map((option) => (
                         <div key={option} className={cn("flex items-center space-x-2 p-2 rounded-md transition-colors", getOptionStyle(option))}>
@@ -95,6 +103,13 @@ export const QuestionViewer = (props: Props) => {
                                         {option} <span>{`)`}</span>
                                     </p>
                                     <p>{ParsedElement(question.options[option as keyof TBaseOption])}</p>
+                                {question.images?.[option as keyof TBaseImages] && (
+                                    <img 
+                                        src={question.images[option as keyof TBaseImages] || undefined} 
+                                        alt={`Option ${option} Image`}
+                                        className="max-w-full h-auto rounded-lg"
+                                    />
+                                )}
                                 </div>
                             </Label>
                         </div>
@@ -127,6 +142,13 @@ export const QuestionViewer = (props: Props) => {
                     <div className="text-sm">
                         <p className="">
                             {ParsedElement(currentExplanation) || "No explanation available for this question."}
+                        {question.images?.exp && (
+                            <img 
+                                src={question.images.exp} 
+                                alt="Explanation Image" 
+                                className="max-w-full h-auto mt-2 rounded-lg"
+                            />
+                        )}
                         </p>
                     </div>
                 </div>

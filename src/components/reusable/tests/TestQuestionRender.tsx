@@ -4,6 +4,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { TBaseUser } from '@/lib/schema/users.schema'
 import { ParsedElement } from '@/lib/utils'
 import QuestionReportDialog from '@/components/reusable/QuestionReportDialog'
+import { TBaseImages } from '@/lib/schema/questions.schema'
 
 type Props = {
   question: TQuestion
@@ -20,6 +21,13 @@ const TestQuestionRender = (props: Props) => {
       <div className="flex gap-4 justify-between items-start w-full mb-4">
         <div className="qn text-md flex items-start text-lg font-semibold text-gray-800 dark:text-gray-200">
           <p>{ParsedElement(`Q.${index + 1}&nbsp;&nbsp;  ${question.question}`)}</p>
+        {question.images?.qn && (
+          <img 
+            src={question.images.qn} 
+            alt="Question Image" 
+            className="max-w-full h-auto mt-2 rounded-lg"
+          />
+        )}
         </div>
         <QuestionReportDialog questionId={question.id} />
       </div>
@@ -46,7 +54,18 @@ const TestQuestionRender = (props: Props) => {
                 <p className="flex gap-1 font-semibold text-gray-800 dark:text-gray-200">
                   {option} <span>)</span>
                 </p>
-                <p>{ParsedElement(question.options[option as keyof TBaseOption])}</p>
+                {question.images?.[option as keyof TBaseImages] ? (
+                  <div className="flex flex-col gap-2">
+                    <p>{ParsedElement(question.options[option as keyof TBaseOption])}</p>
+                    <img 
+                      src={question.images[option as keyof TBaseImages] || undefined} 
+                      alt={`Option ${option} Image`}
+                      className="max-w-full h-auto rounded-lg"
+                    />
+                  </div>
+                ) : (
+                  <p>{ParsedElement(question.options[option as keyof TBaseOption])}</p>
+                )}
               </div>
             </Label>
           </div>
