@@ -113,6 +113,9 @@ export type TQuestion = TBaseQuestion & {
     timetaken?: number
 }
 
+export type TReportQuestion = TQuestion & {message : string | null}
+
+
 export type TcreateCustomTest = Pick<CustomTest,
     'name' |
     'slug' |

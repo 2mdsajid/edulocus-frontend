@@ -1,8 +1,8 @@
 'use server'
 
-import { TAddQuestion, TBaseOption, TCreatePastTestData, TPGSyllabus, TStreamHierarchy, TTotalQuestionsPerSubject } from "@/lib/schema/questions.schema";
+import { TAddQuestion, TAiQUestionUpdate, TBaseOption, TCreatePastTestData, TPGSyllabus, TStreamHierarchy, TTotalQuestionsPerSubject } from "@/lib/schema/questions.schema";
 import { cookies } from "next/headers";
-import { TBaseQuestion, TQuestion, TTotalQuestionsPerSubjectAndChapter } from "../schema/tests.schema";
+import { TBaseQuestion, TQuestion, TReportQuestion, TTotalQuestionsPerSubjectAndChapter } from "../schema/tests.schema";
 import { TStream } from "../schema/users.schema";
 
 export const getSyllabus = async (stream: TStream): Promise<{
@@ -369,3 +369,112 @@ export const addSingleQuestion = async (questionData: Omit<TQuestion, 'id'>): Pr
         return { data: null, message: "Some Error Occurred while adding the question!" };
     }
 };
+
+
+export const getReportedQuestions = async (): Promise<{
+    data: TReportQuestion[] | null;
+    message: string;
+}> => {
+    try {
+        const cookieStore = await cookies();
+        const token = cookieStore.get('auth-token')?.value;
+
+        if (!token) {
+            return { data: null, message: "Authentication token not found!" };
+        }
+
+        const response = await fetch(`${process.env.BACKEND}/questions/get-reported-questions`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occurred while fetching reported questions!" };
+    }
+};
+
+
+
+//update question
+export const updateQuestion = async (questionData: TQuestion): Promise<{
+    data: TQuestion | null;
+    message: string;
+}> => {
+    try {
+        const cookieStore = await cookies();
+        const token = cookieStore.get('auth-token')?.value;
+
+        if (!token) {
+            return { data: null, message: "Authentication token not found!" };
+        }
+
+        const response = await fetch(`${process.env.BACKEND}/questions/update-question`, {
+            method: "PUT",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify(questionData)
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occurred while updating the question!" };
+    }
+};
+
+
+
+export const updateQuestionByAI = async (questionData: TAiQUestionUpdate): Promise<{
+    data: TQuestion | null;
+    message: string;
+}> => {
+    try {
+        const cookieStore = await cookies();
+        const token = cookieStore.get('auth-token')?.value;
+
+        if (!token) {
+            return { data: null, message: "Authentication token not found!" };
+        }
+
+        const response = await fetch(`${process.env.BACKEND}/google/gemini-question-update`, {
+            method: "POST",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify(questionData)
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occurred while updating the question with AI!" };
+    }
+};
+
+

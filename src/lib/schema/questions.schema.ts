@@ -53,4 +53,13 @@ export type TStreamHierarchy = {
 };
 
 
+export type TAiQUestionUpdate = {
+  id: string, // Assuming the ID is needed for update
+  question: string,
+  options: TBaseOption,
+  answer: string,
+  explanation: string,
+  message: string | null, // Include the report message
+}
+
 export type TTotalQuestionsPerSubject = Pick<QuestionCount, 'subject' | 'count'>

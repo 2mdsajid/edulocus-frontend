@@ -219,9 +219,9 @@ export const membershipFeatures: TMembershipFeatures[] = [
   },
   {
     FeatureIcon: Rocket,
-    title: "Early Access to New Features",
+    title: "Personal Mentorship",
     description:
-      "Be the first to explore new tools and updates! Premium members unlock early access to everything new we build.",
+      "Get one-on-one guidance from experienced mentors to help you navigate your medical studies and career path effectively.",
   },
   {
     FeatureIcon: Brain,
@@ -237,9 +237,9 @@ export const membershipFeatures: TMembershipFeatures[] = [
   },
   {
     FeatureIcon: Sparkles,
-    title: "Smart AI-Based Recommendations",
+    title: "Unlimited Test Attempts",
     description:
-      "Let our AI suggest the right tests and topics tailored to your progress, strengths, and areas that need improvement.",
+      "Re-attempt tests as many times as you need to master the material. Our AI will track your progress and suggest improvements.",
   },
 ];
 

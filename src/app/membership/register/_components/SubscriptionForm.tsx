@@ -15,51 +15,50 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from '@/hooks/use-toast'
 import { createSubscriptionRequest } from '@/lib/actions/users.actions'
 import { STREAM_DETAILS } from "@/lib/data"
-import { TStream } from "@/lib/schema/users.schema"
+import { TBaseUser, TStream } from "@/lib/schema/users.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2 } from "lucide-react"
+import Image from 'next/image'
 import { useState } from 'react'
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 
 const formSchema = z.object({
-  name: z.string().min(2, { message: "First name must have at least 2 characters" }),
-  email: z.string().email({
-    message: "Email not formatted",
-  }),
+  // Removed name, email from the schema as they are not input fields anymore
   phone: z.string()
     .refine(value => /^\d{10,}$/g.test(value), {
       message: "Invalid phone number. It must have at least 10 digits."
     }),
-  stream: z.enum(['UG', 'PG'] as [TStream, TStream])
 });
 
 
-type Props = {}
+type Props = {
+  user: TBaseUser
+}
 
 const SubscriptionForm = (props: Props) => {
-
+  const { user } = props
   const [isSubmitClicked, setIsSubmitClicked] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
+      // Keep these default values as they will still be sent in the action
+      // They are just not rendered as input fields
       phone: "",
-      stream: "UG"
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitClicked(true)
     const { data, message } = await createSubscriptionRequest({
-      name: values.name,
-      email: values.email,
+      // Still send name and email from the user object
+      name: user.name,
+      email: user.email,
       phone: values.phone,
-      stream: values.stream,
-    })
+      stream: user.stream,
+    } as any) // Type assertion due to 'name' and 'email' not being in formSchema
 
     if (!data || data === undefined || data === null) {
       toast({
@@ -72,10 +71,7 @@ const SubscriptionForm = (props: Props) => {
 
     setIsSubmitClicked(false)
     form.reset({
-      name: "",
-      email: "",
       phone: "",
-      stream: "UG"
     });
     return toast({
       variant: "success",
@@ -93,49 +89,16 @@ const SubscriptionForm = (props: Props) => {
             Membership Form
           </CardTitle>
           <CardDescription className="text-center text-zinc-600">
-            Enter your details and we&apos;ll get in touch soon.
+          Scan(E-sewa) and pay the membership fee.
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-6">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-zinc-800">Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-300 focus:ring-zinc-300"
-                        placeholder="Your name"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-500" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-zinc-800">Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-300 focus:ring-zinc-300"
-                        placeholder="example@gmail.com"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-500" />
-                  </FormItem>
-                )}
-              />
 
-              {/* fee shown based on the stream */}
-              <FormField
+              {/* Removed FormField for 'name' and 'email' */}
+
+              {/* <FormField
                 control={form.control}
                 name="stream"
                 render={({ field }) => (
@@ -158,14 +121,44 @@ const SubscriptionForm = (props: Props) => {
                     <FormMessage className="text-red-500" />
                   </FormItem>
                 )}
-              />
+              /> */}
+
+              <div className="flex flex-col items-center justify-center space-y-4 ">
+                <div className="relative w-48 h-48">
+                  <img
+                    src="/qr.png"
+                    alt="Payment QR Code"
+                  />
+                </div>
+                <p className="text-center text-zinc-600">
+                  Please pay Rs {STREAM_DETAILS[user.stream.toLowerCase() as keyof typeof STREAM_DETAILS].price} for {user.stream} stream.
+                </p>
+              </div>
+
+              {/* <FormField
+                control={form.control}
+                name="paymentNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-zinc-800">Payment Transaction Number</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-300 focus:ring-zinc-300"
+                        placeholder="Enter the transaction ID or number"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-500" />
+                  </FormItem>
+                )}
+              /> */}
 
               <FormField
                 control={form.control}
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-zinc-800">Phone Number</FormLabel>
+                    <FormLabel className="text-zinc-800">Phone Number <span className="text-red-500">*</span></FormLabel>
                     <FormControl>
                       <Input
                         className="border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-300 focus:ring-zinc-300"
@@ -194,12 +187,35 @@ const SubscriptionForm = (props: Props) => {
             </form>
           </Form>
         </CardContent>
-        <CardFooter className="text-center text-sm text-zinc-600 border-t border-zinc-200 pt-6">
-          We&apos;ll never share your details. Read our{' '}
-          <a href="/privacy" className="text-zinc-900 hover:text-zinc-700 underline underline-offset-4">
-            Privacy Policy
-          </a>
-          .
+        <CardFooter className="flex flex-col items-center text-center text-sm text-zinc-600 border-t border-zinc-200 pt-6 space-y-3">
+          
+          <p className="text-sm font-semibold text-zinc-800">
+            Within 24 hours, we&apos;ll contact you. Please include your email in the payment remarks.
+          </p>
+          <p className="text-sm text-zinc-800">
+            <span className="font-bold">5-day refund policy</span> applies from the date of payment.
+          </p>
+          <div className="mt-4 text-center">
+            <p className="font-medium text-zinc-800">Contact Us:</p>
+            <p>
+              Facebook:{' '}
+              <a href="https://www.facebook.com/edu.locus" className="text-zinc-900 hover:text-zinc-700 underline underline-offset-4" target="_blank" rel="noopener noreferrer">
+                edu.locus
+              </a>
+            </p>
+            <p>
+              Telegram Chat:{' '}
+              <a href="https://t.me/+ygNs2o0PLXpjNDQ1" className="text-zinc-900 hover:text-zinc-700 underline underline-offset-4" target="_blank" rel="noopener noreferrer">
+                Join our Telegram group
+              </a>
+            </p>
+          </div>
+          <p>
+            <a href="/privacy" className="text-zinc-900 hover:text-zinc-700 underline underline-offset-4">
+              Privacy Policy
+            </a>
+            
+          </p>
         </CardFooter>
       </Card>
     </div>

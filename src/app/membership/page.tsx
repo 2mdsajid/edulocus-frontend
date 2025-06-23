@@ -36,10 +36,7 @@ const page = async () => {
                     Who We Are & Why Your Support Matters
                 </h2>
                 <p className="mx-auto  max-w-3xl text-lg text-gray-700">
-                    We are a small team of medical students from different medical colleges in Nepal,
-                    passionate about helping as many students as we can. Your membership not only enables us to keep updating content
-                    and stay motivated but also helps us run this platform. In short, we&apos;re broke, and we need your support to
-                    keep this platform alive. By getting a membership, you are directly helping us sustain and improve EduLocus!
+                    We're a passionate team of Nepali medical students building EduLocus to help fellow students. Your membership directly supports platform maintenance, content updates, and our mission to improve medical education.
                 </p>
             </section>
 
