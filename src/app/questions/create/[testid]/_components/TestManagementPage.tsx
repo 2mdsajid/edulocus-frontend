@@ -14,6 +14,7 @@ import { TQuestion, TSingleCustomTestWithQuestions } from '@/lib/schema/tests.sc
 import GenerateTestPDF from "./GenerateTestPDF"
 import ManualAddQuestionForm from "./ManualAddQuestionForm"
 import SaveChangesDialog from './SaveChangesDialog'
+import { ParsedElement } from "@/lib/utils"
 
 type Props = {
     test: TSingleCustomTestWithQuestions
@@ -28,7 +29,7 @@ const TestManagementPage = (props: Props) => {
     const [selectedSubject, setSelectedSubject] = useState<string | null>(subjects[0]);
     const [availableQuestions, setAvailableQuestions] = useState<TQuestion[]>([]);
     const [selectedNewQuestions, setSelectedNewQuestions] = useState<Set<string>>(new Set());
-    const [isLoadingImport, setIsLoadingImport] = useState(true); // Renamed for clarity
+    const [isLoadingImport, setIsLoadingImport] = useState(false); // Renamed for clarity
     const [isLoadingAddManual, setIsLoadingAddManual] = useState(false); // New loading state for manual add
     const [activeTab, setActiveTab] = useState("view_questions");
 
@@ -42,11 +43,11 @@ const TestManagementPage = (props: Props) => {
         });
     };
 
-    const handleOpenImportSheet = async () => {
+    const handleOpenImportSheetQuestions = async () => {
         if (!selectedSubject) return;
-
-        setIsLoadingImport(true);
         try {
+            setIsLoadingImport(true);
+
             const { data: questions, message } = await getQuestionsBySubject(selectedSubject);
 
             const currentQuestionIds = new Set(test?.questions.map(q => q.id) || []);
@@ -155,7 +156,7 @@ const TestManagementPage = (props: Props) => {
                         {/* to import new questions */}
                         <Sheet>
                             <SheetTrigger asChild>
-                                <Button onClick={handleOpenImportSheet}>Import Questions</Button>
+                                <Button>Import Questions</Button>
                             </SheetTrigger>
                             <SheetContent className="w-full sm:max-w-md md:max-w-lg overflow-y-auto pt-24">
                                 <SheetHeader>
@@ -164,12 +165,17 @@ const TestManagementPage = (props: Props) => {
                                         Select and scroll down to add
                                     </SheetDescription>
                                 </SheetHeader>
+                                <Button 
+                                    onClick={handleOpenImportSheetQuestions}
+                                    disabled={!selectedSubject}
+                                    className="mt-4"
+                                >
+                                    {isLoadingImport ? 'loading' : 'Load Questions'}
+                                </Button>
 
                                 <div className="py-4 space-y-4">
-                                    {isLoadingImport ? (
-                                        <p>Loading available questions...</p>
-                                    ) : availableQuestions.length === 0 ? (
-                                        <p>No additional questions available for this subject.</p>
+                                    { availableQuestions.length === 0 ? (
+                                        <p>No questions.</p>
                                     ) : (
                                         availableQuestions.map(question => (
                                             <div key={question.id} className="border p-4 rounded-md">
@@ -181,13 +187,13 @@ const TestManagementPage = (props: Props) => {
                                                     />
                                                     <div className="space-y-2 w-full">
                                                         <label htmlFor={question.id} className="font-medium cursor-pointer">
-                                                            {question.question}
+                                                            {ParsedElement(question.question)}
                                                         </label>
                                                         <div className="grid grid-cols-2 gap-2">
-                                                            <div className="p-2 border rounded-md">A: {question.options.a}</div>
-                                                            <div className="p-2 border rounded-md">B: {question.options.b}</div>
-                                                            <div className="p-2 border rounded-md">C: {question.options.c}</div>
-                                                            <div className="p-2 border rounded-md">D: {question.options.d}</div>
+                                                            <div className="p-2 border rounded-md">A: {ParsedElement(question.options.a)}</div>
+                                                            <div className="p-2 border rounded-md">B: {ParsedElement(question.options.b)}</div>
+                                                            <div className="p-2 border rounded-md">C: {ParsedElement(question.options.c)}</div>
+                                                            <div className="p-2 border rounded-md">D: {ParsedElement(question.options.d)}</div>
                                                         </div>
                                                         <div className="text-sm text-green-600">
                                                             Answer: {question.answer}
@@ -240,14 +246,14 @@ const TestManagementPage = (props: Props) => {
                             />
 
                             {test?.questions.length === 0 ? (
-                                <p>No questions available for this subject.</p>
+                                <p>No questions. Please add by importing or manually adding.</p>
                             ) : (
                                 test?.questions
                                     .filter(question => question.subject === selectedSubject)
                                     .map((question, index) => (
                                         <div key={question.id} className="border rounded-lg p-6 space-y-4">
                                             <div className="flex justify-between items-start">
-                                                <h3 className="text-lg font-medium">Q{index + 1}: {question.question}</h3>
+                                                <h3 className="text-lg font-medium">Q{index + 1}: {ParsedElement(question.question)}</h3>
                                                 <Button
                                                     variant="destructive"
                                                     size="sm"
@@ -259,16 +265,16 @@ const TestManagementPage = (props: Props) => {
 
                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                                 <div className="p-3 border rounded-md">
-                                                    <span className="font-semibold">A:</span> {question.options.a}
+                                                    <span className="font-semibold">A:</span> {ParsedElement(question.options.a)}
                                                 </div>
                                                 <div className="p-3 border rounded-md">
-                                                    <span className="font-semibold">B:</span> {question.options.b}
+                                                    <span className="font-semibold">B:</span> {ParsedElement(question.options.b)}
                                                 </div>
                                                 <div className="p-3 border rounded-md">
-                                                    <span className="font-semibold">C:</span> {question.options.c}
+                                                    <span className="font-semibold">C:</span> {ParsedElement(question.options.c)}
                                                 </div>
                                                 <div className="p-3 border rounded-md">
-                                                    <span className="font-semibold">D:</span> {question.options.d}
+                                                    <span className="font-semibold">D:</span> {ParsedElement(question.options.d)}
                                                 </div>
                                             </div>
 
@@ -280,7 +286,7 @@ const TestManagementPage = (props: Props) => {
 
                                             <div className="bg-blue-50 p-4 rounded-md">
                                                 <p className="font-semibold text-blue-700 mb-1">Explanation:</p>
-                                                <p>{question.explanation}</p>
+                                                <p>{ParsedElement(question.explanation)}</p>
                                             </div>
 
                                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm text-gray-600">

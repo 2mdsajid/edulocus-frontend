@@ -16,6 +16,7 @@ import { TGroupDetail } from "@/lib/schema/groups.schema";
 import { TBaseUser } from "@/lib/schema/users.schema";
 import { formatDateTimeDate } from "@/lib/utils";
 import { Eye, MoreHorizontal, Pencil } from "lucide-react";
+import { GenerateCodeDialog } from "./GenerateCodeDialog";
 
 type Props = {
   user: TBaseUser
@@ -24,6 +25,7 @@ type Props = {
 };
 
 export const GroupTestsTable = ({ user, tests, groupId }: Props) => {
+
   if (tests.length === 0) {
     return (
       <div className="p-6 text-center text-gray-500 rounded-lg shadow-inner bg-gray-50">
@@ -53,6 +55,9 @@ export const GroupTestsTable = ({ user, tests, groupId }: Props) => {
             <TableHead className="w-[20%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</TableHead>
             {ROLES_HIEARCHY.MODERATOR.includes(user.role)
               && <TableHead className="w-[20%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Disable</TableHead>}
+
+            {ROLES_HIEARCHY.MODERATOR.includes(user.role)
+              && <TableHead className="w-[20%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Codes</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody className="bg-white divide-y divide-gray-200">
@@ -89,13 +94,16 @@ export const GroupTestsTable = ({ user, tests, groupId }: Props) => {
                       <DropdownMenuItem>
                         <a
                           target="_blank"
-                          href={`/tests/view/${test.id}`}
+                          href={`/tests/view/${test.id}?gid=${groupId}`}
                           className="flex items-center"
                         >
                           <Eye className="mr-2 h-4 w-4" />
                           View
                         </a>
                       </DropdownMenuItem>
+
+
+
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
@@ -128,6 +136,14 @@ export const GroupTestsTable = ({ user, tests, groupId }: Props) => {
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
+                </TableCell>}
+
+              {/* only moderators can disable test */}
+              {ROLES_HIEARCHY.MODERATOR.includes(user.role)
+                && <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <GenerateCodeDialog
+                    testId={test.id}
+                  />
                 </TableCell>}
             </TableRow>
           ))}

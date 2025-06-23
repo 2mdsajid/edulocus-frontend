@@ -54,6 +54,11 @@ export type CustomTest = {
     date: Date;
     stream: TStream;
     questions: string[];
+    description?: string
+    specialUrl?: string
+    imageUrl?: string
+    specialImage?: string
+
 }
 
 export type TPastPaper = {
@@ -157,6 +162,11 @@ export type TCreateCustomTestData = {
     limit: number;
     stream: TStream;
     gid: string | null
+    description?: string;
+    imageUrl?: string;
+    specialUrl?: string;
+    specialImage?: string;
+    isLocked: boolean;
 };
 
 
@@ -235,6 +245,12 @@ export type TIndividualSubjectScores = {
 
 
 
+export type TTestLock = {
+    isLocked: boolean,
+    keysUsed: string[],
+    lockCodes: string[]
+}
+
 
 export type TCustomTestMetadata = Pick<CustomTest,
     'name' |
@@ -242,10 +258,15 @@ export type TCustomTestMetadata = Pick<CustomTest,
     'date' |
     'archive' |
     'id' |
-    'usersConnected'
+    'image' |
+    'usersConnected' |
+    'description' |
+    'specialImage' |
+    'specialUrl' |
+    'imageUrl'
 > & {
     createdBy: string,
     questionsCount: number
     usersAttended: TBaseUserScore[]
-    image?: string
+    testLock: TTestLock | null
 }

@@ -76,6 +76,7 @@ export const GroupDetailSchema = z.object({
       id: z.string().uuid("Invalid test ID format."),
       name: z.string().min(1, "Test name cannot be empty."),
       date: z.date(),
+      isLocked: z.boolean().default(false),
     })
   ),
 });

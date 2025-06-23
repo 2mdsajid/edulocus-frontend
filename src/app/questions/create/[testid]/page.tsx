@@ -1,6 +1,6 @@
 import ErrorPage from '@/components/reusable/ErrorPage'
 import { getSyllabus } from '@/lib/actions/questions.actions'
-import { getSingleTestById } from '@/lib/actions/tests.actions'
+import { getSingleTestByIdForEdit } from '@/lib/actions/tests.actions'
 import TestManagementPage from './_components/TestManagementPage'
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 }
 
 const page = async (props: Props) => {
-    const { data: test, message: testMessage } = await getSingleTestById(props.params.testid)
+    const { data: test, message: testMessage } = await getSingleTestByIdForEdit(props.params.testid)
     if (!test) {
         return <ErrorPage errorMessage={testMessage} />
     }

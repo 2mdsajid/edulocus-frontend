@@ -5,10 +5,16 @@ import TestInput from "./_components/TestInput"
 import { Metadata } from "next"
 import { constructMetadata } from "@/lib/data"
 import { getTestMetadata } from "@/lib/actions/tests.actions"
+import TestUnlockSection from "./_components/TestUnlockSection"
+import TestInfoFooter from "./_components/TestInfoFooter"
+import GenerateLeaderboardPDF from "./_components/GenerateLeaderboardPDF"
 
 type Props = {
     params: {
         id: string
+    },
+    searchParams: {
+        gid: string
     }
 }
 
@@ -32,6 +38,7 @@ const page = async (props: Props) => {
     const { data: user, message: authMessage } = await getUserSession()
 
     const { id: testid } = props.params
+    const { gid } = props.searchParams
     // to do later ---
     // let uniqueid = userId
     // if (!uniqueid) {
@@ -56,8 +63,8 @@ const page = async (props: Props) => {
         }));
 
     return (
-        <div className="flex flex-col md:flex-row flex-grow gap-5 bg-bg1">
-            <div className="w-full md:w-[40%]  bg-primary dark:bg-dark-primary border p-8 rounded-lg shadow h-fit">
+        <div className="flex flex-col lg:flex-row flex-grow gap-5 bg-bg1">
+            <div className="w-full lg:w-[40%]  bg-primary dark:bg-dark-primary border p-8 rounded-lg shadow h-fit">
                 {testMetadata.image && (
                     <img
                         src={testMetadata.image}
@@ -75,23 +82,45 @@ const page = async (props: Props) => {
                     </div>
                 </div>
 
-                {testMetadata.archive
-                    ? <div className="text-center p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                {/* Conditional rendering for TestInput or Archive Message */}
+                {testMetadata.archive ? (
+                    <div className="text-center p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
                         <p className="text-gray-600 dark:text-gray-400">This test is no longer available</p>
-                      </div>
-                    : <div className="relative">
-                        <TestInput testid={testMetadata.id} />
-                      </div>
-                }
+                    </div>
+                ) : (
+                    <div className="relative">
+                        <TestInput testid={testMetadata.id} testLock={testMetadata.testLock} specialUrl={testMetadata.specialUrl} />
+                    </div>
+                )}
             </div>
 
-            <div className="w-full md:w-[60%] bg-primary  h-fit p-4 rounded-lg shadow border">
+            <div className="w-full lg:w-[60%] bg-primary  h-fit p-4 rounded-lg shadow border">
                 <div className="flex items-center space-x-2">
                     <span className="text-2xl">🏆</span> {/* Emoji acting as an icon */}
                     <h2 className="text-xl font-bold ">Leaderboard</h2>
                 </div>
+
+
+                {/* Leaderboard PDF Download Button */}
+                {gid && ( // Only show when view via group with a gid in url
+                    <GenerateLeaderboardPDF
+                        rankedUsers={rankedUsers}
+                        testName={testMetadata.name}
+                        testDate={testMetadata.date}
+                        description={testMetadata.description || undefined} 
+                    />
+                )}
                 <SearchableResultTable columns={SearchableResultTableColumns} data={rankedUsers} />
             </div>
+
+
+            {testMetadata.description && <div className="w-full lg:w-[60%] bg-primary  h-fit p-4 rounded-lg shadow border">
+                <TestInfoFooter
+                    description={testMetadata.description}
+                    specialUrl={testMetadata.specialUrl}
+                    specialImage={testMetadata.specialImage}
+                />
+            </div>}
         </div>
     )
 

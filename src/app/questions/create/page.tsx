@@ -23,7 +23,6 @@ const page = async (props: Props) => {
 
   return (
     <div className="">
-      <h1 className="text-2xl font-bold">Create Custom Test</h1>
       <CreateCustomTestForm 
       streams={streams} 
       gid={gid}

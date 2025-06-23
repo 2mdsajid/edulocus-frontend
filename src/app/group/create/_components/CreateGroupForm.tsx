@@ -19,9 +19,11 @@ import { toast } from "@/hooks/use-toast";
 import { createGroupAction } from "@/lib/actions/group.actions";
 import { useState } from "react"; // Import useState for managing loading state
 import { Loader2 } from "lucide-react"; // Import Loader2 icon for spinner
+import { useRouter } from "next/navigation";
 
 
 export function CreateGroupForm() {
+  const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false); // State for loading indicator
 
   const form = useForm<TGroupCreate>({
@@ -43,9 +45,15 @@ export function CreateGroupForm() {
       if (data) {
         toast({
           title: "Group Created Successfully!",
+          variant:'success',
           description: message || "Your group has been created.",
         });
         form.reset();
+        toast({
+          title: "Redirecting soon!",
+          description: message || "Your group has been created.",
+        });
+        router.push(`/group/view/${data}`)
       } else {
         toast({
           title: "Group Creation Failed",

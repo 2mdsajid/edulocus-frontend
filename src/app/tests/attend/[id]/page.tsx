@@ -16,6 +16,8 @@ type Props = {
     },
     searchParams: {
         username: string
+        c:string
+        t:string
     }
 }
 
@@ -44,7 +46,8 @@ const page = async (props: Props) => {
 
 
     const testid = props.params.id
-    const { data: test, message } = await getSingleTestById(testid)
+    const testCode = props.searchParams.c
+    const { data: test, message } = await getSingleTestById(testid,testCode)
     if (!test || test.archive) {
         return <ErrorPage errorMessage={'Test Not Available'} />
     }
