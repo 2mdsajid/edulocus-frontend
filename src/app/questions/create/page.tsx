@@ -12,7 +12,6 @@ type Props = {
 const page = async (props: Props) => {
 
   const gid = props.searchParams.gid || null
-  console.log("giddd",gid)
 
   const { data: streamHirearchy, message: streamHirearchyMessage } = await getStreamsHierarchy()
   if (!streamHirearchy) {
