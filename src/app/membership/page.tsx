@@ -36,7 +36,7 @@ const page = async () => {
                     Who We Are & Why Your Support Matters
                 </h2>
                 <p className="mx-auto  max-w-3xl text-lg text-gray-700">
-                    We're a passionate team of Nepali medical students building EduLocus to help fellow students. Your membership directly supports platform maintenance, content updates, and our mission to improve medical education.
+                    We&apos;re a passionate team of Nepali medical students building EduLocus to help fellow students. Your membership directly supports platform maintenance, content updates, and our mission to improve medical education.
                 </p>
             </section>
 
