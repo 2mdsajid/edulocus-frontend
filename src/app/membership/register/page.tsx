@@ -18,6 +18,7 @@ const page =async (props: Props) => {
         redirect('/login?ru=/membership/register')
     }
 
+    console.log(user)
 
 
     return (

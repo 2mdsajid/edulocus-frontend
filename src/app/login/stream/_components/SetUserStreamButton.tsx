@@ -10,6 +10,7 @@ import { STREAM_DETAILS } from '@/lib/data'
 
 type Props = {
     stream: TStream // "PG" | "UG"
+    ru:string
 }
 
 
@@ -21,7 +22,12 @@ const SetUserStreamButton = (props: Props) => {
         setIsLoading(true);
         try {
             await setUserStream(props.stream as TStream);
-            router.push(`/tests`);
+
+            if (props.ru) {
+                router.push(props.ru); // Redirect back to the original page
+            } else {
+                router.push(`/tests`); // Fallback if no redirectBack URL is found
+            }
         } finally {
             setIsLoading(false);
         }

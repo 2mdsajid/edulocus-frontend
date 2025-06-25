@@ -5,16 +5,22 @@ import React from 'react'
 import ErrorPage from '@/components/reusable/ErrorPage'
 import SetUserStreamButton from './_components/SetUserStreamButton'
 
-type Props = {}
+type Props = {
+    searchParams: {
+        ru: string
+    }
+}
 
 const page = async (props: Props) => {
 
+    const redirectUrl = props.searchParams.ru
+
     const { data: user, message: authMessage } = await getUserSession()
     if (!user || !user.googleId || !user.id) {
-        redirect('/login')
+        redirect(`/login?ru=${redirectUrl}`)
     }
 
-    if(user.isCompleted) {
+    if (user.isCompleted) {
         await setUserStream(user.stream)
         redirect('/dashboard')
     }
@@ -30,7 +36,7 @@ const page = async (props: Props) => {
             <h1 className='text-2xl font-bold mb-5'>Select A Stream</h1>
             <div className='flex gap-4'>
                 {streams?.map((stream) => (
-                    <SetUserStreamButton key={stream} stream={stream} />
+                    <SetUserStreamButton key={stream} stream={stream} ru={redirectUrl} />
                 ))}
             </div>
         </div>

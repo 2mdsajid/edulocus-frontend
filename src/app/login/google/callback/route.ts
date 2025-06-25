@@ -124,7 +124,7 @@ export async function GET(request: Request): Promise<Response> {
         return new Response(null, {
             status: 302,
             headers: {
-                Location: "/login/stream" // Path to complete user profile (e.g., select stream)
+                Location: `/login/stream?ru=${redirectTo}` // Path to complete user profile (e.g., select stream)
             }
         });
     }

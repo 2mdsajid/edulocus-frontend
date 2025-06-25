@@ -12,7 +12,6 @@ export const metadata = {
 
 
 const page = (props: Props) => {
-    console.log(props.searchParams.ru)
     return (
         <div className="min-h-screen pt-32 flex flex-col gap-10 items-center bg-gradient-to-b from-color1 to-color1 bg-blur-lg ">
             <h1 className="text-4xl font-bold"> Choose Your Stream </h1>
