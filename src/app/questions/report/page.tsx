@@ -4,22 +4,17 @@ import ReportQuestionCard from "./_components/ReportQuestionCard";
 
 const page = async () => {
     //call function here to fetch the questions
-    const { data, message } = await getReportedQuestions()
-    console.log(data)
+    const { data: questions, message } = await getReportedQuestions()
 
-    if (!data || data.length === 0) {
+    if (!questions || questions.length === 0) {
         return <div>No reported questions found</div>
     }
 
     return (
         <div className="space-y-4">
-            {data.map((question) => (
-                <ReportQuestionCard
-                    key={question.id}
-                    question={question}
-                    showReportInfo={true}
-                />
-            ))}
+            <ReportQuestionCard
+                questions={questions}
+            />
         </div>
     )
 }

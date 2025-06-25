@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getStreamCookieForUnauthenticatedUser } from "@/lib/actions/try.actions";
 import { constructMetadata, membershipFeatures } from "@/lib/data";
-import { TStream } from "@/lib/schema/users.schema";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
@@ -12,7 +10,6 @@ export const metadata = constructMetadata({
 });
 
 const page = async () => {
-    const stream = await getStreamCookieForUnauthenticatedUser() as TStream || 'UG'
 
     return (
         <div className="flex min-h-screen flex-col bg-gradient-to-br from-bg1 to-bg2 pt-20">

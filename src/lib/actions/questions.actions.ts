@@ -407,8 +407,8 @@ export const getReportedQuestions = async (): Promise<{
 
 
 //update question
-export const updateQuestion = async (questionData: TQuestion): Promise<{
-    data: TQuestion | null;
+export const updateQuestionAction = async (questionData: TAiQUestionUpdate): Promise<{
+    data: TAiQUestionUpdate | null;
     message: string;
 }> => {
     try {
@@ -420,7 +420,7 @@ export const updateQuestion = async (questionData: TQuestion): Promise<{
         }
 
         const response = await fetch(`${process.env.BACKEND}/questions/update-question`, {
-            method: "PUT",
+            method: "POST",
             cache: 'no-store',
             headers: {
                 "Content-Type": "application/json",
@@ -444,7 +444,7 @@ export const updateQuestion = async (questionData: TQuestion): Promise<{
 
 
 export const updateQuestionByAI = async (questionData: TAiQUestionUpdate): Promise<{
-    data: TQuestion | null;
+    data: TAiQUestionUpdate | null;
     message: string;
 }> => {
     try {
@@ -473,8 +473,43 @@ export const updateQuestionByAI = async (questionData: TAiQUestionUpdate): Promi
         const { data, message } = await response.json();
         return { data, message };
     } catch (error) {
+        console.log(error)
         return { data: null, message: "Some Error Occurred while updating the question with AI!" };
     }
 };
 
+
+// remove questions
+export const removeReportedQuestion = async (questionId: string): Promise<{
+    data: boolean | null;
+    message: string;
+}> => {
+    try {
+        const cookieStore = await cookies();
+        const token = cookieStore.get('auth-token')?.value;
+
+        if (!token) {
+            return { data: null, message: "Authentication token not found!" };
+        }
+
+        const response = await fetch(`${process.env.BACKEND}/questions/remove-reported-question/${questionId}`, {
+            method: "DELETE",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            }
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message };
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occurred while removing the reported question!" };
+    }
+};
 
