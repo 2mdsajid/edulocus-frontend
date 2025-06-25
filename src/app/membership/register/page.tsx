@@ -3,6 +3,7 @@ import { constructMetadata } from '@/lib/data'
 import SubscriptionForm from './_components/SubscriptionForm'
 import { getUserSession } from '@/lib/auth/auth'
 import { redirect } from 'next/navigation'
+import PremiumSuspend from './_components/PremiumSuspend'
 
 type Props = {}
 
@@ -16,9 +17,13 @@ const page =async (props: Props) => {
     if(!user){
         redirect('/login?ru=/membership/register')
     }
+
+
+
     return (
-        <div className='flex items-center justify-center bg-gradient-to-br from-bg1  to-bg2 pt-20'>
-            <SubscriptionForm user={user} />
+        <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-bg1  to-bg2 pt-20'>
+            {user.stream === 'PG' && <SubscriptionForm user={user} />}
+            {user.stream === 'UG' && <PremiumSuspend />}
         </div>
     )
 }

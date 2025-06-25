@@ -89,7 +89,7 @@ const SubscriptionForm = (props: Props) => {
             Membership Form
           </CardTitle>
           <CardDescription className="text-center text-zinc-600">
-          Scan(E-sewa) and pay the membership fee.
+          Fill the form below and submit
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-6">
@@ -123,15 +123,18 @@ const SubscriptionForm = (props: Props) => {
                 )}
               /> */}
 
-              <div className="flex flex-col items-center justify-center space-y-4 ">
-                <div className="relative w-48 h-48">
+              <div className="flex flex-col items-center justify-center">
+                {/* <div className="relative w-48 h-48">
                   <img
                     src="/qr.png"
                     alt="Payment QR Code"
                   />
-                </div>
-                <p className="text-center text-zinc-600">
-                  Please pay Rs {STREAM_DETAILS[user.stream.toLowerCase() as keyof typeof STREAM_DETAILS].price} for {user.stream} stream.
+                </div> */}
+                <p className="text-center ">
+                  Membership fee for {user.stream} is Rs {STREAM_DETAILS[user.stream.toLowerCase() as keyof typeof STREAM_DETAILS].price}.
+                </p>
+                <p className="text-center text-zinc-600 text-sm">
+                  [{STREAM_DETAILS[user.stream.toLowerCase() as keyof typeof STREAM_DETAILS].desc}]
                 </p>
               </div>
 
@@ -190,13 +193,13 @@ const SubscriptionForm = (props: Props) => {
         <CardFooter className="flex flex-col items-center text-center text-sm text-zinc-600 border-t border-zinc-200 pt-6 space-y-3">
           
           <p className="text-sm font-semibold text-zinc-800">
-            Within 24 hours, we&apos;ll contact you. Please include your email in the payment remarks.
+            Please provide your correct phone number. Within 24 hours, we&apos;ll contact you.
           </p>
-          <p className="text-sm text-zinc-800">
+          {/* <p className="text-sm text-zinc-800">
             <span className="font-bold">5-day refund policy</span> applies from the date of payment.
-          </p>
+          </p> */}
           <div className="mt-4 text-center">
-            <p className="font-medium text-zinc-800">Contact Us:</p>
+            <p className="font-medium text-zinc-800">For Support or Contact :</p>
             <p>
               Facebook:{' '}
               <a href="https://www.facebook.com/edu.locus" className="text-zinc-900 hover:text-zinc-700 underline underline-offset-4" target="_blank" rel="noopener noreferrer">
