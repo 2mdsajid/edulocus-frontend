@@ -77,6 +77,7 @@ export const GroupDetailSchema = z.object({
       name: z.string().min(1, "Test name cannot be empty."),
       date: z.date(),
       isLocked: z.boolean().default(false),
+      archive:z.boolean(),
     })
   ),
 });

@@ -17,6 +17,8 @@ import { TBaseUser } from "@/lib/schema/users.schema";
 import { formatDateTimeDate } from "@/lib/utils";
 import { Eye, MoreHorizontal, Pencil } from "lucide-react";
 import { GenerateCodeDialog } from "./GenerateCodeDialog";
+import { deleteCustomTestAction } from "@/lib/actions/group.actions";
+import { useRouter } from "next/navigation";
 
 type Props = {
   user: TBaseUser
@@ -25,6 +27,8 @@ type Props = {
 };
 
 export const GroupTestsTable = ({ user, tests, groupId }: Props) => {
+
+  const router = useRouter()
 
   if (tests.length === 0) {
     return (
@@ -58,6 +62,10 @@ export const GroupTestsTable = ({ user, tests, groupId }: Props) => {
 
             {ROLES_HIEARCHY.MODERATOR.includes(user.role)
               && <TableHead className="w-[20%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Codes</TableHead>}
+
+
+            {ROLES_HIEARCHY.MODERATOR.includes(user.role)
+              && <TableHead className="w-[20%] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delete</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody className="bg-white divide-y divide-gray-200">
@@ -101,9 +109,6 @@ export const GroupTestsTable = ({ user, tests, groupId }: Props) => {
                           View
                         </a>
                       </DropdownMenuItem>
-
-
-
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
@@ -114,24 +119,29 @@ export const GroupTestsTable = ({ user, tests, groupId }: Props) => {
                 && <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <Button variant="destructive" size="sm">
-                        Disable Test
+                      <Button variant={test.archive ? "default" : "destructive"} size="sm">
+                        {test.archive ? "Enable Test" : "Disable Test"}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                         <AlertDialogDescription>
-                          This will disable the test and prevent users from accessing it.
+                          {test.archive
+                            ? "This will enable the test and allow users to access it."
+                            : "This will disable the test and prevent users from accessing it."}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={() => disableTestAction(test.id)}
-                          className="bg-red-600 hover:bg-red-700"
+                          onClick={async () => {
+                            await disableTestAction(test.id)
+                            router.refresh()
+                          }}
+                          className={test.archive ? "bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"}
                         >
-                          Disable
+                          {test.archive ? "Enable" : "Disable"}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -145,6 +155,39 @@ export const GroupTestsTable = ({ user, tests, groupId }: Props) => {
                     testId={test.id}
                   />
                 </TableCell>}
+
+
+              {ROLES_HIEARCHY.MODERATOR.includes(user.role)
+                && <TableCell className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="destructive" size="sm">
+                        Delete Test
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently delete the test and all its data.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={async () => {
+                            await deleteCustomTestAction(test.id)
+                            router.refresh()
+                          }}
+                          className="bg-red-600 hover:bg-red-700"
+                        >
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </TableCell>}
+
             </TableRow>
           ))}
         </TableBody>

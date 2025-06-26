@@ -192,3 +192,43 @@ export const addGroupMemberAction = async (
     };
   }
 };
+
+
+
+export const deleteCustomTestAction = async (
+  testId: string
+): Promise<{ data: any; message: string }> => {
+  try {
+    const cookieStore = cookies();
+    const authToken = cookieStore.get("auth-token")?.value;
+
+    if (!authToken) {
+      return { data: null, message: "User not logged in!" };
+    }
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/tests/delete-custom-test/${testId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + authToken,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const { message } = await response.json();
+      return { data: null, message };
+    }
+
+    const { data, message } = await response.json();
+    return { data, message };
+  } catch (error) {
+    console.error("Error deleting custom test:", error);
+    return { 
+      data: null, 
+      message: "Failed to delete test. Please try again." 
+    };
+  }
+};
