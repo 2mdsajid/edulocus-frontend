@@ -88,9 +88,9 @@ export const QuestionViewer = (props: Props) => {
             <CardContent className="pt-4">
                 <div className="text-md font-medium mb-4">{ParsedElement(question.question)}</div>
                 {question.images?.qn && (
-                    <img 
-                        src={question.images.qn} 
-                        alt="Question Image" 
+                    <img
+                        src={question.images.qn}
+                        alt="Question Image"
                         className="max-w-full h-auto mb-4 rounded-lg"
                     />
                 )}
@@ -103,13 +103,13 @@ export const QuestionViewer = (props: Props) => {
                                         {option} <span>{`)`}</span>
                                     </p>
                                     <p>{ParsedElement(question.options[option as keyof TBaseOption])}</p>
-                                {question.images?.[option as keyof TBaseImages] && (
-                                    <img 
-                                        src={question.images[option as keyof TBaseImages] || undefined} 
-                                        alt={`Option ${option} Image`}
-                                        className="max-w-full h-auto rounded-lg"
-                                    />
-                                )}
+                                    {question.images?.[option as keyof TBaseImages] && (
+                                        <img
+                                            src={question.images[option as keyof TBaseImages] || undefined}
+                                            alt={`Option ${option} Image`}
+                                            className="max-w-full h-auto rounded-lg"
+                                        />
+                                    )}
                                 </div>
                             </Label>
                         </div>
@@ -142,13 +142,31 @@ export const QuestionViewer = (props: Props) => {
                     <div className="text-sm">
                         <p className="">
                             {ParsedElement(currentExplanation) || "No explanation available for this question."}
-                        {question.images?.exp && (
-                            <img 
-                                src={question.images.exp} 
-                                alt="Explanation Image" 
-                                className="max-w-full h-auto mt-2 rounded-lg"
-                            />
-                        )}
+                            {question.images?.exp && (
+                                <img
+                                    src={question.images.exp}
+                                    alt="Explanation Image"
+                                    className="max-w-full h-auto mt-2 rounded-lg"
+                                />
+                            )}
+                            {question.videoUrl && (
+                                <div className="mt-4 aspect-video w-full">
+                                    <h4 className="font-semibold text-lg mt-4 mb-2">Video Explanation</h4>
+                                    <iframe
+                                        className="w-full h-full rounded-lg"
+                                        src={
+                                            question.videoUrl.includes('youtube.com/watch?v=')
+                                                ? `https://www.youtube.com/embed/${question.videoUrl.split('v=')[1].split('&')[0]}`
+                                                : question.videoUrl.includes('youtu.be/')
+                                                    ? `https://www.youtube.com/embed/${question.videoUrl.split('youtu.be/')[1]}`
+                                                    : question.videoUrl
+                                        }
+                                        title="YouTube video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    />
+                                </div>
+                            )}
                         </p>
                     </div>
                 </div>

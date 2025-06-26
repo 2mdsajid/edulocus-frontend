@@ -33,6 +33,7 @@ export type Question = {
     attempt: number;
     correctattempt: number;
     userId: string;
+    videoUrl?: string
 }
 
 export type QuestionCount = {

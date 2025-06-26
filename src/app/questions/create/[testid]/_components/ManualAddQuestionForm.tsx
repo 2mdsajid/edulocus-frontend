@@ -8,22 +8,41 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from '@/hooks/use-toast';
 import { getAllTopicsBySubject } from '@/lib/methods/questions.methods';
-import { TQuestion } from '@/lib/schema/tests.schema';
+import { TBaseImages } from "@/lib/schema/questions.schema"; // Ensure TBaseImages is imported
+import { TQuestion } from '@/lib/schema/tests.schema'; // Ensure TQuestion is imported
 import { TStream } from '@/lib/schema/users.schema';
 import { useEffect, useState } from 'react';
 
+// Import dialog components
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import { Image as ImageIcon, XCircle } from 'lucide-react'; // Import an icon for the button and for removing images
+import UploadImage from "./UploadImage";
+
+// Import the updated ImageUploaderComponent
+
 // Define a type for the data we send to the API, without the ID
-type NewQuestionData = Omit<TQuestion, 'id'>;
+// Explicitly include images and videoUrl as they might be new additions
+type NewQuestionData = Omit<TQuestion, 'id'> & {
+    images: TBaseImages | null;
+    videoUrl: string | null; // Ensure this is nullable in the type
+};
 
 type Props = {
-    stream:TStream
+    stream: TStream
     subjects: string[];
     syllabus: any; // Add syllabus prop to get chapters
     onQuestionAdd: (newQuestionData: NewQuestionData) => Promise<void>; // Prop now expects a Promise
     isLoading: boolean; // Add isLoading prop to disable button
 };
 
-const ManualAddQuestionForm = ({ stream,subjects, syllabus, onQuestionAdd, isLoading }: Props) => {
+const ManualAddQuestionForm = ({ stream, subjects, syllabus, onQuestionAdd, isLoading }: Props) => {
     const [question, setQuestion] = useState('');
     const [optionA, setOptionA] = useState('');
     const [optionB, setOptionB] = useState('');
@@ -34,8 +53,23 @@ const ManualAddQuestionForm = ({ stream,subjects, syllabus, onQuestionAdd, isLoa
     const [subject, setSubject] = useState(subjects[0] || '');
     const [chapter, setChapter] = useState('');
     const [difficulty, setDifficulty] = useState('');
-    const [formError, setFormError] = useState<string | null>(null); // Renamed to avoid conflict
+    const [videoUrl, setVideoUrl] = useState('');
+    const [formError, setFormError] = useState<string | null>(null);
     const [chapters, setChapters] = useState<string[]>([]);
+
+    // State for images, initialized with all nulls
+    const [images, setImages] = useState<TBaseImages>({
+        a: null,
+        b: null,
+        c: null,
+        d: null,
+        qn: null,
+        exp: null,
+    });
+    // State to manage which dialog is open and for which field
+    const [currentUploadField, setCurrentUploadField] = useState<keyof TBaseImages | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
 
     // Update chapters when subject changes
     useEffect(() => {
@@ -45,6 +79,28 @@ const ManualAddQuestionForm = ({ stream,subjects, syllabus, onQuestionAdd, isLoa
             setChapter(''); // Reset chapter when subject changes
         }
     }, [subject, syllabus]);
+
+    // Handler for when an image is successfully uploaded from ImageUploaderComponent
+    const handleImageUploaded = (field: keyof TBaseImages, url: string) => {
+        setImages(prev => ({
+            ...prev,
+            [field]: url
+        }));
+        setIsDialogOpen(false); // Close the dialog after upload
+    };
+
+    // Handler to remove an uploaded image
+    const handleRemoveImage = (field: keyof TBaseImages) => {
+        setImages(prev => ({
+            ...prev,
+            [field]: null
+        }));
+        toast({
+            title: "Image Removed",
+            description: `Image for ${field.toUpperCase()} has been removed.`,
+            variant: "default",
+        });
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -78,8 +134,10 @@ const ManualAddQuestionForm = ({ stream,subjects, syllabus, onQuestionAdd, isLoa
             subject,
             chapter,
             difficulty: difficulty.toLowerCase().charAt(0),
-            unit : "",
-            stream: stream // Assuming a default stream
+            unit: "",
+            stream: stream,
+            videoUrl: videoUrl, // Ensure videoUrl is nullable and sent correctly
+            images: images, // Pass the images object
         };
 
         try {
@@ -94,7 +152,14 @@ const ManualAddQuestionForm = ({ stream,subjects, syllabus, onQuestionAdd, isLoa
             setExplanation('');
             setChapter('');
             setDifficulty('');
-            
+            setVideoUrl('');
+            setImages({ a: null, b: null, c: null, d: null, qn: null, exp: null }); // Reset images
+            toast({
+                title: "Success",
+                description: "Question added successfully!",
+                variant: "success",
+            });
+
         } catch (error) {
             console.error("Failed to add question:", error);
             setFormError("Failed to add question. Please try again.");
@@ -106,39 +171,101 @@ const ManualAddQuestionForm = ({ stream,subjects, syllabus, onQuestionAdd, isLoa
         }
     };
 
+    // Helper function to render input with image upload dialog
+    const renderInputFieldWithImage = (
+        id: string,
+        label: string,
+        value: string,
+        onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
+        imageField: keyof TBaseImages,
+        inputType: "input" | "textarea" = "textarea",
+        required: boolean = true
+    ) => (
+        <div className="flex flex-col gap-2">
+            <Label htmlFor={id}>{label}</Label>
+            <div className="flex items-center gap-2">
+                {inputType === "textarea" ? (
+                    <Textarea
+                        id={id}
+                        value={value}
+                        onChange={onChange}
+                        placeholder={`Enter the ${label.toLowerCase()}`}
+                        required={required}
+                        className="flex-grow"
+                    />
+                ) : (
+                    <Input
+                        id={id}
+                        value={value}
+                        onChange={onChange}
+                        placeholder={`Enter ${label.toLowerCase()}`}
+                        required={required}
+                        className="flex-grow"
+                    />
+                )}
+
+                <Dialog open={isDialogOpen && currentUploadField === imageField} onOpenChange={setIsDialogOpen}>
+                    <DialogTrigger asChild>
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => { setCurrentUploadField(imageField); setIsDialogOpen(true); }}
+                            title={`Upload image for ${label}`}
+                        >
+                            <ImageIcon className="h-4 w-4" />
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Upload Image for {label}</DialogTitle>
+                            <DialogDescription>
+                                Upload an image that will be associated with the {label.toLowerCase()}.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <UploadImage
+                            field={imageField}
+                            onImageUploaded={handleImageUploaded}
+                        />
+                    </DialogContent>
+                </Dialog>
+            </div>
+            {/* Display uploaded image URL and remove button if present */}
+            {images[imageField] && (
+                <div className="flex items-center justify-between w-fit p-2 border rounded-md bg-gray-50 text-sm break-all">
+                    <img src={images[imageField]} alt="Uploaded" className="h-20  w-fit" />
+                    <Button variant="ghost" size="icon" onClick={() => handleRemoveImage(imageField)} title="Remove image">
+                        <XCircle className="h-4 w-4 text-red-500" />
+                    </Button>
+                </div>
+            )}
+        </div>
+    );
+
+
     return (
         <div className="p-6 border rounded-lg shadow-sm">
             <h2 className="text-2xl font-bold mb-6">Manually Add New Question</h2>
             {formError && <p className="text-red-500 mb-4">{formError}</p>}
             <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                    <Label htmlFor="question">Question</Label>
-                    <Textarea
-                        id="question"
-                        value={question}
-                        onChange={(e) => setQuestion(e.target.value)}
-                        placeholder="Enter the question"
-                        required
-                    />
-                </div>
+                {renderInputFieldWithImage(
+                    "question", "Question", question, (e) => setQuestion(e.target.value), "qn", "textarea"
+                )}
+
                 <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <Label htmlFor="optionA">Option A</Label>
-                        <Input id="optionA" value={optionA} onChange={(e) => setOptionA(e.target.value)} required />
-                    </div>
-                    <div>
-                        <Label htmlFor="optionB">Option B</Label>
-                        <Input id="optionB" value={optionB} onChange={(e) => setOptionB(e.target.value)} required />
-                    </div>
-                    <div>
-                        <Label htmlFor="optionC">Option C</Label>
-                        <Input id="optionC" value={optionC} onChange={(e) => setOptionC(e.target.value)} required />
-                    </div>
-                    <div>
-                        <Label htmlFor="optionD">Option D</Label>
-                        <Input id="optionD" value={optionD} onChange={(e) => setOptionD(e.target.value)} required />
-                    </div>
+                    {renderInputFieldWithImage(
+                        "optionA", "Option A", optionA, (e) => setOptionA(e.target.value), "a", "input"
+                    )}
+                    {renderInputFieldWithImage(
+                        "optionB", "Option B", optionB, (e) => setOptionB(e.target.value), "b", "input"
+                    )}
+                    {renderInputFieldWithImage(
+                        "optionC", "Option C", optionC, (e) => setOptionC(e.target.value), "c", "input"
+                    )}
+                    {renderInputFieldWithImage(
+                        "optionD", "Option D", optionD, (e) => setOptionD(e.target.value), "d", "input"
+                    )}
                 </div>
+
                 <div>
                     <Label htmlFor="answer">Correct Answer</Label>
                     <Select value={answer} onValueChange={(value: 'a' | 'b' | 'c' | 'd') => setAnswer(value)} required>
@@ -153,16 +280,22 @@ const ManualAddQuestionForm = ({ stream,subjects, syllabus, onQuestionAdd, isLoa
                         </SelectContent>
                     </Select>
                 </div>
+
+                {renderInputFieldWithImage(
+                    "explanation", "Explanation", explanation, (e) => setExplanation(e.target.value), "exp", "textarea"
+                )}
+
                 <div>
-                    <Label htmlFor="explanation">Explanation</Label>
-                    <Textarea
-                        id="explanation"
-                        value={explanation}
-                        onChange={(e) => setExplanation(e.target.value)}
-                        placeholder="Enter the explanation for the answer"
-                        required
+                    <Label htmlFor="videoUrl">Video URL (optional)</Label>
+                    <Input
+                        id="videoUrl"
+                        value={videoUrl}
+                        onChange={(e) => setVideoUrl(e.target.value)}
+                        placeholder="Enter video URL for explanation"
+                        type="url"
                     />
                 </div>
+
                 <div>
                     <Label htmlFor="subject">Subject</Label>
                     <Select value={subject} onValueChange={setSubject} required>
@@ -188,7 +321,7 @@ const ManualAddQuestionForm = ({ stream,subjects, syllabus, onQuestionAdd, isLoa
                             ))}
                         </SelectContent>
                     </Select>
-                </div> 
+                </div>
                 <div>
                     <Label htmlFor="difficulty">Difficulty</Label>
                     <Select value={difficulty} onValueChange={(value: 'easy' | 'medium' | 'hard') => setDifficulty(value)} required>

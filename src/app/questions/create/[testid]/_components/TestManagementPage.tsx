@@ -254,6 +254,7 @@ const TestManagementPage = (props: Props) => {
                                         <div key={question.id} className="border rounded-lg p-6 space-y-4">
                                             <div className="flex justify-between items-start">
                                                 <h3 className="text-lg font-medium">Q{index + 1}: {ParsedElement(question.question)}</h3>
+                                                {question.images?.qn && <img src={question.images.qn} alt="Question Image" className="h-40 w-auto" />}
                                                 <Button
                                                     variant="destructive"
                                                     size="sm"
@@ -266,15 +267,19 @@ const TestManagementPage = (props: Props) => {
                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                                 <div className="p-3 border rounded-md">
                                                     <span className="font-semibold">A:</span> {ParsedElement(question.options.a)}
+                                                    {question.images?.a && <img src={question.images.a} alt="Option A Image" className="h-40 w-auto mt-2" />}
                                                 </div>
                                                 <div className="p-3 border rounded-md">
                                                     <span className="font-semibold">B:</span> {ParsedElement(question.options.b)}
+                                                    {question.images?.b && <img src={question.images.b} alt="Option B Image" className="h-40 w-auto mt-2" />}
                                                 </div>
                                                 <div className="p-3 border rounded-md">
                                                     <span className="font-semibold">C:</span> {ParsedElement(question.options.c)}
+                                                    {question.images?.c && <img src={question.images.c} alt="Option C Image" className="h-40 w-auto mt-2" />}
                                                 </div>
                                                 <div className="p-3 border rounded-md">
                                                     <span className="font-semibold">D:</span> {ParsedElement(question.options.d)}
+                                                    {question.images?.d && <img src={question.images.d} alt="Option D Image" className="h-40 w-auto mt-2" />}
                                                 </div>
                                             </div>
 
@@ -287,6 +292,24 @@ const TestManagementPage = (props: Props) => {
                                             <div className="bg-blue-50 p-4 rounded-md">
                                                 <p className="font-semibold text-blue-700 mb-1">Explanation:</p>
                                                 <p>{ParsedElement(question.explanation)}</p>
+                                                {question.images?.exp && <img src={question.images.exp} alt="Explanation Image" className="h-40 w-auto mt-2" />}
+                                                {question.videoUrl && (
+                                                    <div className="mt-4 aspect-video w-full">
+                                                        <iframe
+                                                            className="w-full h-full rounded-lg"
+                                                            src={
+                                                                question.videoUrl.includes('youtube.com/watch?v=') 
+                                                                    ? `https://www.youtube.com/embed/${question.videoUrl.split('v=')[1].split('&')[0]}`
+                                                                    : question.videoUrl.includes('youtu.be/')
+                                                                        ? `https://www.youtube.com/embed/${question.videoUrl.split('youtu.be/')[1]}`
+                                                                        : question.videoUrl
+                                                            }
+                                                            title="YouTube video player"
+                                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                            allowFullScreen
+                                                        />
+                                                    </div>
+                                                )}
                                             </div>
 
                                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm text-gray-600">
