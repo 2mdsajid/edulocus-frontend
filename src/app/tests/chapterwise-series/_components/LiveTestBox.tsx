@@ -6,11 +6,10 @@ type Props = {
   id: string;
   name: string;
   createdBy: string;
-  date: string;
   archive: boolean;
 };
 
-const LiveTestBox = ({ id, name, createdBy, date, archive }: Props) => {
+const LiveTestBox = ({ id, name, createdBy, archive }: Props) => {
   return (
     <Link href={`/tests/view/${id}`} className="block">
       <div className="overflow-hidden bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow duration-200">
@@ -34,10 +33,10 @@ const LiveTestBox = ({ id, name, createdBy, date, archive }: Props) => {
             <User className="w-4 h-4 text-gray-500" />
             <span className="font-semibold">Created By:</span> {createdBy}
           </p>
-          <p className="flex items-center gap-2">
+          {/* <p className="flex items-center gap-2">
             <CalendarDays className="w-4 h-4 text-gray-500" />
             <span className="font-semibold">Date:</span> {date}
-          </p>
+          </p> */}
         </div>
       </div>
     </Link>

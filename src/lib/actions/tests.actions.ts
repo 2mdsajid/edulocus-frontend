@@ -581,3 +581,31 @@ export const generateTestCodes = async (testId: string, limit: number): Promise<
     }
 };
 
+
+export const getCurrentChapterWiseTest = async (dateandtime:string): Promise<{
+    data: TSingleCustomTestWithQuestions | null;
+    message: string;
+}> => {
+    try {
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/tests/get-current-chapterwise-test/${dateandtime}`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        console.log("🚀 ~ getCurrentChapterWiseTest ~ error:", error)
+        return { data: null, message: "Some Error Occured while getting current chapterwise test!" };
+    }
+};
+
