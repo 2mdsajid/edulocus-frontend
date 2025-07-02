@@ -176,7 +176,7 @@ export const startSubjectWiseTest = async (subject: string, type: TTypeOfTest): 
                 "stream": stream
             },
             body: JSON.stringify({
-                name: `${subject} test`,
+                name: `${subject.replace('_',' ')} test`,
                 type: type,
             })
         });
@@ -302,12 +302,14 @@ export const getSingleTestById = async (testid: string, testCode?:string, testTo
 
         if (!response.ok) {
             const { data, message } = await response.json();
+            
             return { data: null, message }
         }
 
         const { data, message } = await response.json();
         return { data, message };
     } catch (error) {
+        console.log(error)
         return { data: null, message: "Some Error Occured while fetching all tests!" };
     }
 };
