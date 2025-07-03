@@ -216,7 +216,7 @@ export const getTotalQuestionsPerSubject = async (): Promise<{
 };
 
 
-export const getQuestionsBySubject = async (subject: string): Promise<{
+export const getQuestionsBySubject = async (subject: string, stream:TStream): Promise<{
     data: TQuestion[] | null;
     message: string;
 }> => {
@@ -229,7 +229,7 @@ export const getQuestionsBySubject = async (subject: string): Promise<{
             return { data: null, message: "User not logged in!" };
         }
 
-        const response = await fetch(`${process.env.BACKEND}/questions/get-questions-by-subject?subject=${subject}`, {
+        const response = await fetch(`${process.env.BACKEND}/questions/get-full-questions-by-subject?subject=${subject}&stream=${stream}`, {
             method: "GET",
             cache: 'no-store',
             headers: {
@@ -243,7 +243,9 @@ export const getQuestionsBySubject = async (subject: string): Promise<{
             return { data: null, message }
         }
 
+        
         const { data, message } = await response.json();
+        console.log(data)
         return { data, message };
 
     } catch (error) {

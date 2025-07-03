@@ -48,7 +48,7 @@ const TestManagementPage = (props: Props) => {
         try {
             setIsLoadingImport(true);
 
-            const { data: questions, message } = await getQuestionsBySubject(selectedSubject);
+            const { data: questions, message } = await getQuestionsBySubject(selectedSubject, test.stream);
 
             const currentQuestionIds = new Set(test?.questions.map(q => q.id) || []);
             const newQuestions = questions?.filter(q => !currentQuestionIds.has(q.id)) || [];
