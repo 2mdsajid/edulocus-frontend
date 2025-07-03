@@ -10,27 +10,33 @@ type Props = {
 }
 
 const page = async (props: Props) => {
-    const { data: test, message: testMessage } = await getSingleTestByIdForEdit(props.params.testid)
-    if (!test) {
-        return <ErrorPage errorMessage={testMessage} />
+    try {
+        const { data: test, message: testMessage } = await getSingleTestByIdForEdit(props.params.testid)
+    
+        if (!test) {
+            return <ErrorPage errorMessage={testMessage} />
+        }
+
+        const {data:syllabus, message} =await getSyllabus(test.stream);
+        if(!syllabus){
+            return <ErrorPage errorMessage={message || 'No Syllabus Found'} />
+        }
+
+
+
+        // console.log(uniqueSubjects) 
+        // console.log(test.questions).
+
+
+        return (
+            <div>
+                <TestManagementPage test={test} syllabus={syllabus} />
+            </div>
+        )
+    } catch (error: any) {
+        console.error("Error in page:", error);
+        return <ErrorPage errorMessage={error.message || 'An unexpected error occurred'} />;
     }
-
-    const {data:syllabus, message} =await getSyllabus(test.stream);
-    if(!syllabus){
-        return <ErrorPage errorMessage={message || 'No Syllabus Found'} />
-    }
-
-
-
-    // console.log(uniqueSubjects) 
-    // console.log(test.questions).
-
-
-    return (
-        <div>
-            <TestManagementPage test={test} syllabus={syllabus} />
-        </div>
-    )
 }
 
 export default page

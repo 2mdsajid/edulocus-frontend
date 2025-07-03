@@ -116,3 +116,15 @@ export type TDashboardAnalyticData = {
     subjectWiseScoreChartData: TSubjectwiseScoresChartData[],
     groupData?:TGroupDataInDashboard[]
 }
+
+
+import {z} from 'zod'
+
+export const ChapterwiseRegistrationSchema = z.object({
+    name: z.string(),
+    email: z.string().email(),
+    phone: z.string(),
+    message: z.string().optional().nullable(),
+});
+
+export type TChapterwiseRegistration = z.infer<typeof ChapterwiseRegistrationSchema>;

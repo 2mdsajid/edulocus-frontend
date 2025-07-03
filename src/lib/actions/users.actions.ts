@@ -1,6 +1,6 @@
 'use server'
 
-import { TCreateUserFeedback, TCreateSubscriptionRequest, TDashboardAnalyticData, TBaseUser } from "@/lib/schema/users.schema";
+import { TCreateUserFeedback, TCreateSubscriptionRequest, TDashboardAnalyticData, TBaseUser, TChapterwiseRegistration } from "@/lib/schema/users.schema";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -216,5 +216,30 @@ export const getDashboardAnalytics = async (userId: string): Promise<{
         return { data, message };
     } catch (error) {
         return { data: null, message: "Some Error Occured while fetching all tests!" };
+    }
+};
+
+
+
+export const registerForChapterwiseTest = async (regData: TChapterwiseRegistration): Promise<{ data: string | null; message: string }> => {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/users/register-chapterwise-test`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(regData),
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message };
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        console.error("Error registering for chapterwise test:", error);
+        return { data: null, message: "Failed to register for chapterwise test." };
     }
 };

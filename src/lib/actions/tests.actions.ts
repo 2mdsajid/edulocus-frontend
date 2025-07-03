@@ -3,6 +3,7 @@
 
 import { cookies } from "next/headers";
 import { TBaseCustomTest, TTypeOfTestsAndDescription, TTotalQuestionsPerSubjectAndChapter, TCreateCustomTestData, TBaseUserScore, TSingleCustomTestWithQuestions, TCreateTestAnalytic, TSaveUserScore, TCustomTestMetadata, TQuestion, TBaseQuestion, TScoreBreakdown } from "../schema/tests.schema";
+import { TChapterWiseSyllabus } from "../chap_syllabus";
 
 export const getAllTests = async (): Promise<{
     data: TBaseCustomTest[] | null;
@@ -344,6 +345,7 @@ export const getSingleTestByIdForEdit = async (testid: string): Promise<{
         const { data, message } = await response.json();
         return { data, message };
     } catch (error) {
+        console.log(error)
         return { data: null, message: "Some Error Occured while fetching all tests!" };
     }
 };
@@ -582,13 +584,13 @@ export const generateTestCodes = async (testId: string, limit: number): Promise<
 };
 
 
-export const getCurrentChapterWiseTest = async (dateandtime:string): Promise<{
+export const getCurrentChapterWiseTest = async (): Promise<{
     data: TSingleCustomTestWithQuestions | null;
     message: string;
 }> => {
     try {
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/tests/get-current-chapterwise-test/${dateandtime}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/tests/get-current-chapterwise-test`, {
             method: "GET",
             cache: 'no-store',
             headers: {
@@ -608,4 +610,33 @@ export const getCurrentChapterWiseTest = async (dateandtime:string): Promise<{
         return { data: null, message: "Some Error Occured while getting current chapterwise test!" };
     }
 };
+
+export const getDailySchedule = async (): Promise<{
+    data: TChapterWiseSyllabus | null;
+    message: string;
+}> => {
+    try {
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/tests/get-daily-schedule`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        console.log("🚀 ~ getDailySchedule ~ error:", error)
+        return { data: null, message: "Some Error Occured while getting daily schedule!" };
+    }
+};
+
+
 
