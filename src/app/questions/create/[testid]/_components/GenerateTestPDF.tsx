@@ -96,7 +96,8 @@ const addPdfCommonElements = (doc: jsPDF, totalPages: number, testName: string) 
 };
 
 
-// Function for multi-column PDF generation (your original logic)
+// --- MODIFIED FUNCTION ---
+// Function for multi-column PDF generation
 const generateMultiColumnPDF = ({ questions, testName }: PdfOptions): jsPDF => {
     const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
     const fontSize = 8;
@@ -113,7 +114,7 @@ const generateMultiColumnPDF = ({ questions, testName }: PdfOptions): jsPDF => {
     // Add test name as title on first page only
     doc.setFontSize(16);
     doc.setFont('Arial', 'bold');
-    doc.text(testName, margin, margin + 5); // Adjusted Y for better top margin
+    doc.text(testName, margin, margin + 5);
     doc.setFontSize(fontSize);
     doc.setFont('Arial', 'normal');
 
@@ -128,33 +129,21 @@ const generateMultiColumnPDF = ({ questions, testName }: PdfOptions): jsPDF => {
 
     const subjectsToInclude = Object.keys(questionsBySubject);
 
-    // Track current page and column for layout
-    let currentPage = 1;
-    let yPos = margin + 20; // Starting Y position after title
+    // Track current layout state
+    let yPos = margin + 20; // Initial Y position after title
     let isLeftColumn = true;
     let xPos = margin;
 
-    subjectsToInclude.forEach((subject) => {
-        // Add a new page if it's not the very first page or if previous subject filled up
-        if (currentPage > 1 || (yPos > margin + 20 && !isLeftColumn)) { // Only add page if content exists or switching from right column
-             if (!isLeftColumn) { // If currently in right column, move to new page
-                doc.addPage();
-                currentPage++;
-                isLeftColumn = true;
-                xPos = margin;
-                yPos = margin + 10; // Reset Y for new page
-            } else if (currentPage === 1 && yPos > margin + 20) { // If first page and already drew something, add page for new subject
-                doc.addPage();
-                currentPage++;
-                isLeftColumn = true;
-                xPos = margin;
-                yPos = margin + 10;
-            } else { // If it's the very first subject and starting
-                 yPos = margin + 20;
-            }
-        } else if (yPos <= margin + 20 && currentPage === 1) { // Initial start for the very first subject
-            yPos = margin + 20;
+    subjectsToInclude.forEach((subject, subjectIndex) => {
+        // ---- CHANGE START ----
+        // If this is not the first subject, start it on a completely new page.
+        if (subjectIndex > 0) {
+            doc.addPage();
+            yPos = margin + 10; // Reset Y position for the new page
+            isLeftColumn = true; // Start in the left column
+            xPos = margin;
         }
+        // ---- CHANGE END ----
 
         // Add subject heading
         doc.setFontSize(12);
@@ -163,7 +152,6 @@ const generateMultiColumnPDF = ({ questions, testName }: PdfOptions): jsPDF => {
         yPos += 8; // Space after subject heading
         doc.setFontSize(fontSize);
         doc.setFont('Arial', 'normal');
-
 
         const subjectQuestions = questionsBySubject[subject] || [];
 
@@ -180,7 +168,7 @@ const generateMultiColumnPDF = ({ questions, testName }: PdfOptions): jsPDF => {
             const cleanAnswer = stripHtmlTags(question.answer);
             const cleanExplanation = stripHtmlTags(question.explanation);
 
-            let estimatedHeight = 3.5; // Question number + spacing
+            let estimatedHeight = 3.5; // Question number
             estimatedHeight += doc.splitTextToSize(cleanQuestion, colWidth - 5).length * 3.5;
 
             const optionLabels = ['A', 'B', 'C', 'D'];
@@ -192,11 +180,12 @@ const generateMultiColumnPDF = ({ questions, testName }: PdfOptions): jsPDF => {
                     ).length * 3.5;
                 }
             });
+
             if (cleanAnswer) estimatedHeight += 3.5;
             if (cleanExplanation) estimatedHeight += (doc.splitTextToSize(cleanExplanation, colWidth - 5).length + 1) * 3.5;
-            estimatedHeight += questionSpacing + 10; // Extra spacing
+            estimatedHeight += questionSpacing;
 
-            // Check if content fits. If not, move to next column or page.
+            // Check if content fits in the current column. If not, move to the next.
             if (yPos + estimatedHeight > pageHeight - bottomMargin) {
                 if (isLeftColumn) {
                     isLeftColumn = false;
@@ -204,7 +193,6 @@ const generateMultiColumnPDF = ({ questions, testName }: PdfOptions): jsPDF => {
                     yPos = margin + 10; // Reset yPos for the new column
                 } else {
                     doc.addPage();
-                    currentPage++;
                     isLeftColumn = true;
                     xPos = margin;
                     yPos = margin + 10; // Reset yPos for the new page
@@ -217,8 +205,9 @@ const generateMultiColumnPDF = ({ questions, testName }: PdfOptions): jsPDF => {
             yPos += 3.5;
 
             doc.setFont('Arial', 'normal');
-            doc.text(doc.splitTextToSize(cleanQuestion, colWidth - 5), xPos, yPos);
-            yPos += doc.splitTextToSize(cleanQuestion, colWidth - 5).length * 3.5;
+            const questionLines = doc.splitTextToSize(cleanQuestion, colWidth - 5);
+            doc.text(questionLines, xPos, yPos);
+            yPos += questionLines.length * 3.5;
 
             optionLabels.forEach(label => {
                 if (cleanOptions && cleanOptions[label.toLowerCase() as keyof TBaseOption]) {
@@ -237,32 +226,33 @@ const generateMultiColumnPDF = ({ questions, testName }: PdfOptions): jsPDF => {
 
             if (cleanAnswer) {
                 doc.setFont('Arial', 'bold');
-                doc.text(`Answer : `, xPos, yPos);
+                doc.text(`Answer:`, xPos, yPos);
                 doc.setFont('Arial', 'normal');
-                doc.text(`${cleanAnswer}`, xPos + 12, yPos);
+                doc.text(cleanAnswer, xPos + 12, yPos);
                 yPos += 3.5;
             }
 
             if (cleanExplanation) {
                 doc.setFont('Arial', 'bold');
-                doc.text(`Explanation: `, xPos, yPos);
+                doc.text(`Explanation:`, xPos, yPos);
+                yPos += 3.5;
                 doc.setFont('Arial', 'normal');
-
                 const explanationText = doc.splitTextToSize(cleanExplanation, colWidth - 5);
-                doc.text(explanationText, xPos, yPos + 3.5);
-                yPos += (explanationText.length + 1) * 3.5;
+                doc.text(explanationText, xPos, yPos);
+                yPos += explanationText.length * 3.5;
             }
 
+            yPos += questionSpacing / 2;
             doc.setDrawColor(200, 200, 200);
             doc.line(xPos, yPos, xPos + colWidth - 5, yPos);
-            yPos += questionSpacing;
+            yPos += questionSpacing / 2;
         });
     });
 
     return doc;
 };
 
-
+// --- UNCHANGED FUNCTIONS ---
 // Function for one-question-per-page PDF generation (New Variation)
 const generateOneQuestionPerPagePDF = ({ questions, testName }: PdfOptions): jsPDF => {
     const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
@@ -361,7 +351,7 @@ const generateOneQuestionPerPagePDF = ({ questions, testName }: PdfOptions): jsP
 };
 
 
-// Main Component
+// Main Component (Unchanged)
 interface GenerateTestPDFProps {
     questions: TQuestion[];
     testName: string;

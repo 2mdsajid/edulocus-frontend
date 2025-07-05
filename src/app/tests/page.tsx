@@ -29,9 +29,9 @@ export default async function Page() {
           {/* <h2 className="text-2xl font-bold tracking-wide text-color7 dark:text-green-100 mb-6">
             Available Tests
           </h2> */}
-          {/* <div className="mb-5">
+          <div className="mb-5">
             <LiveTestCard />
-          </div> */}
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {availableTests.map(testType => (

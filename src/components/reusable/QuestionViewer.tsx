@@ -121,7 +121,7 @@ export const QuestionViewer = (props: Props) => {
                 <div className="mt-6 p-4 bg-color1 rounded-md">
                     <div className="flex justify-between items-center mb-2">
                         <h3 className="font-semibold">Explanation:</h3>
-                        {(
+                        {/* {(
                             <Button
                                 variant="outline"
                                 size="sm"
@@ -137,7 +137,7 @@ export const QuestionViewer = (props: Props) => {
                                     "Generate AI Explanation"
                                 )}
                             </Button>
-                        )}
+                        )} */}
                     </div>
                     <div className="text-sm">
                         <p className="">

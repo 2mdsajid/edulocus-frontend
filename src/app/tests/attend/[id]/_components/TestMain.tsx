@@ -291,7 +291,7 @@ const TestMain = (props: Props) => {
                     </TabsList>
                     <TabsContent value="analysis" className='w-full space-y-5'>
                         <TestBasicAnalysis
-                            total_questions={totalTimeTaken}
+                            total_questions={uquestions.length}
                             corrrect_attempt={correctAttempt.length}
                             questions_attempt={questionsAttempt.length}
                             total_timetaken={totalTimeTaken}

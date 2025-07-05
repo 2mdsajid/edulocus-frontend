@@ -10,7 +10,6 @@ type Props = {
 const layout = async (props: Props) => {
 
     const { data: user, message: userAuthMessage } = await getUserSession()
-console.log(user)
     if (!user || !ROLES_HIEARCHY.MODERATOR.includes(user.role)) {
         return <ErrorPage errorMessage='You do not have permission to access this page' />
     }

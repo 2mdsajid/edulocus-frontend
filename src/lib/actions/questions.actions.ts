@@ -153,6 +153,7 @@ export const getTotalQuestionsPerSubjectAndChapter = async (): Promise<{
 
         const cookieStore = cookies();
         const stream = cookieStore.get("stream")?.value;
+        const authToken = cookieStore.get("auth-token")?.value;
 
         if (!stream) {
             return { data: null, message: "Stream Not Specified" };
@@ -163,7 +164,8 @@ export const getTotalQuestionsPerSubjectAndChapter = async (): Promise<{
             cache: 'no-store',
             headers: {
                 "Content-Type": "application/json",
-                "stream": stream
+                "stream": stream,
+                Authorization: "Bearer " + authToken,
             },
         });
 
@@ -189,6 +191,8 @@ export const getTotalQuestionsPerSubject = async (): Promise<{
 
         const cookieStore = cookies();
         const stream = cookieStore.get("stream")?.value;
+        const authToken = cookieStore.get("auth-token")?.value;
+
 
         if (!stream) {
             return { data: null, message: "Stream Not Specified" };
@@ -199,7 +203,8 @@ export const getTotalQuestionsPerSubject = async (): Promise<{
             cache: 'no-store',
             headers: {
                 "Content-Type": "application/json",
-                "stream": stream
+                "stream": stream,
+                Authorization: "Bearer " + authToken,
             },
         });
 
@@ -223,6 +228,7 @@ export const getQuestionsBySubject = async (subject: string, stream:TStream): Pr
     try {
 
         const cookieStore = cookies();
+        const stream = cookieStore.get("stream")?.value;
         const authToken = cookieStore.get("auth-token")?.value;
 
         if (!authToken) {

@@ -1,13 +1,12 @@
 import ErrorPage from "@/components/reusable/ErrorPage"
 import { SearchableResultTable, SearchableResultTableColumns } from "@/components/reusable/SearchableResultTable"
-import { getUserSession } from "@/lib/auth/auth"
-import TestInput from "./_components/TestInput"
-import { Metadata } from "next"
-import { constructMetadata } from "@/lib/data"
 import { getTestMetadata } from "@/lib/actions/tests.actions"
-import TestUnlockSection from "./_components/TestUnlockSection"
-import TestInfoFooter from "./_components/TestInfoFooter"
+import { getUserSession } from "@/lib/auth/auth"
+import { constructMetadata } from "@/lib/data"
+import { Metadata } from "next"
 import GenerateLeaderboardPDF from "./_components/GenerateLeaderboardPDF"
+import TestInfoFooter from "./_components/TestInfoFooter"
+import TestInput from "./_components/TestInput"
 
 type Props = {
     params: {
@@ -23,13 +22,13 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
     const { data: testMetadata, message } = await getTestMetadata(props.params.id)
     if (!testMetadata) {
         return constructMetadata({
-            title: `EduLocus | Model Test`,
-            description: `ModelTest from EduLocus for more comprehensive learning experience.`
+            title: `EduLocus | Test`,
+            description: `Test from EduLocus for more comprehensive learning experience.`
         });
     }
     return constructMetadata({
         title: `Edulocus | ${testMetadata.name}`,
-        description: `${testMetadata.slug} created by ${testMetadata.createdBy} for a comprehensive learning experience.`,
+        description: `${testMetadata.name} created by ${testMetadata.createdBy} for a comprehensive learning experience.`,
     });
 };
 

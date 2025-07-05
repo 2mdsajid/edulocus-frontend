@@ -21,7 +21,7 @@ const page = async (props: Props) => {
     }
 
     const { data, message } = await getCurrentChapterWiseTest();
-    console.log(data)
+    // console.log(data)
     if (!data) {
         return <div className='min-h-[70vh] flex flex-col items-center justify-center py-1 px-4 sm:px-6 lg:px-8'>
             <p className='text-xl font-semibold text-gray-800 mb-10'>No Test Available Right Now</p>
