@@ -228,7 +228,6 @@ export const getQuestionsBySubject = async (subject: string, stream:TStream): Pr
     try {
 
         const cookieStore = cookies();
-        const stream = cookieStore.get("stream")?.value;
         const authToken = cookieStore.get("auth-token")?.value;
 
         if (!authToken) {
