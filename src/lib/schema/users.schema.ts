@@ -102,21 +102,6 @@ export type TGroupDataInDashboard = {
     name: string
 }
 
-export type TDashboardAnalyticData = {
-    totalTests: number,
-    totalQuestionsAttempt: number,
-    totalCorrectAnswers: number,
-    totalUnattemptQuestions: number,
-    totalIncorrectanswers: number,
-    averageScorePerTest: number,
-    averageScorePerQuestion: number,
-    scoreParametersData:TScoreParametersData[],
-    recentTests: TRecentTestInDashboardData[],
-    dailyTestProgressChartData: TDailyTestProgressChartData[],
-    subjectWiseScoreChartData: TSubjectwiseScoresChartData[],
-    groupData?:TGroupDataInDashboard[]
-}
-
 
 import {z} from 'zod'
 

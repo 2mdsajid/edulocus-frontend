@@ -13,7 +13,7 @@ export type TChapterWiseSyllabus = {
 
 export const ChapterWiseSyllabus:TChapterWiseSyllabus = [
   {
-    "day": "july_3",
+    "day": "july_6",
     "8am": {
       "zoology": [
         "reproductive_system"

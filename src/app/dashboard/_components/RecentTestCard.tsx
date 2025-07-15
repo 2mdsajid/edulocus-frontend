@@ -41,11 +41,11 @@ const RecentTestCard = (props: Props) => {
                 </div>
 
                 <div className="flex flex-col gap-3">
-                    {/* <Link href={`/dashboard/view/${id}`} passHref>
+                    <Link href={`/dashboard/view/${id}`} passHref>
                         <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition-colors duration-200 shadow-md">
                             View Details
                         </Button>
-                    </Link> */}
+                    </Link>
                     <Link href={`/tests/retake/${id}`} passHref>
                         <Button variant="outline" className="w-full border-blue-500 text-blue-600 hover:bg-blue-50 hover:text-blue-700 font-semibold py-2 rounded-md transition-colors duration-200">
                             Re-attempt Test

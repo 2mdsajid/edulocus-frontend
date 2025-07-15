@@ -5,16 +5,17 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { TGroupBase } from "@/lib/schema/groups.schema"; 
 
 interface SingleGroupCardProps {
-  group: TGroupBase ; 
+  id:string
+  name:string
 }
 
-export function SingleGroupCard({ group }: SingleGroupCardProps) {
-  const groupLink = `/group/view/${group.id}`; 
+export function SingleGroupCard({ id , name}: SingleGroupCardProps) {
+  const groupLink = `/group/view/${id}`; 
 
   return (
     <Link href={groupLink} className="w-full ">
-      <Card className="hover:shadow-lg transition-shadow duration-200 ease-in-out h-full flex flex-col">
-        <CardHeader className="space-y-1">
+      <Card className="hover:shadow-lg transition-shadow duration-200 ease-in-out h-full flex flex-col p-5">
+        {/* <CardHeader className="space-y-1">
           {group.image && (
             <div className="relative w-full h-24">
               <img
@@ -36,7 +37,15 @@ export function SingleGroupCard({ group }: SingleGroupCardProps) {
           {group.creatorName && (
             <p className="text-sm">Admin: {group.creatorName}</p>
           )}
-        </CardContent>
+        </CardContent> */}
+        <h1 className="text-3xl font-bold my-4 center">{name}</h1>
+        <CardFooter>
+          <Link href={groupLink} className="w-full">
+            <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              View
+            </button>
+          </Link>
+        </CardFooter>
 
       </Card>
     </Link>

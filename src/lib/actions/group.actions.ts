@@ -2,7 +2,7 @@
 
 
 import { cookies } from "next/headers";
-import { TGroupBase, TGroupCreate, TGroupDetail } from "@/lib/schema/groups.schema"; // Adjust the path to your schema file
+import { TGroupBase, TGroupByUser, TGroupCreate, TGroupDetail, TMember } from "@/lib/schema/groups.schema"; // Adjust the path to your schema file
 
 export const createGroupAction = async (
   createGroupData: TGroupCreate,
@@ -43,8 +43,8 @@ export const createGroupAction = async (
 
 
 
-export const getAllGroupsByModerator = async (): Promise<{
-    data: TGroupBase[] | null; // Adjust based on your backend response if creatorName is sent
+export const getAllGroupsByUser = async (userId:string): Promise<{
+    data: TMember[] | null; // Adjust based on your backend response if creatorName is sent
     message: string;
 }> => {
   try {
@@ -55,7 +55,7 @@ export const getAllGroupsByModerator = async (): Promise<{
       return { data: null, message: "User not logged in!" };
     }
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/groups/get-all-groups-by-moderator`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/groups/get-group-by-user/${userId}`, {
       method: "GET",
       cache: "no-store", // Ensures fresh data
       headers: {

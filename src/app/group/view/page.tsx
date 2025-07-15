@@ -1,9 +1,9 @@
 import ErrorPage from "@/components/reusable/ErrorPage";
-import { getAllGroupsByModerator } from "@/lib/actions/group.actions"; // Corrected import to the action
 import { Separator } from "@/components/ui/separator"; // For a nice visual separation
-import { SingleGroupCard } from "./_components/SingleGroupCard";
+import { getAllGroupsByUser } from "@/lib/actions/group.actions"; // Corrected import to the action
 import { getUserSession } from "@/lib/auth/auth";
 import { redirect } from "next/navigation";
+import { SingleGroupCard } from "./_components/SingleGroupCard";
 
 const ModeratorGroupsPage = async () => { 
 
@@ -13,7 +13,7 @@ const ModeratorGroupsPage = async () => {
     } 
 
 
-  const { data: groups, message } = await getAllGroupsByModerator();
+  const { data: groups, message } = await getAllGroupsByUser(user.id);
   if (!groups || groups.length === 0) {
     return <ErrorPage errorMessage={message || "No groups found or an error occurred."} />;
   }
@@ -26,8 +26,8 @@ const ModeratorGroupsPage = async () => {
       <Separator className="mb-8" />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {groups.map((group) => (
-          <SingleGroupCard key={group.id} group={group} />
+        {groups.map((g) => (
+          <SingleGroupCard key={g.group.id} id={g.group.id} name={g.group.name}  />
         ))}
       </div>
     </div>

@@ -131,6 +131,15 @@ export const groupResponseSchema = groupBaseSchema.extend({
 
 
 
+export type TGroupByUser = {
+  name: string;
+  id: string;
+}
+
+export type TMember = {
+  group : TGroupByUser
+}
+
 // Type inference for Group and GroupMember
 export type TGroupRole = z.infer<typeof groupRoleSchema>;
 export type TMemberStatus = z.infer<typeof memberStatusSchema>;

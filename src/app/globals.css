@@ -111,3 +111,14 @@ body {
   font-weight: bold;
   color: #2d3748; /* Tailwind's gray-800 */
 }
+
+
+
+/* dashboard */
+
+
+:root {
+  --emerald: 158 64% 52%;
+  --rose: 347 77% 62%;
+  --violet: 258 90% 66%;
+}
