@@ -91,11 +91,11 @@ export function VariousScoresPieChart(props: Props) {
                         </Pie>
                         {/* Ensure the legend receives correct props and renders labels */}
                         <ChartLegend
-                            content={
+                            content={({ payload }) => (
                                 <ChartLegendContent
-                                    nameKey={String('value')} // Make sure nameKey is passed correctly
+                                    nameKey={String('value')}
                                 />
-                            }
+                            )}
                             className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
                         />
                     </PieChart>

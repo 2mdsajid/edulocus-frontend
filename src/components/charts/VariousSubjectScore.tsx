@@ -89,11 +89,15 @@ export function VariousSubjectScore(props: Props) {
                         </Pie>
                         {/* Ensure the legend receives correct props and renders labels */}
                         <ChartLegend
-
                             content={
                                 <ChartLegendContent
                                     className="border"
-                                    nameKey={String('subject')} // Make sure nameKey is passed correctly
+                                    nameKey={String('subject')}
+                                    payload={chartData.map((entry) => ({
+                                        value: entry.subject,
+                                        color: '#8884d8', // Use a default color since 'color' doesn't exist in the type
+                                        payload: entry
+                                    }))}
                                 />
                             }
                             className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"

@@ -10,7 +10,7 @@ import {
     ChartTooltipContent
 } from "@/components/ui/chart";
 import { TDailyTestProgressChartData, TPerformanceInsight, TPerformanceStat, TScoreParameter } from "@/lib/schema/analytics.schema";
-import { BookOpen, CheckCircle, ChevronDown, ChevronUp, Folder, HelpCircle, RotateCw,  Target, TrendingDown, TrendingUp, Trophy, Eye, Loader2, PlayCircle } from "lucide-react";
+import { BookOpen, CheckCircle, ChevronDown, ChevronUp, Folder, HelpCircle, RotateCw, Target, TrendingDown, TrendingUp, Trophy, Eye, Loader2, PlayCircle } from "lucide-react";
 import React, { useMemo, useState } from 'react';
 import { Area, AreaChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
@@ -25,19 +25,19 @@ import { startChapterWiseTest, startSubjectWiseTest } from "@/lib/actions/tests.
 
 /* --------- THEME-COLORS (feel free to tweak) --------- */
 const COLORS = {
-    correct:   '#10b981',   // emerald-500
+    correct: '#10b981',   // emerald-500
     incorrect: '#f43f5e',   // rose-500
     unattempt: '#8b5cf6',   // violet-500
 };
 
 const COLORS_CHART = {
-    correct:   'hsl(var(--emerald))',
+    correct: 'hsl(var(--emerald))',
     incorrect: 'hsl(var(--rose))',
     unattempt: 'hsl(var(--violet))',
 };
 
 const chartConfig = {
-    correct:   { label: "Correct",   color: "hsl(var(--emerald))" },
+    correct: { label: "Correct", color: "hsl(var(--emerald))" },
     incorrect: { label: "Incorrect", color: "hsl(var(--rose))" },
     unattempt: { label: "Unattempted", color: "hsl(var(--violet))" },
 } satisfies ChartConfig;
@@ -145,8 +145,11 @@ export const ScoreCompositionChart = ({ data }: ScoreCompositionChartProps) => {
                                     <Cell key={`cell-${idx}`} fill={entry.fill} />
                                 ))}
                             </Pie>
-                            <ChartLegend content={<ChartLegendContent nameKey="name" />} className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center" />
-                        </PieChart>
+                            <ChartLegend 
+  content={({ payload }) => <ChartLegendContent payload={payload as any} nameKey="name" />}
+  className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center" 
+/>
+                            </PieChart>
                     </ResponsiveContainer>
                 </ChartContainer>
             </CardContent>
@@ -339,8 +342,8 @@ export const DailyProgressChart = ({ data }: DailyProgressChartProps) => (
                 <AreaChart data={data} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
                     <defs>
                         <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.8}/>
-                            <stop offset="95%" stopColor="#38bdf8" stopOpacity={0}/>
+                            <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.8} />
+                            <stop offset="95%" stopColor="#38bdf8" stopOpacity={0} />
                         </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" />
@@ -435,7 +438,7 @@ export const RecentTestsList = ({ tests }: RecentTestsListProps) => {
                     </>
                 ) : (
                     <div className="flex items-center justify-center h-full">
-                         <p className="text-sm text-gray-500">No recent tests found.</p>
+                        <p className="text-sm text-gray-500">No recent tests found.</p>
                     </div>
                 )}
             </CardContent>

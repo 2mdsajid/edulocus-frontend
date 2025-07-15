@@ -59,7 +59,6 @@ export function SubjectWiseScoreBarGraph(props: Props) {
             />
             <Bar
               dataKey="score"
-              layout="vertical"
               fill="var(--color-score)"
               radius={4}
             >

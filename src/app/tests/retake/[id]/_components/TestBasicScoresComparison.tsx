@@ -1,7 +1,6 @@
-import React from 'react';
 import TestBasicAnalysis from '@/components/reusable/tests/TestBasicAnalysis'; // Adjust the import path as needed
-import { ArrowUpRight, ArrowDownRight, TrendingUp, TrendingDown, Minus } from 'lucide-react'; // Added Minus icon for no change
-import { isInRectangle } from 'recharts/types/shape/Rectangle';
+import { Minus, TrendingDown, TrendingUp } from 'lucide-react'; // Added Minus icon for no change
+import React from 'react';
 
 type Props = {
     total_timetaken: number;
