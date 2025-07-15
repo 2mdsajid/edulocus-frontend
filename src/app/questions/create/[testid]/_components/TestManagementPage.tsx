@@ -15,6 +15,7 @@ import GenerateTestPDF from "./GenerateTestPDF"
 import ManualAddQuestionForm from "./ManualAddQuestionForm"
 import SaveChangesDialog from './SaveChangesDialog'
 import { ParsedElement } from "@/lib/utils"
+import QuestionReportDialog from "@/components/reusable/QuestionReportDialog"
 
 type Props = {
     test: TSingleCustomTestWithQuestions
@@ -165,7 +166,7 @@ const TestManagementPage = (props: Props) => {
                                         Select and scroll down to add
                                     </SheetDescription>
                                 </SheetHeader>
-                                <Button 
+                                <Button
                                     onClick={handleOpenImportSheetQuestions}
                                     disabled={!selectedSubject}
                                     className="mt-4"
@@ -174,7 +175,7 @@ const TestManagementPage = (props: Props) => {
                                 </Button>
 
                                 <div className="py-4 space-y-4">
-                                    { availableQuestions.length === 0 ? (
+                                    {availableQuestions.length === 0 ? (
                                         <p>No questions.</p>
                                     ) : (
                                         availableQuestions.map(question => (
@@ -255,14 +256,19 @@ const TestManagementPage = (props: Props) => {
                                             <div className="flex justify-between items-start">
                                                 <h3 className="text-lg font-medium">Q{index + 1}: {ParsedElement(question.question)}</h3>
                                                 {question.images?.qn && <img src={question.images.qn} alt="Question Image" className="h-40 w-auto" />}
-                                                <Button
-                                                    variant="destructive"
-                                                    size="sm"
-                                                    onClick={() => handleRemoveQuestion(question.id)}
-                                                >
-                                                    Remove
-                                                </Button>
+                                                <div className="flex gap-2">
+                                                    <Button
+                                                        variant="destructive"
+                                                        size="sm"
+                                                        onClick={() => handleRemoveQuestion(question.id)}
+                                                    >
+                                                        Remove
+                                                    </Button>
+                                                    <QuestionReportDialog questionId={question.id} />
+                                                </div>
                                             </div>
+
+
 
                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                                 <div className="p-3 border rounded-md">
@@ -298,7 +304,7 @@ const TestManagementPage = (props: Props) => {
                                                         <iframe
                                                             className="w-full h-full rounded-lg"
                                                             src={
-                                                                question.videoUrl.includes('youtube.com/watch?v=') 
+                                                                question.videoUrl.includes('youtube.com/watch?v=')
                                                                     ? `https://www.youtube.com/embed/${question.videoUrl.split('v=')[1].split('&')[0]}`
                                                                     : question.videoUrl.includes('youtu.be/')
                                                                         ? `https://www.youtube.com/embed/${question.videoUrl.split('youtu.be/')[1]}`
