@@ -289,3 +289,14 @@ export type CustomTestQuestionCounts = {
         [chapterOrSubject: string]: number; 
     };
 };
+
+
+// for difficulty based tests
+export type TQuestionsCountByDifficulty = {
+    e: number; // easy
+    m: number; // medium
+    h: number; // hard
+};
+
+
+export type TDifficulty = 'e' | 'm' | 'h'
