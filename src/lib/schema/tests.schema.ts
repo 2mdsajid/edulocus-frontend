@@ -274,3 +274,18 @@ export type TCustomTestMetadata = Pick<CustomTest,
     usersAttended: TBaseUserScore[]
     testLock: TTestLock | null
 }
+
+
+
+// for custom tests
+export type CustomTestSelections = {
+    [subject: string]: {
+        [chapter: string]: boolean;
+    };
+};
+
+export type CustomTestQuestionCounts = {
+    [subject: string]: {
+        [chapterOrSubject: string]: number; 
+    };
+};

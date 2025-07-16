@@ -3,11 +3,12 @@ import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import RandomTestForm from './_components/RandomTestForm';
 import ErrorPage from '@/components/reusable/ErrorPage';
+import { constructMetadata } from '@/lib/data';
 
-export const metadata: Metadata = {
-  title: 'Random Test | Your Platform Name',
-  description: 'Start a new test with a random selection of questions. Customize the test length and challenge your knowledge.',
-};
+export const metadata =  constructMetadata({
+  title: `Edulocus | Random Test`,
+  description: `Random Test created from EduLocus for a comprehensive learning experience.`,
+});
 
 
 const Page = async () => {

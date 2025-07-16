@@ -2,7 +2,7 @@
 
 
 import { cookies } from "next/headers";
-import { TBaseCustomTest, TTypeOfTestsAndDescription, TTotalQuestionsPerSubjectAndChapter, TCreateCustomTestData, TBaseUserScore, TSingleCustomTestWithQuestions, TCreateTestAnalytic, TSaveUserScore, TCustomTestMetadata, TQuestion, TBaseQuestion, TScoreBreakdown } from "../schema/tests.schema";
+import { TBaseCustomTest, TTypeOfTestsAndDescription, TTotalQuestionsPerSubjectAndChapter, TCreateCustomTestData, TBaseUserScore, TSingleCustomTestWithQuestions, TCreateTestAnalytic, TSaveUserScore, TCustomTestMetadata, TQuestion, TBaseQuestion, TScoreBreakdown, CustomTestSelections, CustomTestQuestionCounts } from "../schema/tests.schema";
 import { TChapterWiseSyllabus } from "../chap_syllabus";
 
 export const getAllTests = async (): Promise<{
@@ -681,5 +681,47 @@ export const startRandomTest = async (limit:number): Promise<{
         return { data, message };
     } catch (error) {
         return { data: null, message: "Some Error Occured while fetching all tests!" };
+    }
+};
+
+
+//start custom test
+export const startCustomTest = async (questionCounts: CustomTestQuestionCounts): Promise<{
+    data: string | null;
+    message: string;
+}> => {
+    try {
+        const cookieStore = cookies();
+        const authToken = cookieStore.get('auth-token')?.value;
+        if (!authToken) {
+            return { data: null, message: "User not logged in!" };
+        }
+
+
+        const stream = cookieStore.get('stream')?.value
+        if (!stream) {
+            return { data: null, message: "Stream not found!" }
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/tests/create-custom-test-by-premium`, {
+            method: "POST",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": "Bearer " + authToken,
+                "stream": stream
+            },
+            body: JSON.stringify({ questionCounts }),
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message };
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occurred while creating custom test!" };
     }
 };
