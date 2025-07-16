@@ -1,11 +1,9 @@
 'use client'
 
-import { QuestionViewer } from '@/components/reusable/QuestionViewer';
 import SubmitButton from '@/components/reusable/SubmitButton';
 import TestQuestionRender from '@/components/reusable/tests/TestQuestionRender';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { sendTestAnalytic } from '@/lib/actions/tests.actions';
 import { TCreateTestAnalytic, TCreateTestQuestionAnswer, TQuestion, TScoreBreakdown, TSubjectWiseChapterScores } from '@/lib/schema/tests.schema';
 import { TBaseUser } from '@/lib/schema/users.schema';

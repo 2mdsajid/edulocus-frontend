@@ -2,7 +2,7 @@
 
 
 import { cookies } from "next/headers";
-import { TBaseCustomTest, TTypeOfTestsAndDescription, TTotalQuestionsPerSubjectAndChapter, TCreateCustomTestData, TBaseUserScore, TSingleCustomTestWithQuestions, TCreateTestAnalytic, TSaveUserScore, TCustomTestMetadata, TQuestion, TBaseQuestion, TScoreBreakdown, CustomTestSelections, CustomTestQuestionCounts, TDifficulty } from "../schema/tests.schema";
+import { TBaseCustomTest, TTypeOfTestsAndDescription, TTotalQuestionsPerSubjectAndChapter, TCreateCustomTestData, TBaseUserScore, TSingleCustomTestWithQuestions, TCreateTestAnalytic, TSaveUserScore, TCustomTestMetadata, TQuestion, TBaseQuestion, TScoreBreakdown, CustomTestSelections, CustomTestQuestionCounts, TDifficulty, TRecentTest } from "../schema/tests.schema";
 import { TChapterWiseSyllabus } from "../chap_syllabus";
 
 export const getAllTests = async (): Promise<{
@@ -767,3 +767,42 @@ export const startDifficultyTest = async (level:TDifficulty, limit:number, subje
     }
 };
 
+
+// get recent tests
+export const getRecentTests = async (): Promise<{
+    data: TRecentTest[] | null;
+    message: string;
+}> => {
+    try {
+        const cookieStore = cookies();
+        const authToken = cookieStore.get('auth-token')?.value;
+        if (!authToken) {
+            return { data: null, message: "User not logged in!" };
+        }
+
+        const stream = cookieStore.get('stream')?.value;
+        if (!stream) {
+            return { data: null, message: "Stream not found!" };
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/tests/get-recent-tests`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": "Bearer " + authToken,
+                "stream": stream
+            }
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message };
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occurred while fetching recent tests!" };
+    }
+};

@@ -35,8 +35,6 @@ const page = async (props: Props) => {
         return <ErrorPage errorMessage={dashboardAnalyticsMessage || "Could not load dashboard data."} />;
     }
 
-    
-
     return (
         <div className='w-full bg-gray-50 min-h-screen'>
             <div className='max-w-7xl mx-auto space-y-6 pt-24 pb-16 px-4 sm:px-6 lg:px-8'>

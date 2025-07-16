@@ -300,3 +300,13 @@ export type TQuestionsCountByDifficulty = {
 
 
 export type TDifficulty = 'e' | 'm' | 'h'
+
+
+// for recent tests
+export type TRecentTest = {
+    id: string;
+    name: string;
+    date: string;
+    totalQuestions: number;
+    score: number;
+}
