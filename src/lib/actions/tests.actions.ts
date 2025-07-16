@@ -195,7 +195,7 @@ export const startSubjectWiseTest = async (subject: string, type: TTypeOfTest): 
     }
 };
 
-
+// start chapter wise test
 export const startChapterWiseTest = async (subject: string, chapter: string, type: TTypeOfTest): Promise<{
     data: string | null;
     message: string;
@@ -583,7 +583,7 @@ export const generateTestCodes = async (testId: string, limit: number): Promise<
     }
 };
 
-
+// for shapteriwse series ----------------------------
 export const getCurrentChapterWiseTest = async (): Promise<{
     data: TSingleCustomTestWithQuestions | null;
     message: string;
@@ -639,4 +639,47 @@ export const getDailySchedule = async (): Promise<{
 };
 
 
+///////////////////////////////////////////////
+/////////////// FOR MEMBERS ONLY /////////////
+/////////////////////////////////////////////
 
+// generate random test
+export const startRandomTest = async (limit:number): Promise<{
+    data: string | null;
+    message: string;
+}> => {
+    try {
+
+        const cookieStore = cookies()
+        const authToken = cookieStore.get('auth-token')?.value
+        if (!authToken) {
+            return { data: null, message: "User not logged in!" }
+        }
+
+
+        const stream = cookieStore.get('stream')?.value
+        if (!stream) {
+            return { data: null, message: "Stream not found!" }
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/tests/create-random-test?limit=${limit}`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": "Bearer " + authToken,
+                "stream": stream
+            },
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occured while fetching all tests!" };
+    }
+};
