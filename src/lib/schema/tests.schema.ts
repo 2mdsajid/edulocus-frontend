@@ -1,6 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import { TStream } from "./users.schema";
-import { TBaseImages } from "./questions.schema";
+import { TAnswer, TBaseImages } from "./questions.schema";
 import { z } from "zod";
 import { PerformanceStatSchema, ChapterStatsBySubjectSchema, PerformanceInsightSchema, ChapterInsightsSchema } from "./analytics.schema";
 export type ANSWER = 'a' | 'b' | 'c' | 'd'
@@ -334,3 +334,27 @@ export const PerformanceAnalyzerTestSchems = z.object({
 
 
 export type TPerformanceAnalyzerTest = z.infer<typeof PerformanceAnalyzerTestSchems>;
+
+
+// mistake analyzer
+type TQuestionForRevision = {
+    id: string;
+    question: string;
+    answer: TAnswer;
+    explanation: string | null;
+    subject: string | null;
+    chapter: string | null;
+    unit: string | null;
+    images: TBaseImages | null
+    difficulty: string; 
+    options: TBaseOption | null
+};
+
+export type TQuestionForRevisionWithUserAnswer = TQuestionForRevision & {
+    userAnswer: string;
+};
+
+export type TMistakeAnalysis = {
+    incorrectQuestions: TQuestionForRevisionWithUserAnswer[];
+    unattemptedQuestions: TQuestionForRevisionWithUserAnswer[];
+};

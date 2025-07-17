@@ -2,7 +2,7 @@
 
 
 import { cookies } from "next/headers";
-import { TBaseCustomTest, TTypeOfTestsAndDescription, TTotalQuestionsPerSubjectAndChapter, TCreateCustomTestData, TBaseUserScore, TSingleCustomTestWithQuestions, TCreateTestAnalytic, TSaveUserScore, TCustomTestMetadata, TQuestion, TBaseQuestion, TScoreBreakdown, CustomTestSelections, CustomTestQuestionCounts, TDifficulty, TRecentTest, TPerformanceAnalyzerTest } from "../schema/tests.schema";
+import { TBaseCustomTest, TTypeOfTestsAndDescription, TTotalQuestionsPerSubjectAndChapter, TCreateCustomTestData, TBaseUserScore, TSingleCustomTestWithQuestions, TCreateTestAnalytic, TSaveUserScore, TCustomTestMetadata, TQuestion, TBaseQuestion, TScoreBreakdown, CustomTestSelections, CustomTestQuestionCounts, TDifficulty, TRecentTest, TPerformanceAnalyzerTest, TMistakeAnalysis } from "../schema/tests.schema";
 import { TChapterWiseSyllabus } from "../chap_syllabus";
 
 export const getAllTests = async (): Promise<{
@@ -845,5 +845,74 @@ export const getPerformanceAnalyzerTest = async (): Promise<{
         return { data, message };
     } catch (error) {
         return { data: null, message: "Some Error Occurred while creating performance analyzer test!" };
+    }
+};
+
+
+
+//  mistake revision
+export const getRevisionQuestions = async (): Promise<{
+    data: TMistakeAnalysis | null;
+    message: string;
+}> => {
+    try {
+        const cookieStore = cookies();
+        const authToken = cookieStore.get('auth-token')?.value;
+        if (!authToken) {
+            return { data: null, message: "User not logged in!" };
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/tests/get-revision-questions`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": "Bearer " + authToken
+            }
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message };
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occurred while fetching mistake analysis!" };
+    }
+};
+
+
+export const createRevisionTest = async (questionIds: string[]): Promise<{
+    data: string | null;
+    message: string;
+}> => {
+    try {
+        const cookieStore = cookies();
+        const authToken = cookieStore.get('auth-token')?.value;
+        if (!authToken) {
+            return { data: null, message: "User not logged in!" };
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/tests/create-revision-test`, {
+            method: "POST",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": "Bearer " + authToken
+            },
+            body: JSON.stringify({ questionIds })
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message };
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occurred while creating revision test!" };
     }
 };
