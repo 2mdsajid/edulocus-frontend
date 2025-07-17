@@ -1,6 +1,8 @@
 import { LucideIcon } from "lucide-react";
 import { TStream } from "./users.schema";
 import { TBaseImages } from "./questions.schema";
+import { z } from "zod";
+import { PerformanceStatSchema, ChapterStatsBySubjectSchema, PerformanceInsightSchema, ChapterInsightsSchema } from "./analytics.schema";
 export type ANSWER = 'a' | 'b' | 'c' | 'd'
 export type Images = {
     a: string | null;
@@ -310,3 +312,25 @@ export type TRecentTest = {
     totalQuestions: number;
     score: number;
 }
+
+
+
+// performance analyzer
+export const PerformanceAnalyzerTestSchems = z.object({
+    performance: z.object({
+        subjects: z.object({
+            stats: z.record(z.string(), PerformanceStatSchema),
+            insights: z.object({
+                top: z.array(PerformanceInsightSchema),
+                weakest: z.array(PerformanceInsightSchema),
+            }),
+        }),
+        chapters: z.object({
+            stats: ChapterStatsBySubjectSchema,
+            insights: z.record(z.string(), ChapterInsightsSchema),
+        }),
+    }),
+});
+
+
+export type TPerformanceAnalyzerTest = z.infer<typeof PerformanceAnalyzerTestSchems>;

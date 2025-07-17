@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
 // Schema for the raw data we expect from the Prisma query
-const QuestionForAnalyticsSchema = z.object({
+export const QuestionForAnalyticsSchema = z.object({
     answer: z.string(),
     subject: z.string().default('Unknown'),
     chapter: z.string().default('Unknown'),
 });
 
-const TestQuestionAnswerForAnalyticsSchema = z.object({
+export const TestQuestionAnswerForAnalyticsSchema = z.object({
     userAnswer: z.string().nullable(),
     question: QuestionForAnalyticsSchema,
 });
@@ -34,7 +34,7 @@ export const PerformanceStatSchema = z.object({
 });
 export type TPerformanceStat = z.infer<typeof PerformanceStatSchema>;
 
-const PerformanceInsightSchema = PerformanceStatSchema.extend({
+export const PerformanceInsightSchema = PerformanceStatSchema.extend({
     name: z.string(),
 });
 export type TPerformanceInsight = z.infer<typeof PerformanceInsightSchema>;
@@ -44,13 +44,13 @@ export const ChapterStatsBySubjectSchema = z.record(z.string(), z.record(z.strin
 export type TChapterStatsBySubject = z.infer<typeof ChapterStatsBySubjectSchema>;
 
 // ✨ New schema for chapter insights, which will also be nested by subject
-const ChapterInsightsSchema = z.object({
+export const ChapterInsightsSchema = z.object({
     top: z.array(PerformanceInsightSchema),
     weakest: z.array(PerformanceInsightSchema),
 });
 
 
-const ScoreParameterSchema = z.object({
+export const ScoreParameterSchema = z.object({
     name: z.enum(['correct', 'incorrect', 'unattempt']),
     value: z.number(),
     total: z.number(),
@@ -59,7 +59,7 @@ const ScoreParameterSchema = z.object({
 export type TScoreParameter = z.infer<typeof ScoreParameterSchema>;
 
 
-const RecentTestSchema = z.object({
+export const RecentTestSchema = z.object({
     id: z.string(),
     name: z.string(),
     date: z.string().datetime(),
@@ -69,7 +69,7 @@ const RecentTestSchema = z.object({
 export type TRecentTestInDashboardData = z.infer<typeof RecentTestSchema>;
 
 
-const DailyTestProgressSchema = z.object({
+export const DailyTestProgressSchema = z.object({
     date: z.string(),
     score: z.number(),
     fill: z.string(),
