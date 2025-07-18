@@ -98,41 +98,54 @@ const ReTestMain = (props: Props) => {
                 questionId: question.id,
                 userAnswer: question.uans || '',
             });
-
-
+        
             total_timetaken += question.timetaken;
-
-            // Initialize chapter-specific scores if not already done
-            if (!subject_wise_chapter_scores[question.subject]) {
-                subject_wise_chapter_scores[question.subject] = {};
+        
+            // --- START OF THE FIX ---
+        
+            // 1. Validate that subject and chapter are actual strings.
+            const subject = question.subject;
+            const chapter = question.chapter;
+        
+            // 2. If either is missing, skip this question for chapter-wise scoring.
+            //    This prevents creating keys like "null" or "undefined".
+            if (!subject || !chapter) {
+                return; // Go to the next iteration of the loop
             }
-            if (!subject_wise_chapter_scores[question.subject][question.chapter]) {
-                subject_wise_chapter_scores[question.subject][question.chapter] = {
+        
+            // Initialize chapter-specific scores if not already done
+            if (!subject_wise_chapter_scores[subject]) {
+                subject_wise_chapter_scores[subject] = {};
+            }
+            if (!subject_wise_chapter_scores[subject][chapter]) {
+                subject_wise_chapter_scores[subject][chapter] = {
                     total: 0,
                     correct: 0,
                     incorrect: 0,
                     unattempt: 0,
                 };
             }
-
+        
             // Update total counts
-            subject_wise_chapter_scores[question.subject][question.chapter].total++;
-
+            subject_wise_chapter_scores[subject][chapter].total++;
+        
             if (!question.uans) {
-                return subject_wise_chapter_scores[question.subject][question.chapter].unattempt++;
+                subject_wise_chapter_scores[subject][chapter].unattempt++;
+                return; // Use return to exit the current iteration cleanly
             }
-
+        
             // Check if the answer is correct or incorrect
             if (question.answer.toLowerCase() === question.uans.toLowerCase()) {
                 correct_questions_ids.push(question.id);
-                subject_wise_chapter_scores[question.subject][question.chapter].correct++;
+                subject_wise_chapter_scores[subject][chapter].correct++;
             } else {
                 incorrect_questions_ids.push(question.id);
-                subject_wise_chapter_scores[question.subject][question.chapter].incorrect++;
+                subject_wise_chapter_scores[subject][chapter].incorrect++;
             }
+            // --- END OF THE FIX ---
         });
-
-        setSubjectWiseChapterScore(subject_wise_chapter_scores)
+        
+        setSubjectWiseChapterScore(subject_wise_chapter_scores);        
         setTotalTimeTaken(total_timetaken)
         setCorrectAttempt(correct_questions_ids)
 
@@ -303,7 +316,7 @@ const ReTestMain = (props: Props) => {
                     <form className="w-full space-y-10" onSubmit={checkAns} action="" method="POST">
                         {SUBJECTS.map((s, i) => (
                             <div key={s} id={s} className={`${s} subject`}>
-                                <h2 className='text-3xl font-bold my-8 text-center text-gray-800 dark:text-gray-100 capitalize'>{s.replace(/_/g, ' ')}</h2>
+                                <h2 className='text-3xl font-bold my-8 text-center text-gray-800 dark:text-gray-100 capitalize'>{s}</h2>
                                 <div className="space-y-6">
                                     {categorizedQuestions[s].map((question, index) => (
                                         <TestQuestionRender

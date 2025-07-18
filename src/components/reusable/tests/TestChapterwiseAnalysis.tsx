@@ -1,124 +1,166 @@
 "use client"
 
-import { CardDescription, CardTitle } from '@/components/ui/card'
+import React from 'react';
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
-import { TSubjectWiseChapterScores } from '@/lib/schema/tests.schema'
-import { subjectWiseChapterScore } from '@/lib/methods/tests.methods'
-import { SubjectScoreBreakdownGraph } from './SubjectScoreBreakdownGraph'
-import { ChaptersAccuracyGraph } from '@/app/tests/attend/[id]/_components/ChaptersAccuracyGraph'
+import { TSubjectWiseChapterScores, TScoreBreakdown, TChapterAccuracy, TIndividualSubjectScores } from '@/lib/schema/tests.schema';
+import { CheckCircle, XCircle, HelpCircle, Target } from "lucide-react";
 
+
+// This function ensures the data structure is clean and safe before rendering.
+export function processScoreData(data: TSubjectWiseChapterScores): TIndividualSubjectScores[] {
+    const result: TIndividualSubjectScores[] = [];
+    if (!data || typeof data !== 'object') {
+        return []; // Return empty array if data is invalid
+    }
+
+    for (const subjectKey in data) {
+        if (Object.prototype.hasOwnProperty.call(data, subjectKey)) {
+            const subjectName = String(subjectKey || 'Unnamed Subject');
+            const subjectData = data[subjectKey];
+            
+            let total = 0, correct = 0, incorrect = 0, unattempt = 0;
+            const chapterAccuracies: TChapterAccuracy[] = [];
+
+            if (subjectData && typeof subjectData === 'object') {
+                for (const chapterKey in subjectData) {
+                    if (Object.prototype.hasOwnProperty.call(subjectData, chapterKey)) {
+                        const chapterName = String(chapterKey || 'Unnamed Chapter');
+                        const chapterData = subjectData[chapterKey];
+
+                        if (chapterData && typeof chapterData.total === 'number') {
+                             total += chapterData.total;
+                             correct += chapterData.correct;
+                             incorrect += chapterData.incorrect;
+                             unattempt += chapterData.unattempt;
+
+                             const accuracy = chapterData.total > 0 ? (chapterData.correct / chapterData.total) * 100 : 0;
+                             chapterAccuracies.push({ chapter: chapterName, accuracy });
+                        }
+                    }
+                }
+            }
+            result.push({ name: subjectName, total, correct, incorrect, unattempt, chapterAccuracies });
+        }
+    }
+    return result;
+}
+
+// Helper for presentation formatting (capitalization, etc.)
+const formatNameForDisplay = (name: string): string => {
+    return name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+};
+
+
+const SimpleBreakdownChart = ({ data }: { data: TIndividualSubjectScores }) => {
+    const items = [
+        { label: 'Correct', value: data.correct, color: 'bg-green-500' },
+        { label: 'Incorrect', value: data.incorrect, color: 'bg-red-500' },
+        { label: 'Unattempted', value: data.unattempt, color: 'bg-yellow-500' },
+    ];
+    const total = Math.max(1, data.total); // Avoid division by zero
+
+    return (
+        <div className="space-y-3 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+            {items.map(item => (
+                <div key={item.label} className="flex items-center">
+                    <span className="w-28 text-sm text-gray-600 dark:text-gray-400">{item.label}</span>
+                    <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-5">
+                        <div
+                            className={`${item.color} h-5 rounded-full flex items-center justify-center text-white text-xs font-bold`}
+                            style={{ width: `${(item.value / total) * 100}%` }}
+                        >
+                           {item.value}
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+};
+
+// A simple, dependency-free list with progress bars for chapter accuracy
+const ChapterAccuracyList = ({ chapters }: { chapters: TChapterAccuracy[] }) => {
+    return (
+         <div className="space-y-4 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+            {chapters.map(({ chapter, accuracy }) => {
+                const color = accuracy >= 75 ? 'bg-green-500' : accuracy >= 40 ? 'bg-yellow-500' : 'bg-red-500';
+                return (
+                    <div key={chapter} className="flex items-center">
+                        <p className="w-2/5 truncate pr-4 text-sm font-medium text-gray-600 dark:text-gray-400">{formatNameForDisplay(chapter)}</p>
+                        <div className="w-3/5 flex items-center">
+                            <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                <div className={`${color} h-2.5 rounded-full`} style={{ width: `${accuracy}%` }}></div>
+                            </div>
+                            <span className="ml-4 w-16 text-right font-semibold text-sm text-gray-800 dark:text-gray-200">{accuracy.toFixed(1)}%</span>
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+    );
+};
+
+
+// --- 3. MAIN COMPONENT ---
 type Props = {
     data: TSubjectWiseChapterScores
 }
 
 export default function TestChapterwiseAnalysis({ data }: Props) {
-    const eachSubjectData = subjectWiseChapterScore(data)
+    const eachSubjectData = React.useMemo(() => processScoreData(data), [data]);
+
+    if (!eachSubjectData || eachSubjectData.length === 0) {
+        return (
+            <div className="w-full max-w-4xl p-8 mt-10 text-center text-gray-500 bg-white rounded-2xl shadow-lg">
+                <h3 className="text-xl font-semibold">No Chapter Data Available</h3>
+                <p>Could not generate a chapter-wise analysis for this test.</p>
+            </div>
+        );
+    }
 
     return (
-        <div className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl p-8 mt-10 border-t-8 border-purple-500">
-            <h2 className="text-3xl font-bold text-purple-700 mb-6 text-center">
-                Individual Subjects
-            </h2>
+        <div className="w-full max-w-6xl mx-auto mt-10">
+            <div className="p-6 sm:p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
+                <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2 text-center">
+                    Subject Performance Breakdown
+                </h2>
+                <p className="text-center text-gray-500 dark:text-gray-400 mb-8">
+                    Expand each subject to see a detailed analysis of your performance by chapter.
+                </p>
 
-            <Accordion type="multiple" className="w-full [&>*:not(:first-child)]:mt-px">
-                {eachSubjectData.sort().map((subject) => {
-                    // Calculate subject statistics
-                    const totalQuestions = subject.total;
-                    const correctAnswers = subject.correct;
-                    const incorrectAnswers = subject.incorrect;
-                    const unattemptedQuestions = subject.unattempt;
+                <Accordion type="multiple" className="w-full">
+                    {[...eachSubjectData]
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map((subject) => {
+                            const sortedChapters = [...subject.chapterAccuracies].sort((a, b) => b.accuracy - a.accuracy);
 
-                    // Find highest and lowest scoring chapters
-                    const chapterScores = subject.chapterAccuracies.map((data) => ({
-                        name: data.chapter,
-                        accuracy: data.accuracy
-                    }));
-
-                    const sortedChapters = [...chapterScores].sort((a, b) => b.accuracy - a.accuracy);
-                    const bestChapters = sortedChapters;
-                    const improveChapters = [...sortedChapters].reverse();
-
-                    const allHaveFullAccuracy = chapterScores.every(chapter => chapter.accuracy === 100);
-                    const allHaveZeroAccuracy = chapterScores.every(chapter => chapter.accuracy === 0);
-
-                    const highestChapter = sortedChapters[0];
-                    const lowestChapter = sortedChapters[sortedChapters.length - 1];
-
-                    return (
-                        <AccordionItem key={subject.name} value={subject.name} className="border-b">
-                            <AccordionTrigger className="text-black hover:no-underline">
-                                {subject.name.replace('_', ' ').toUpperCase()}
-                            </AccordionTrigger>
-                            <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-                                <div className="flex flex-col gap-4">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
-                                        <div className="p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
-                                            <h3 className="font-semibold text-lg mb-2">Overview</h3>
-                                            <div className="space-y-2">
-                                                <p>Total Questions: <span className="font-bold">{totalQuestions}</span></p>
-                                                <p>Correct: <span className="font-bold text-green-600">{correctAnswers}</span></p>
-                                                <p>Incorrect: <span className="font-bold text-red-600">{incorrectAnswers}</span></p>
-                                                <p>Unattempted: <span className="font-bold text-yellow-600">{unattemptedQuestions}</span></p>
+                            return (
+                                <AccordionItem key={subject.name} value={subject.name} className="border-b-2 border-gray-100 dark:border-gray-700 last:border-b-0">
+                                    <AccordionTrigger className="text-xl font-semibold text-gray-700 dark:text-gray-200 hover:no-underline py-5">
+                                        {formatNameForDisplay(subject.name)}
+                                    </AccordionTrigger>
+                                    <AccordionContent className="pt-4 pb-8 px-2 space-y-8">
+                                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+                                            <div>
+                                                <h3 className="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">Score Breakdown</h3>
+                                                <SimpleBreakdownChart data={subject} />
+                                            </div>
+                                            <div>
+                                                <h3 className="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">Chapter Accuracy</h3>
+                                                <ChapterAccuracyList chapters={sortedChapters} />
                                             </div>
                                         </div>
-
-                                        {allHaveFullAccuracy ? (
-                                            <div className="p-4 bg-green-50 dark:bg-green-900 rounded-lg">
-                                                <h3 className="font-semibold text-lg mb-2">Best Performance</h3>
-                                                {sortedChapters.map((chapter, i) => (
-                                                    <div key={i}>
-                                                        <p className="font-bold">{chapter.name.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())} - {chapter.accuracy.toFixed(1)}%</p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        ) : allHaveZeroAccuracy ? (
-                                            <div className="p-4 bg-red-50 dark:bg-red-900 rounded-lg">
-                                                <h3 className="font-semibold text-lg mb-2">Needs Improvement</h3>
-                                                {sortedChapters.map((chapter, i) => (
-                                                    <div key={i}>
-                                                        <p className="font-bold">{chapter.name.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())} - {chapter.accuracy.toFixed(1)}%</p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        ) : (
-                                            <>
-                                                <div className="p-4 bg-green-50 dark:bg-green-900 rounded-lg">
-                                                    <h3 className="font-semibold text-lg mb-2">Best Performance</h3>
-                                                    {bestChapters.filter(c => c.accuracy === highestChapter.accuracy).map((chapter, i) => (
-                                                        <div key={i}>
-                                                            <p className="font-bold">{chapter.name.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())} - {chapter.accuracy.toFixed(1)}%</p>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                                <div className="p-4 bg-red-50 dark:bg-red-900 rounded-lg">
-                                                    <h3 className="font-semibold text-lg mb-2">Needs Improvement</h3>
-                                                    {improveChapters.filter(c => c.accuracy === lowestChapter.accuracy).map((chapter, i) => (
-                                                        <div key={i}>
-                                                            <p className="font-bold">{chapter.name.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())} - {chapter.accuracy.toFixed(1)}%</p>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </>
-                                        )}
-                                    </div>
-
-                                    <SubjectScoreBreakdownGraph
-                                        data={subject}
-                                    />
-                                    <ChaptersAccuracyGraph
-                                        data={subject.chapterAccuracies}
-                                    />
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
-                    )
-                })}
-            </Accordion>
+                                    </AccordionContent>
+                                </AccordionItem>
+                            );
+                        })}
+                </Accordion>
+            </div>
         </div>
-    )
+    );
 }
