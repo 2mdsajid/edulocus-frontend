@@ -188,8 +188,18 @@ export const ChapterPerformanceAccordion = ({ chaptersData }: { chaptersData: TP
                                     </ul>
                                 </div>
                                 <div className="lg:col-span-1 space-y-4 border-t lg:border-t-0 lg:border-l lg:pl-6 pt-4 lg:pt-0">
-                                    <InsightsList title="Top Chapters" insights={chaptersData.insights[subject]?.top || []} color="green" />
-                                    <InsightsList title="Weakest Chapters" insights={chaptersData.insights[subject]?.weakest || []} color="red" />
+                                    {/* Sort the 'top' insights by accuracy in descending order */}
+                                    <InsightsList 
+                                        title="Top Chapters" 
+                                        insights={(chaptersData.insights[subject]?.top ?? []).sort((a, b) => b.accuracy - a.accuracy)} 
+                                        color="green" 
+                                    />
+                                    {/* Sort the 'weakest' insights by accuracy in descending order */}
+                                    <InsightsList 
+                                        title="Weakest Chapters" 
+                                        insights={(chaptersData.insights[subject]?.weakest ?? []).sort((a, b) => b.accuracy - a.accuracy)} 
+                                        color="red" 
+                                    />
                                 </div>
                             </div>
                         )}
