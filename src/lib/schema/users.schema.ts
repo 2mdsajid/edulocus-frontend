@@ -24,8 +24,7 @@ export type TBaseUser = Omit<User,
     'ip' |
     'key' |
     'tokensUsed' |
-    'institution' |
-    'createdAt'
+    'institution'
 >
 
 export type TSignUpUser = Omit<User,
@@ -68,8 +67,18 @@ type SubscriptionRequest = {
     stream:TStream;
 }
 
-export type TCreateSubscriptionRequest = Omit<SubscriptionRequest, 'id' | 'createdAt'>
+export type TCreateSubscriptionRequestData = {
+    name: string;
+    email: string;
+    phone: string;
+    transactionImage:string
+}
 
+export type TCreateTrialRequestData = {
+    name: string;
+    email: string;
+    phone: string;
+}
 
 export type TRecentTestInDashboardData = {
     id: string

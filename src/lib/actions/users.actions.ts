@@ -1,6 +1,6 @@
 'use server'
 
-import { TBaseUser, TChapterwiseRegistration, TCreateSubscriptionRequest, TCreateUserFeedback } from "@/lib/schema/users.schema";
+import { TBaseUser, TChapterwiseRegistration, TCreateSubscriptionRequestData, TCreateTrialRequestData, TCreateUserFeedback, TStream } from "@/lib/schema/users.schema";
 import { cookies } from "next/headers";
 
 
@@ -108,18 +108,59 @@ export const deleteUserFeedback = async (id: string): Promise<{
     }
 };
 
-
-
-export const createSubscriptionRequest = async (formData: TCreateSubscriptionRequest): Promise<{
+export const unsubscribeEmail = async (): Promise<{
     data: string | null;
     message: string;
 }> => {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/users/create-subscription-request`, {
+        const cookieStore = cookies();
+        const authToken = cookieStore.get("auth-token")?.value;
+
+        if (!authToken) {
+            return { data: null, message: "User not logged in!" };
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/users/unsubscribe-email`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": "Bearer " + authToken,
+            },
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occured while unsubscribing email!" };
+    }
+};
+
+
+export const createSubscriptionRequest = async (formData: TCreateSubscriptionRequestData): Promise<{
+    data: string | null;
+    message: string;
+}> => {
+    try {
+
+        const cookieStore = cookies();
+        const authToken = cookieStore.get("auth-token")?.value;
+
+        if (!authToken) {
+            return { data: null, message: "User not logged in!" };
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/subscription/create-subscription`, {
             method: "POST",
             cache: 'no-store',
             headers: {
                 "Content-Type": "application/json",
+                "authorization": "Bearer " + authToken,
             },
             body: JSON.stringify({
                 ...formData
@@ -134,13 +175,53 @@ export const createSubscriptionRequest = async (formData: TCreateSubscriptionReq
         const { data, message } = await response.json();
         return { data, message };
     } catch (error) {
+        console.log(error)
         return { data: null, message: "Some Error Occured while creating the membership request!" };
+    }
+};
+
+export const createTrialRequest = async (formData: TCreateTrialRequestData): Promise<{
+    data: string | null;
+    message: string;
+}> => {
+    try {
+
+        const cookieStore = cookies();
+        const authToken = cookieStore.get("auth-token")?.value;
+
+        if (!authToken) {
+            return { data: null, message: "User not logged in!" };
+        }
+
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/subscription/create-trial`, {
+            method: "POST",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": "Bearer " + authToken,
+            },
+            body: JSON.stringify({
+                ...formData
+            })
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        console.log(error)
+        return { data: null, message: "Some Error Occured while creating the trial request!" };
     }
 };
 
 
 
-export const setSubscription = async (id: string): Promise<{
+export const updateSubscription = async (id: string): Promise<{
     data: TBaseUser | null;
     message: string;
 }> => {
@@ -148,8 +229,45 @@ export const setSubscription = async (id: string): Promise<{
         const cookieStore = cookies();
         const authToken = cookieStore.get("auth-token")?.value;
 
+        if (!authToken) {
+            return { data: null, message: "User not logged in!" };
+        }
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/users/set-user-subscription/${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/subscription/update-subscription/${id}`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${authToken}`,
+            },
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        console.log(error)
+        return { data: null, message: "Some Error Occured while updating the membership request!" };
+    }
+};
+
+
+export const removeSubscription = async (id: string): Promise<{
+    data: TBaseUser | null;
+    message: string;
+}> => {
+    try {
+        const cookieStore = cookies();
+        const authToken = cookieStore.get("auth-token")?.value;
+        if (!authToken) {
+            return { data: null, message: "User not logged in!" };
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/subscription/remove-subscription/${id}`, {
             method: "GET",
             cache: 'no-store',
             headers: {
@@ -168,6 +286,41 @@ export const setSubscription = async (id: string): Promise<{
     } catch (error) {
         // console.log(error)
         return { data: null, message: "Some Error Occured while updating the membership request!" };
+    }
+};
+
+
+export const changeStream = async (stream: TStream): Promise<{
+    data: TBaseUser | null;
+    message: string;
+}> => {
+    try {
+        const cookieStore = cookies();
+        const authToken = cookieStore.get("auth-token")?.value;
+
+        if (!authToken) {
+            return { data: null, message: "User not logged in!" };
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/users/set-user-stream`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${authToken}`,
+            },
+            body: JSON.stringify({ stream }),
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: null, message };
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        console.error("Error changing stream:", error);
+        return { data: null, message: "Failed to change stream." };
     }
 };
 

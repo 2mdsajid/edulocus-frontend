@@ -1,7 +1,8 @@
-import { getUserSession } from '@/lib/auth/auth'
+import React from 'react'
 import { constructMetadata } from '@/lib/data'
+import { getUserSession } from '@/lib/auth/auth'
 import { redirect } from 'next/navigation'
-import FullSubscriptionForm from './_components/FullSubscriptionForm'
+import CreateTrialForm from './_components/CreateTrialForm'
 
 type Props = {}
 
@@ -16,12 +17,10 @@ const page =async (props: Props) => {
         redirect('/login?ru=/membership/register')
     }
 
-    // console.log(user)
-
 
     return (
         <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-bg1  to-bg2 pt-20'>
-            <FullSubscriptionForm user={user} />
+            <CreateTrialForm user={user} />
         </div>
     )
 }

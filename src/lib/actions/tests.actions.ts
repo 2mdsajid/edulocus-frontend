@@ -2,8 +2,9 @@
 
 
 import { cookies } from "next/headers";
-import { TBaseCustomTest, TTypeOfTestsAndDescription, TTotalQuestionsPerSubjectAndChapter, TCreateCustomTestData, TBaseUserScore, TSingleCustomTestWithQuestions, TCreateTestAnalytic, TSaveUserScore, TCustomTestMetadata, TQuestion, TBaseQuestion, TScoreBreakdown, CustomTestSelections, CustomTestQuestionCounts, TDifficulty, TRecentTest, TPerformanceAnalyzerTest, TMistakeAnalysis } from "../schema/tests.schema";
 import { TChapterWiseSyllabus } from "../chap_syllabus";
+import { CustomTestQuestionCounts, TBaseCustomTest, TBaseUserScore, TCreateCustomTestData, TCreateTestAnalytic, TCustomTestMetadata, TDifficulty, TMistakeAnalysis, TPerformanceAnalyzerTest, TRecentTest, TSaveUserScore, TScoreBreakdown, TSingleCustomTestWithQuestions } from "../schema/tests.schema";
+import { TTypeOfTestsAndDescription } from "../data";
 
 export const getAllTests = async (): Promise<{
     data: TBaseCustomTest[] | null;

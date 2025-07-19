@@ -1,22 +1,27 @@
 import ErrorPage from '@/components/reusable/ErrorPage'
 import { getAllUsers } from '@/lib/actions/users.actions'
 import React from 'react'
-import UsersTable from './_components/UsersTable'
+import UsersTableClient from './_components/UserTableClient'
+import { Metadata } from 'next';
+import { constructMetadata } from '@/lib/data';
 
-type Props = {}
+export const metadata: Metadata = constructMetadata({
+    title: 'Admin | User Management',
+    description: 'Manage all users, their streams, and subscription status.'
+});
 
-const page = async (props: Props) => {
+const UsersPage = async () => {
+    // Note: Ensure your getAllUsers function returns a 'createdAt' field for default sorting.
     const { data: users, message } = await getAllUsers()
     if (!users || users.length === 0) {
-        return <ErrorPage errorMessage={message} />
+        return <ErrorPage errorMessage={message || 'No users found.'} />
     }    
 
-
     return (
-        <div>
-            <UsersTable users={users} />
+        <div className="container mx-auto py-8 px-4">
+            <UsersTableClient initialUsers={users} />
         </div>
     )
 }
 
-export default page
+export default UsersPage

@@ -29,13 +29,18 @@ const SubjectWiseStartButton = (props: Props) => {
             })
         }
         setIsbtnClicked(false)
+        toast({
+            variant: 'success',
+            title: 'Test Creataed',
+            description: 'Redirecting Soon....'
+        })
         return router.push(`/tests/attend/${testId}`)
     }
 
     return (
         <Button 
             onClick={startTest}
-            className="w-full bg-color7 hover:bg-color8 font-semibold text-white"
+            className="w-full mt-3 bg-color7 hover:bg-color8 font-semibold text-white"
             disabled={isBtnClicked}
         >
             {isBtnClicked ? (

@@ -13,142 +13,181 @@ export const ROLES_HIEARCHY = {
 import {
   BarChart,
   BarChart2,
-  Book,
   BookOpen,
   Cpu,
-  FileText, FlaskConical, // Alternative for Tools
+  FileText,
+  FlaskConical,
   Folder,
   Lightbulb,
-  Puzzle,
+  LucideIcon,
   RefreshCcw,
   Repeat,
   Shuffle,
   Sliders,
-  Tag, // Alternative for Robot
+  Tag,
   TrendingUp,
-  Wrench, // Alternative for Dice
+  Wrench,
   Zap
 } from 'lucide-react';
+
 
 export const STREAM_DETAILS = {
   pg:{
     price: 299,
     title : 'PG',
-    desc:'NMCLE, CEE PG, USMLE'
+    desc:'NMCLE, CEE PG, USMLE',
+    duration:' /month'
   },
   ug:{
     price: 159,
     title:'UG',
-    desc:'CEE UG, NURSING, NEET'
+    desc:'CEE UG, NURSING, NEET',
+    duration:' till CEE'
   }
 }
 
 
+export type TAccessLevel = 'FREE' | 'PREMIUM';
+export type TTypeOfTestsAndDescription = {
+  type: TTypeOfTest;
+  title: string; 
+  description: string;
+  isAvailableTo: TStream[];
+  accessLevel: TAccessLevel;
+  icon: LucideIcon;
+  href: string; 
+}
+
+// Data array with the new fields
 export const typeOfTestsAndDescriptionData: TTypeOfTestsAndDescription[] = [
   {
     type: 'DAILY_TEST',
+    title: 'Daily Test',
     description: 'Daily test from 4pm to 8pm everyday.',
-    isAvailableTo: ['PG'],
-    icon: Zap
+    isAvailableTo: [],
+    accessLevel: 'FREE',
+    icon: Zap,
+    href: '/tests/dailytest'
   },
   {
     type: 'PAST_PAPER',
+    title: 'Past Papers',
     description: 'Collection of past papers from various exams.',
     isAvailableTo: ['UG','PG'],
-    icon: Repeat
+    accessLevel: 'FREE',
+    icon: Repeat,
+    href: '/tests/pastpaper'
   },
   {
     type: 'MODEL',
+    title: 'Model Exams',
     description: 'Mock test to simulate real exam conditions.',
     isAvailableTo: ['UG','PG'],
-    icon: BarChart
+    accessLevel: 'FREE',
+    icon: BarChart,
+    href: '/tests/model'
   },
   {
     type: 'SUBJECT_WISE',
+    title: 'Subject Wise',
     description: 'Test focused on a specific subject.',
     isAvailableTo: ['UG','PG'],
-    icon: BookOpen
+    accessLevel: 'FREE',
+    icon: BookOpen,
+    href: '/tests/subjectwise'
   },
   {
     type: 'CHAPTER_WISE',
+    title: 'Chapter Wise',
     description: 'Test focused on specific chapters.',
     isAvailableTo: ['UG','PG'],
-    icon: FileText
-  },
-  {
-    type: 'TOPIC_WISE',
-    description: 'Test focused on a particular topic.',
-    isAvailableTo: [],
-    icon: Tag
+    accessLevel: 'FREE',
+    icon: FileText,
+    href: '/tests/chapterwise'
   },
   {
     type: 'CUSTOM',
-    description: 'Custom test created by the user.',
-    isAvailableTo: [],
-    icon: Wrench
-  },
-  {
-    type: 'UNIT_WISE',
-    description: 'Test focused on a specific unit.',
-    isAvailableTo: [],
-    icon: Folder
+    title: 'Custom Test',
+    description: 'Create your own test with custom settings.',
+    isAvailableTo: ['UG','PG'],
+    accessLevel: 'PREMIUM',
+    icon: Wrench,
+    href: '/tests/custom'
   },
   {
     type: 'DIFFICULTY_BASED',
-    description: 'Test based on difficulty level.',
-    isAvailableTo: [],
-    icon: Sliders
+    title: 'Difficulty Based',
+    description: 'Test based on easy, medium, or hard questions.',
+    isAvailableTo: ['UG','PG'],
+    accessLevel: 'PREMIUM',
+    icon: Sliders,
+    href: '/tests/difficulty'
   },
   {
     type: 'RANDOM',
+    title: 'Random Test',
     description: 'Randomly selected questions for variety.',
-    isAvailableTo: [],
-    icon: Shuffle
-  },
-  {
-    type: 'FLASH',
-    description: 'Quick test with fast results.',
-    isAvailableTo: [],
-    icon: Zap
-  },
-  {
-    type: 'AI_GENERATED',
-    description: 'AI-generated test tailored to your needs.',
-    isAvailableTo: [],
-    icon: Cpu
+    isAvailableTo: ['UG','PG'],
+    accessLevel: 'PREMIUM',
+    icon: Shuffle,
+    href: '/tests/random'
   },
   {
     type: 'PERFORMANCE_ANALYZER',
-    description: 'Test designed to assess performance.',
-    isAvailableTo: [],
-    icon: TrendingUp
-  },
-  {
-    type: 'PBQ_BASED',
-    description: 'Test focused on practical-based questions (PBQ).',
-    isAvailableTo: [],
-    icon: Puzzle
-  },
-  {
-    type: 'THEORY_BASED',
-    description: 'Test focused on theoretical questions.',
-    isAvailableTo: [],
-    icon: Book
+    title: 'Performance Analyzer',
+    description: 'Test designed to assess your weak areas.',
+    isAvailableTo: ['UG','PG'],
+    accessLevel: 'PREMIUM',
+    icon: TrendingUp,
+    href: '/tests/performance'
   },
   {
     type: 'REVISION',
-    description: 'Test for reviewing learned material.',
-    isAvailableTo: [],
-    icon: RefreshCcw
+    title: 'Revision Test',
+    description: 'Practice questions you got wrong or skipped.',
+    isAvailableTo: ['UG','PG'],
+    accessLevel: 'PREMIUM',
+    icon: RefreshCcw,
+    href: '/tests/revision' // Assuming this is the entry point
   },
   {
     type: 'RETAKE',
-    description: 'Test retake for improving previous scores.',
-    isAvailableTo: [],
-    icon: Repeat
+    title: 'Retake Test',
+    description: 'Retake a previously completed test.',
+    isAvailableTo: ['UG','PG'],
+    accessLevel: 'PREMIUM',
+    icon: Repeat,
+    href: '/tests/retake' // Assuming you'd select a test to retake from history
   },
-
-]
+  // --- Upcoming / Not yet available tests ---
+  {
+    type: 'TOPIC_WISE',
+    title: 'Topic Wise',
+    description: 'Test focused on a particular topic.',
+    isAvailableTo: [],
+    accessLevel: 'PREMIUM',
+    icon: Tag,
+    href: '#'
+  },
+  {
+    type: 'UNIT_WISE',
+    title: 'Unit Wise',
+    description: 'Test focused on a specific unit.',
+    isAvailableTo: [],
+    accessLevel: 'PREMIUM',
+    icon: Folder,
+    href: '#'
+  },
+  {
+    type: 'AI_GENERATED',
+    title: 'AI Generated',
+    description: 'AI-generated test tailored to your needs.',
+    isAvailableTo: [],
+    accessLevel: 'PREMIUM',
+    icon: Cpu,
+    href: '#'
+  },
+];
 
 
 // this is for the subjects with their icons ----------------------------------------------------------------
@@ -161,7 +200,6 @@ import {
   Ear,
   Eye,
   Heart,
-  LucideIcon,
   Microscope,
   Pill,
   Radio,
@@ -196,15 +234,11 @@ export const subjectData: { [key: string]: { icon: LucideIcon, name: string } } 
 
 // premium features data ----------------------------------------------------------------
 import {
-  BarChart3,
   Calendar,
-  Gauge,
   Rocket,
-  Sparkles,
-  Trophy
+  Sparkles
 } from "lucide-react";
-import { TTypeOfTestsAndDescription } from "./schema/tests.schema";
-
+import { TStream } from "./schema/users.schema";
 export type TMembershipFeatures = {
   FeatureIcon: LucideIcon,
   title: string,

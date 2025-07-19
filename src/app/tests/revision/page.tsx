@@ -7,6 +7,7 @@ import ErrorPage from '@/components/reusable/ErrorPage';
 import { constructMetadata } from '@/lib/data';
 import { getRevisionQuestions } from '@/lib/actions/tests.actions'; 
 import MistakeRevisionClient from './_components/MistakeRevisionClient';
+import NoTestFoundError from '@/components/reusable/NoTestFoundError';
 
 
 export const metadata: Metadata = constructMetadata({
@@ -27,12 +28,12 @@ const Page = async () => {
   // If you want even non-subscribed users to see their mistakes but not practice,
   // you could pass `isSubscribed` as a prop to the client component and disable the practice button there.
   if (!user.isSubscribed) {
-    return <ErrorPage errorMessage='Only Members can practice their mistakes. Please subscribe to access this feature.' />;
+    return <ErrorPage errorMessage='Only Members can access this test. Please subscribe to access this feature.' />;
   }
 
   const { data: mistakeQuestionsData, message } = await getRevisionQuestions();
   if (!mistakeQuestionsData || (mistakeQuestionsData.incorrectQuestions.length === 0 && mistakeQuestionsData.unattemptedQuestions.length === 0)) {
-    return <ErrorPage errorMessage={message || 'No performance data found. Complete a test to see your analysis.'} />;
+    return <NoTestFoundError/>;
   }
 
   return (

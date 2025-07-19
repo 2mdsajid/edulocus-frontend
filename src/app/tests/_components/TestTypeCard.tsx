@@ -1,49 +1,68 @@
-import Link from "next/link"
-import { TTypeOfTestsAndDescription } from "@/lib/schema/tests.schema"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { Icon, LockIcon, PlayCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { getStreamCookieForUnauthenticatedUser } from "@/lib/actions/try.actions"
-import { TStream } from "@/lib/schema/users.schema"
+import Link from 'next/link';
+import { Lock, ArrowRight } from 'lucide-react';
+import { TTypeOfTestsAndDescription, TAccessLevel } from '@/lib/data'; // Adjust path if needed
 
-type Props = {
-  card: TTypeOfTestsAndDescription
-  isAvailable: boolean
-}
+type TestTypeCardProps = {
+  card: TTypeOfTestsAndDescription;
+  isLocked: boolean; // Is the card locked due to subscription status?
+  isAvailable: boolean; // Is the card globally available or upcoming?
+};
 
-const TestTypeCard = async ({ card, isAvailable }: Props) => {
-  const { type, description, icon: Icon, isAvailableTo } = card;
+export default function TestTypeCard({ card, isLocked, isAvailable }: TestTypeCardProps) {
+  const { icon: Icon, title, description, accessLevel, href } = card;
+
+  const cardContent = (
+    <>
+      <div className="flex items-center justify-between">
+        <div className="p-3 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg">
+          <Icon className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
+        </div>
+        {isAvailable && accessLevel === 'PREMIUM' && (
+          <span className={`px-3 py-1 text-xs font-bold uppercase rounded-full ${isLocked ? 'bg-yellow-200 text-yellow-800' : 'bg-green-200 text-green-800'}`}>
+            Premium
+          </span>
+        )}
+        {!isAvailable && (
+            <span className="px-3 py-1 text-xs font-bold text-gray-800 uppercase bg-gray-200 rounded-full">
+                Upcoming
+            </span>
+        )}
+      </div>
+      <div className="mt-4">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{title}</h3>
+        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{description}</p>
+      </div>
+      <div className="flex items-center justify-end mt-4 text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+        {isLocked ? (
+          <>
+            <Lock className="w-4 h-4 mr-2" />
+            <span>Upgrade to Access</span>
+          </>
+        ) : isAvailable ? (
+          <>
+            <span>Start Test</span>
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </>
+        ) : (
+          <span>Coming Soon</span>
+        )}
+      </div>
+    </>
+  );
+
+  const isClickable = isAvailable && !isLocked;
+  const finalHref = isLocked ? '/membership' : href;
+
   return (
-    <Link href={`/tests/${type.toLowerCase().replace(/_/g, '')}`} className="block">
-      <Card className={`overflow-hidden ${isAvailable ? 'bg-primary' : 'bg-gray-100'}`}>
-        <CardHeader className="-mb-2">
-          <CardTitle className="text-xl font-bold flex items-center gap-4">
-            <div className="bg-gray-200 p-3 rounded-full">
-              <Icon className="w-5 h-5  text-black" />
-            </div>
-            {type.replace(/_/g, ' ')}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-gray-600 mb-2">{description}</p>
-          {isAvailable ? (
-            <Button className="w-full bg-color7 hover:bg-color5 text-white">
-              <PlayCircle className="w-6 h-6" /> Start
-            </Button>
-          ) : (
-            <div className="space-y-2">
-              <Link href="/membership" passHref>
-                <Button variant="outline" className="w-full">
-                  <LockIcon className="w-6 h-6 text-gray-400" />
-                  Start
-                </Button>
-              </Link>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+    <Link
+      href={finalHref}
+      className={`group block p-6 bg-white dark:bg-gray-800 border rounded-xl transition-all duration-300
+        ${isClickable ? 'border-gray-200 dark:border-gray-700 shadow-sm hover:border-indigo-400 hover:shadow-lg dark:hover:border-indigo-600' : ''}
+        ${!isAvailable ? 'border-gray-200 dark:border-gray-700 opacity-60 cursor-not-allowed' : ''}
+        ${isLocked ? 'border-yellow-300 dark:border-yellow-700 shadow-sm hover:shadow-lg hover:border-yellow-400' : ''}
+      `}
+    >
+      {cardContent}
     </Link>
-  )
+  );
 }
-
-export default TestTypeCard

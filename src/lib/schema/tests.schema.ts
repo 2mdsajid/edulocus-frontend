@@ -145,14 +145,6 @@ export type TBaseCustomTest = Pick<CustomTest,
 export type TBaseUserScore = Pick<UserScore, 'username' | 'totalScore'>
 
 
-export type TTypeOfTestsAndDescription = {
-    type: TTypeOfTest;
-    description: string;
-    isAvailableTo: TStream[]; // for which stream is the test available to
-    icon: LucideIcon;
-}
-
-
 export type TTotalQuestionsPerSubjectAndChapter =
     {
         [subject: string]: {

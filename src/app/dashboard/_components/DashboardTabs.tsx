@@ -1,72 +1,33 @@
+'use client';
+
 import { TDashboardAnalyticData } from "@/lib/schema/analytics.schema";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; // from shadcn/ui
+import { BarChart3, Bookmark, Settings } from "lucide-react";
+import React, { useState } from 'react';
 import { ChapterPerformanceCard, DailyProgressChart, KeyMetrics, RecentTestsList, ScoreCompositionChart, SubjectPerformanceCard } from "./Components";
+import ChangeStreamForm from "./ChangeStreamForm";
+import { TBaseUser, TStream } from "@/lib/schema/users.schema";
 
-type DashboardTabsProps = {
-    analyticsData: TDashboardAnalyticData;
-};
-
-export const DashboardTabs = ({ analyticsData }: DashboardTabsProps) => {
-    return (
-        <Tabs defaultValue="analysis" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 sm:w-[400px] bg-gray-200">
-                <TabsTrigger value="analysis">Analysis</TabsTrigger>
-                <TabsTrigger value="chapters">Chapter Analysis</TabsTrigger>
-                {/* <TabsTrigger value="settings">Settings</TabsTrigger> */}
-            </TabsList>
-            <TabsContent value="analysis" className="mt-6">
-                <AnalysisTab data={analyticsData} />
-            </TabsContent>
-            <TabsContent value="chapters" className="mt-6">
-                <ChapterAnalysisTab data={analyticsData} />
-            </TabsContent>
-            <TabsContent value="settings" className="mt-6">
-                <SettingsTab />
-            </TabsContent>
-        </Tabs>
-    );
-};
-
-
-
-
+// Define the types for the tab content components' props
 type AnalysisTabProps = {
     data: TDashboardAnalyticData;
 };
 
+// =================================================================================
+// Tab Content Components (Can be in this file or imported from elsewhere)
+// =================================================================================
 
-export const AnalysisTab = ({ data }: AnalysisTabProps) => {
+const AnalysisTab = ({ data }: AnalysisTabProps) => {
     return (
-        <div className="space-y-6">
-            {/* Top row with key metrics and score composition */}
+        <div className="space-y-6 animate-fade-in">
             <KeyMetrics
                 totalTests={data.totalTests}
-                totalQuestions={data.totalQuestionsAttempt- data.totalUnattemptQuestions}
+                totalQuestions={data.totalQuestionsAttempt - data.totalUnattemptQuestions}
                 accuracy={data.averageAccuracy}
                 totalCorrectAnswers={data.totalCorrectAnswers}
             />
-            <ScoreCompositionChart
-                data={data.scoreParametersData}
-            />
-
-            
-            {/* Middle row with performance insights */}
-            {/* Render the self-contained subject practice card */}
+            <ScoreCompositionChart data={data.scoreParametersData} />
             <SubjectPerformanceCard stats={data.performance.subjects.stats} />
-
-            {/* Loop through subjects to render a self-contained chapter practice card for each */}
-            {/* {Object.entries(data.performance.chapters.stats).map(([subjectName, chapterStats]) => (
-                <ChapterPerformanceCard
-                    key={subjectName}
-                    subjectName={subjectName}
-                    chapterStats={chapterStats}
-                />
-            ))} */}
-
-
-            {/* Bottom row with daily progress and recent tests */}
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 <div className="lg:col-span-3">
                     <DailyProgressChart data={data.dailyTestProgressChartData} />
@@ -79,12 +40,9 @@ export const AnalysisTab = ({ data }: AnalysisTabProps) => {
     );
 };
 
-export const ChapterAnalysisTab = ({ data }: AnalysisTabProps) => {
+const ChapterAnalysisTab = ({ data }: AnalysisTabProps) => {
     return (
-        <div className="space-y-6">
-            {/* <SubjectPerformanceCard stats={data.performance.subjects.stats} /> */}
-
-            {/* Loop through subjects to render a self-contained chapter practice card for each */}
+        <div className="space-y-6 animate-fade-in">
             {Object.entries(data.performance.chapters.stats).map(([subjectName, chapterStats]) => (
                 <ChapterPerformanceCard
                     key={subjectName}
@@ -96,18 +54,73 @@ export const ChapterAnalysisTab = ({ data }: AnalysisTabProps) => {
     );
 };
 
-
-
-export const SettingsTab = () => {
+const SettingsTab = ({stream}:{stream:TStream}) => {
     return (
-        <Card className="shadow-sm">
-            <CardHeader>
-                <CardTitle>Settings</CardTitle>
-                <p className="text-sm text-gray-500">Manage your account and preferences.</p>
-            </CardHeader>
-            <CardContent>
-                <p>Settings page is under construction.</p>
-            </CardContent>
-        </Card>
+        <div className="animate-fade-in">
+            <Card className="shadow-sm">
+                <CardHeader>
+                    <CardTitle>Settings</CardTitle>
+                    <p className="text-sm text-gray-500">Manage your account and preferences.</p>
+                </CardHeader>
+                <CardContent>
+                    <ChangeStreamForm currentStream={stream} />
+                </CardContent>
+            </Card>
+        </div>
+    );
+};
+
+// =================================================================================
+// The Main Custom Tabs Component
+// =================================================================================
+
+type DashboardTabsProps = {
+    analyticsData: TDashboardAnalyticData;
+    user: TBaseUser
+};
+
+export const DashboardTabs = ({ analyticsData , user}: DashboardTabsProps) => {
+    // Use useState to manage the active tab
+    const [activeTab, setActiveTab] = useState('analysis');
+
+    // Helper component for a single tab button for cleanliness
+    const TabButton = ({ value, children }: { value: string; children: React.ReactNode }) => (
+        <button
+            onClick={() => setActiveTab(value)}
+            className={`flex-1 flex items-center justify-center gap-2 rounded-lg py-3 px-4 text-base font-semibold transition-all duration-300 ${
+                activeTab === value
+                    ? 'bg-white text-purple-600 shadow-md dark:bg-slate-900'
+                    : 'bg-transparent text-slate-600 hover:bg-slate-200/70 dark:text-slate-300 dark:hover:bg-slate-700/50'
+            }`}
+        >
+            {children}
+        </button>
+    );
+
+    return (
+        <div className="w-full">
+            {/* The custom tab list acting as a segmented control */}
+            <div className="flex items-center gap-2 rounded-xl bg-slate-100 p-2 dark:bg-slate-800">
+                <TabButton value="analysis">
+                    <BarChart3 className="h-5 w-5" />
+                    <span>Analysis</span>
+                </TabButton>
+                <TabButton value="chapters">
+                    <Bookmark className="h-5 w-5" />
+                    <span>Chapters</span>
+                </TabButton>
+                <TabButton value="settings">
+                    <Settings className="h-5 w-5" />
+                    <span>Settings</span>
+                </TabButton>
+            </div>
+
+            {/* The content area that conditionally renders based on activeTab state */}
+            <div className="mt-6">
+                {activeTab === 'analysis' && <AnalysisTab data={analyticsData} />}
+                {activeTab === 'chapters' && <ChapterAnalysisTab data={analyticsData} />}
+                {activeTab === 'settings' && <SettingsTab stream={user.stream} />}
+            </div>
+        </div>
     );
 };

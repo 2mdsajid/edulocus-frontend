@@ -1,32 +1,60 @@
-
-import React from 'react'
-import SubjectWiseStartButton from './SubjectWiseStartButton'
-import { Book, HelpCircle } from 'lucide-react'
-import { subjectData } from '@/lib/data'
+import { subjectData } from '@/lib/data';
+import { ArrowRight, Book, HelpCircle } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
+import SubjectWiseStartButton from './SubjectWiseStartButton';
 
 type Props = {
-    subject: string
-    count: number
-}
+    subject: string;
+    count: number;
+};
 
 const SubjectCard = (props: Props) => {
+    // Keep the existing logic to get a specific icon and formatted name
+    const { icon: SubjectIcon, name } = subjectData[props.subject] || { 
+        icon: Book, 
+        name: props.subject.replace(/_/g, ' ') 
+    };
 
-    const { icon: SubjectIcon, name } = subjectData[props.subject] || { icon: Book, name: props.subject.replace(/_/g, ' ') }
-
+    // The entire card now links to the chapters page for that subject
+    // const href = `/tests/subjectwise/${props.subject}`;
 
     return (
-        <div className="p-6 bg-primary dark:bg-purple-900 text-black shadow-lg rounded-lg transition-all hover:shadow-xl hover:scale-105">
-            <div className="flex items-center mb-2">
-                <SubjectIcon className="w-6 h-6 text-gray-700 dark:text-purple-300 mr-2" />
-                <h2 className="text-xl font-semibold tracking-wide capitalize text-gray-800">{name}</h2>
-            </div>
-            <div className="flex items-center mb-4">
-                <HelpCircle className="w-5 h-5 text-purple-500 dark:text-purple-400 mr-2" />
-                <p className="text-md text-gray-600">Questions: {props.count}</p>
-            </div>
-            <SubjectWiseStartButton subject={props.subject} />
-        </div>
-    )
-}
+        <div className="group block h-full">
+            <div className="flex flex-col h-full overflow-hidden rounded-xl border bg-white p-6 shadow-sm transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1 hover:border-purple-300 dark:bg-gray-800 dark:border-gray-700 dark:hover:border-purple-600">
+                
+                {/* Icon */}
+                <div className="mb-4">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-purple-100 text-purple-600">
+                        <SubjectIcon className="h-8 w-8" />
+                    </div>
+                </div>
 
-export default SubjectCard
+                {/* Title */}
+                <h3 className="text-xl font-bold capitalize text-gray-900 dark:text-white flex-grow">
+                    {name}
+                </h3>
+                
+                {/* Metadata Badge for Question Count */}
+                <div className="mt-2">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700 dark:bg-slate-700 dark:text-slate-200">
+                        <HelpCircle className="h-4 w-4" />
+                        {props.count} Questions
+                    </span>
+                </div>
+
+                {/* Call to Action (revealed on hover) */}
+                {/* <div className="mt-auto pt-6">
+                    <div className="flex items-center font-semibold text-purple-600">
+                        View Chapters
+                        <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </div>
+                </div> */}
+
+                <SubjectWiseStartButton subject={props.subject} />
+            </div>
+        </div>
+    );
+};
+
+export default SubjectCard;

@@ -36,7 +36,7 @@ const page = async (props: Props) => {
     }
 
     return (
-        <div className='w-full bg-gray-50 min-h-screen'>
+        <div className='w-full bg-gray-50 min-h-screen bg-gradient-to-b from-color1 to-color1'>
             <div className='max-w-7xl mx-auto space-y-6 pt-24 pb-16 px-4 sm:px-6 lg:px-8'>
                 <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
@@ -53,7 +53,7 @@ const page = async (props: Props) => {
                 </header>
 
                 <main>
-                    <DashboardTabs analyticsData={dashboardAnalyticsData} />
+                    <DashboardTabs analyticsData={dashboardAnalyticsData} user={user}/>
                 </main>
             </div>
         </div>

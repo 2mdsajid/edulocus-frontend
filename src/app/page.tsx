@@ -21,7 +21,7 @@ export default function Home() {
       <LandingPage />
       <FeaturesBrief />
       {/* <Features /> */}
-      <StreamSection /> 
+      {/* <StreamSection />  */}
       {/* <CounterSection /> */}
       <ProductFeatures />
       {/* <ContactSection /> */}

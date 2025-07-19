@@ -1,8 +1,6 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, PlayCircle, ShieldQuestion } from 'lucide-react';
-import Link from 'next/link';
 import { TBaseCustomTest } from '@/lib/schema/tests.schema';
-import { Button } from '@/components/ui/button';
+import { ArrowRight, Calendar, ClipboardList, HelpCircle } from 'lucide-react';
+import Link from 'next/link';
 
 type Props = {
   tests: TBaseCustomTest[];
@@ -10,37 +8,50 @@ type Props = {
 
 const TestList = ({ tests }: Props) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 pt-4 sm:p-4 bg-bg1 gap-3">
-    {tests.map(test => (
-      <Link key={test.id} href={`/tests/view/${test.id}`} className="block">
-        <Card className="shadow border hover:shadow-lg transition-all duration-300  bg-white group">
-          <CardHeader className="space-y-1">
-            <CardDescription className="text-gray-800 flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-color6" />
-              {new Date(test.date).toLocaleDateString()}
-            </CardDescription>
-            <div className="flex items-start justify-start">
-              <CardTitle className="text-black tracking-wide text-xl uppercase group-hover:text-gray-600 transition-colors duration-300 flex items-center gap-2">
-                {/* <ClipboardList className="w-6 h-6 text-color7" /> */}
-                {test.name}
-              </CardTitle>
-            </div>
-            <div className="flex items-center gap-2 mb-5">
-              <p className="flex items-center gap-1 text-sm font-medium text-gray-700 bg-color2 rounded-full px-4 ">
-                <ShieldQuestion className='h-4 w-4'/> {`${test.questions.length} questions`}
-              </p>
-            </div>
-          </CardHeader>
-          <CardContent>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4 sm:p-6 lg:p-8">
+      {tests.map(test => (
+        <Link 
+          key={test.id} 
+          href={`/tests/view/${test.id}`} 
+          className="group block h-full"
+        >
+          <div className="flex flex-col h-full overflow-hidden rounded-xl border bg-white p-6 shadow-sm transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1 hover:border-purple-300 dark:bg-gray-800 dark:border-gray-700 dark:hover:border-purple-600">
             
-            <Button className="w-full bg-color7 hover:bg-color5 text-white">
-              <PlayCircle className="w-6 h-6" /> Start
-            </Button>
-          </CardContent>
-        </Card>
-      </Link>
-    ))}
-  </div>
+            {/* Icon */}
+            <div className="mb-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-purple-100 text-purple-600">
+                <ClipboardList className="h-8 w-8" />
+              </div>
+            </div>
+
+            {/* Title */}
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white flex-grow">
+              {test.name}
+            </h3>
+            
+            {/* Metadata */}
+            <div className="mt-4 flex flex-col gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <div className="flex items-center">
+                <Calendar className="w-4 h-4 mr-2" />
+                <span>{new Date(test.date).toLocaleDateString()}</span>
+              </div>
+              <div className="flex items-center">
+                <HelpCircle className="w-4 h-4 mr-2" />
+                <span>{test.questions.length} Questions</span>
+              </div>
+            </div>
+
+            {/* Call to Action (appears on hover) */}
+            <div className="mt-auto pt-6">
+              <div className="flex items-center font-semibold text-purple-600">
+                Start Test
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </div>
+            </div>
+          </div>
+        </Link>
+      ))}
+    </div>
   );
 }
 

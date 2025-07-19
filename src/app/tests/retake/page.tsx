@@ -7,6 +7,7 @@ import ErrorPage from '@/components/reusable/ErrorPage';
 import { constructMetadata } from '@/lib/data';
 import { getRecentTests } from '@/lib/actions/tests.actions';
 import { RecentTestsClientPage } from './_components/RecentTestsClientPage';
+import NoTestFoundError from '@/components/reusable/NoTestFoundError';
 
 export const metadata =  constructMetadata({
   title: `Edulocus | Recent Tests`,
@@ -36,7 +37,7 @@ const Page = async () => {
 
   const {data:tests, message} = await getRecentTests()
   if(!tests || tests.length === 0){
-    return <ErrorPage errorMessage= {message || 'No Recent Tests Found'} />
+    return <NoTestFoundError />
   }
 
   return (
