@@ -14,7 +14,7 @@ export const metadata = constructMetadata({
 const page =async (props: Props) => {
     const {data:user, message} = await getUserSession()
     if(!user){
-        redirect('/login?ru=/membership/register')
+        redirect('/login?ru=/membership/trial')
     }
 
 

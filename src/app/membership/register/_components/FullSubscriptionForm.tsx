@@ -37,6 +37,9 @@ type Props = {
 // --- Reusable Support Footer ---
 const SupportFooter = () => (
     <CardFooter className="flex flex-col items-center border-t border-zinc-200 p-6 text-center text-sm text-zinc-600">
+         <a href="/membership/trial" className="font-semibold mb-3">
+            Get Your Free Trial - <span className="text-purple-700 hover:text-purple-800 underline underline-offset-4">Click Here</span>
+          </a>
         <p className="font-medium text-zinc-800">For Support or Inquiries:</p>
         <div className="flex gap-4 mt-2">
             <a href="https://www.facebook.com/edu.locus" className="font-semibold text-purple-700 hover:text-purple-800 underline underline-offset-4" target="_blank" rel="noopener noreferrer">
@@ -47,7 +50,7 @@ const SupportFooter = () => (
             </a>
         </div>
         <div className="mt-4">
-            <a href="/contact" target="_blank" className="font-semibold ">
+            <a href="/feedback" target="_blank" className="font-semibold ">
                 Don&apos;t want to pay? <span className="text-purple-700 hover:text-purple-800 underline underline-offset-4">Contact us here</span>
             </a>
         </div>
@@ -120,7 +123,7 @@ const FullSubscriptionForm = (props: Props) => {
 
     // --- Main 3-Step Form Card ---
     return (
-        <div className="flex items-center justify-center p-4">
+        <div className="flex items-center justify-center p-4 pb-32">
             <Card className="w-full max-w-lg bg-white shadow-2xl shadow-zinc-900/10 ring-1 ring-gray-100">
                 <CardHeader className="p-6 text-center border-b border-zinc-200">
                     <CardTitle className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
