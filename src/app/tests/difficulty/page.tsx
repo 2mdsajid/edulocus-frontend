@@ -13,7 +13,7 @@ export const metadata = constructMetadata({
 
 const Page = async () => {
   const { data: user } = await getUserSession();
-  if (!user?.id) {
+  if (!user) {
     redirect('/login?ru=/tests/difficulty');
   }
   if (!user.isCompleted) {

@@ -8,6 +8,16 @@ import { useMemo, useState } from 'react';
 import { groupQuestionsBySubject, PracticeFooter, QuestionCard } from './HelperComponents';
 import { toast } from '@/hooks/use-toast';
 
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
+import {  FileWarning } from 'lucide-react';
+
+
 export default function MistakeRevisionClient({ mistakeQuestionsData }: { mistakeQuestionsData: TMistakeAnalysis }) {
     const router = useRouter();
     const [selectedIds, setSelectedIds] = useState(new Set<string>());
@@ -60,30 +70,55 @@ export default function MistakeRevisionClient({ mistakeQuestionsData }: { mistak
 
     const renderQuestionList = (questionsBySubject: Record<string, TQuestionForRevisionWithUserAnswer[]>, isUnattempted = false) => {
         const subjects = Object.keys(questionsBySubject).sort();
+        
+        // Handle the case where there are no questions at all
         if (subjects.length === 0) {
-            return <div className="py-12 text-center text-gray-500">
-                <p className="text-lg">No questions in this category. Great job!</p>
-            </div>
+            return (
+                <div className="py-16 text-center text-gray-500">
+                    <FileWarning className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+                    <p className="text-lg font-semibold">No questions in this category.</p>
+                    <p className="mt-1">Great job keeping your mistakes list clear!</p>
+                </div>
+            );
         }
-        return subjects.map(subject => (
-            <div key={subject} className="mb-8">
-                <h2 className="flex items-center mb-4 text-xl font-bold text-gray-800">
-                    <BookOpen className="w-6 h-6 mr-3 text-indigo-500"/>
-                    {subject}
-                </h2>
-                {questionsBySubject[subject].map(q => (
-                    <QuestionCard
-                        key={q.id}
-                        question={q}
-                        isSelected={selectedIds.has(q.id)}
-                        isExpanded={expandedIds.has(q.id)}
-                        onSelect={handleSelectQuestion}
-                        onToggleExpand={handleToggleExpand}
-                        isUnattempted={isUnattempted}
-                    />
+    
+        // Render the list of subjects as an accordion
+        return (
+            <Accordion type="multiple"  className="w-full space-y-4">
+                {subjects.map(subject => (
+                    <AccordionItem 
+                        key={subject} 
+                        value={subject} 
+                        className="border-none rounded-xl bg-white dark:bg-gray-800 shadow-sm transition-shadow hover:shadow-md"
+                    >
+                        <AccordionTrigger className="flex w-full items-center justify-between p-4 text-xl font-bold hover:no-underline">
+                            <div className="flex items-center text-left">
+                                <BookOpen className="w-6 h-6 mr-4 text-indigo-500 flex-shrink-0"/>
+                                <span className="capitalize">{subject.replace(/_/g, ' ')}</span>
+                            </div>
+                            <Badge variant="secondary" className="ml-4">
+                                {questionsBySubject[subject].length} Questions
+                            </Badge>
+                        </AccordionTrigger>
+                        <AccordionContent className="px-4 pb-4">
+                            <div className="space-y-4 border-t pt-4 dark:border-gray-700">
+                                {questionsBySubject[subject].map(q => (
+                                    <QuestionCard
+                                        key={q.id}
+                                        question={q}
+                                        isSelected={selectedIds.has(q.id)}
+                                        isExpanded={expandedIds.has(q.id)}
+                                        onSelect={handleSelectQuestion}
+                                        onToggleExpand={handleToggleExpand}
+                                        isUnattempted={isUnattempted}
+                                    />
+                                ))}
+                            </div>
+                        </AccordionContent>
+                    </AccordionItem>
                 ))}
-            </div>
-        ));
+            </Accordion>
+        );
     };
     
     const incorrectCount = mistakeQuestionsData.incorrectQuestions.length;
@@ -96,7 +131,7 @@ export default function MistakeRevisionClient({ mistakeQuestionsData }: { mistak
                 <p className="mt-2 text-lg text-gray-600">Select questions from your past tests to start a new practice session.</p>
 
                 <div className="mt-8 border-b border-gray-200">
-                    <nav className="flex -mb-px space-x-8" aria-label="Tabs">
+                    <nav className="flex flex-col md:floex-row -mb-px space-y-3 md:space-y-0 md:space-x-8" aria-label="Tabs">
                         <button
                             onClick={() => setActiveTab('incorrect')}
                             className={`${activeTab === 'incorrect' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}
