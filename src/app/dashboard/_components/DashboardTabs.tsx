@@ -100,18 +100,18 @@ export const DashboardTabs = ({ analyticsData , user}: DashboardTabsProps) => {
     return (
         <div className="w-full">
             {/* The custom tab list acting as a segmented control */}
-            <div className="flex items-center gap-2 rounded-xl bg-slate-100 p-2 dark:bg-slate-800">
+            <div className="flex items-center gap-2 rounded-xl bg-slate-100 p-2 dark:bg-slate-800 overflow-x-auto">
                 <TabButton value="analysis">
                     <BarChart3 className="h-5 w-5" />
-                    <span>Analysis</span>
+                    <span className="text-sm sm:text-base">Analysis</span>
                 </TabButton>
                 <TabButton value="chapters">
                     <Bookmark className="h-5 w-5" />
-                    <span>Chapters</span>
+                    <span className="text-sm sm:text-base">Chapters</span>
                 </TabButton>
                 <TabButton value="settings">
                     <Settings className="h-5 w-5" />
-                    <span>Settings</span>
+                    <span className="text-sm sm:text-base">Settings</span>
                 </TabButton>
             </div>
 
