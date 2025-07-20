@@ -11,10 +11,9 @@ type Props = {
 
 const ChapterCard = (props: Props) => {
     // Construct the link for starting the test, ensuring parts are URL-friendly
-    const href = `/tests/start?subject=${encodeURIComponent(props.selectedSubject)}&chapter=${encodeURIComponent(props.chapter)}`;
+    // const href = `/tests/start?subject=${encodeURIComponent(props.selectedSubject)}&chapter=${encodeURIComponent(props.chapter)}`;
 
     return (
-        <Link href={href} className="group block h-full">
             <div className="flex flex-col h-full overflow-hidden rounded-xl border bg-white p-6 shadow-sm transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1 hover:border-purple-300 dark:bg-gray-800 dark:border-gray-700 dark:hover:border-purple-600">
                 
                 {/* Icon */}
@@ -46,7 +45,6 @@ const ChapterCard = (props: Props) => {
                 </div> */}
                 <ChapterWiseStartButton subject={props.selectedSubject} chapter={props.chapter} />
             </div>
-        </Link>
     );
 }
 
