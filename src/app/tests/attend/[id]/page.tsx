@@ -1,7 +1,7 @@
 import ErrorPage from '@/components/reusable/ErrorPage'
 import { getUserSession } from '@/lib/auth/auth'
 import { constructMetadata } from '@/lib/data'
-import { generateRandomName } from '@/lib/utils'
+import { generateRandomName, isUserSubscribed } from '@/lib/utils'
 import { Metadata } from 'next'
 import TestDetails from './_components/TestDetails'
 import TestMain from './_components/TestMain'
@@ -43,6 +43,8 @@ const page = async (props: Props) => {
     const authToken = cookieStore.get('auth-token')?.value
 
     const { data: user, message: userAuthMessage } = await getUserSession()
+    const isSubscribed = user?.isSubscribed || false
+    // console.log(isSubscribed)
 
 
     const testid = props.params.id
@@ -74,6 +76,7 @@ const page = async (props: Props) => {
                 sharableTestUrl={testUrl}
                 user={user}
                 authToken={authToken}
+                isSubscribed={isSubscribed}
             />
         </div>
     )

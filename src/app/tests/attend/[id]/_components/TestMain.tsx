@@ -20,6 +20,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import TestAnalysis from './TestAnalysis';
 import TestQuestoinsAndAnswersViewer from './TestQuestoinsAndAnswersViewer';
+import TestShareLinks from '@/components/reusable/links/TestShareLinks';
 
 
 type Props = {
@@ -31,6 +32,7 @@ type Props = {
     sharableTestUrl: string
     user: TBaseUser | null
     authToken?: string
+    isSubscribed?:boolean
 }
 
 const TestMain = (props: Props) => {
@@ -38,7 +40,7 @@ const TestMain = (props: Props) => {
 
     const submitref = useRef<HTMLButtonElement | null>(null)
 
-    const {authToken} = props
+    const {authToken,isSubscribed} = props
 
     const TIME_PER_QUESTION = 54000
     const NEGATIVEMARK = 0.25
@@ -303,27 +305,31 @@ const TestMain = (props: Props) => {
                         />
 
                         {/* ask users to login when they are not logged in */}
-                        {(!authToken
+                        {/* {(!authToken
                             || authToken === ''
                             || authToken === undefined
                             || authToken === 'undefined') &&
                             <div className=" w-full">
                                 <JoinUsComponent />
                             </div>
-                        }
+                        } */}
 
-                        <div className=" w-full">
+                        {/* <div className=" w-full">
                             <JoinTelegramComponent />
-                        </div>
+                        </div> */}
 
 
                         {/* <div className=" w-full">
                             <FeedbackComponent />
-                        </div>
+                        </div> */}
 
                         <div className=" w-full">
-                            <ContributeCardComponent />
-                        </div> */}
+                            <ContributeCardComponent isSubscribed={isSubscribed} />
+                        </div> 
+
+                        <div className="w-full">
+                            <TestShareLinks url={props.sharableTestUrl} />
+                        </div>
 
                     </TabsContent>
 

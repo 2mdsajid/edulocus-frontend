@@ -1,42 +1,93 @@
-import React from 'react'
-import { FaFacebook, FaFacebookMessenger, FaLinkedin, FaTelegramPlane, FaTwitter, FaWhatsapp } from 'react-icons/fa';
+import React from 'react';
+import { FaFacebookF, FaLinkedinIn, FaTelegramPlane, FaTwitter, FaWhatsapp, FaFacebookMessenger } from 'react-icons/fa';
 
-type Props = {
-    url: string
-    slug?: string
-    typeoftest?: string
-}
+// Define a more specific type for the props of ShareIcon
+type ShareIconProps = {
+    href: string;
+    icon: React.ElementType;
+    tooltip: string;
+};
 
-const TestShareLinks = (props: Props) => {
-    const { url, slug } = props
-    const facebookShareLink = `https://www.facebook.com/sharer.php?u=${url}`;
-    const twitterShareLink = `https://twitter.com/intent/tweet?url=${url}&text=${encodeURIComponent(slug || '')}`;
-    const whatsappShareLink = `https://api.whatsapp.com/send?text=${`${url}`}`;
-    const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
-    const telegramShareLink = `https://t.me/share/url?url=${url}`;
-    const messengerShareLink = `https://www.facebook.com/dialog/send?link=${encodeURIComponent(url)}&app_id=423237070046415&redirect_uri=${url}`;
-    return (
-        <div className='flex space-x-3'>
-            <a href={telegramShareLink} target="_blank" rel="noopener noreferrer">
-                <FaTelegramPlane size={24} />
-            </a>
-            <a href={facebookShareLink} target="_blank" rel="noopener noreferrer">
-                <FaFacebook size={24} />
-            </a>
-            <a href={whatsappShareLink} target="_blank" rel="noopener noreferrer">
-                <FaWhatsapp size={24} />
-            </a>
-            <a className='hidden md:block' href={messengerShareLink} target="_blank" rel="noopener noreferrer">
-                <FaFacebookMessenger size={24} />
-            </a>
-            <a href={twitterShareLink} target="_blank" rel="noopener noreferrer">
-                <FaTwitter size={24} />
-            </a>
-            <a href={linkedInShareUrl} target="_blank" rel="noopener noreferrer">
-                <FaLinkedin size={24} />
-            </a>
+// A reusable component for each social icon to keep the code clean
+const ShareIcon = ({ href, icon: Icon, tooltip }: ShareIconProps) => (
+    <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group relative"
+    >
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-600 transition-all duration-300 ease-in-out group-hover:bg-gray-800 group-hover:text-white dark:bg-gray-700 dark:text-gray-300 dark:group-hover:bg-white dark:group-hover:text-gray-800">
+            <Icon size={20} />
         </div>
-    )
-}
+        {/* Tooltip */}
+        <div className="absolute bottom-full mb-2 w-max scale-0 rounded-md bg-gray-800 px-3 py-1.5 text-xs font-medium text-white transition-all duration-300 group-hover:scale-100 dark:bg-gray-900">
+            {tooltip}
+            <div className="absolute left-1/2 -bottom-1 h-2 w-2 -translate-x-1/2 rotate-45 bg-gray-800 dark:bg-gray-900"></div>
+        </div>
+    </a>
+);
 
-export default TestShareLinks
+type TestShareLinksProps = {
+    url: string;
+    slug?: string;
+    typeoftest?: string;
+};
+
+const TestShareLinks = (props: TestShareLinksProps) => {
+    const { url, slug = "Check out this test!" } = props;
+    const encodedUrl = encodeURIComponent(url);
+    const encodedText = encodeURIComponent(slug);
+
+    const shareLinks = [
+        {
+            name: 'Telegram',
+            href: `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`,
+            icon: FaTelegramPlane,
+        },
+        {
+            name: 'Facebook',
+            href: `https://www.facebook.com/sharer.php?u=${encodedUrl}`,
+            icon: FaFacebookF,
+        },
+        {
+            name: 'WhatsApp',
+            href: `https://api.whatsapp.com/send?text=${encodedText}%20${encodedUrl}`,
+            icon: FaWhatsapp,
+        },
+        {
+            name: 'Twitter',
+            href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`,
+            icon: FaTwitter,
+        },
+        {
+            name: 'LinkedIn',
+            href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+            icon: FaLinkedinIn,
+        },
+        {
+            name: 'Messenger',
+            href: `https://www.facebook.com/dialog/send?link=${encodedUrl}&app_id=423237070046415&redirect_uri=${encodedUrl}`,
+            icon: FaFacebookMessenger,
+        }
+    ];
+
+    return (
+        <div className="rounded-2xl  border-purple-500 border-t-8 bg-white p-6 shadow-2xl dark:bg-gray-800 dark:border-gray-700">
+            <h4 className="mb-5 text-center text-lg font-bold text-gray-800 dark:text-white">
+                Share this Test
+            </h4>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+                {shareLinks.map((link) => (
+                    <ShareIcon
+                        key={link.name}
+                        href={link.href}
+                        icon={link.icon}
+                        tooltip={`Share on ${link.name}`}
+                    />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default TestShareLinks;

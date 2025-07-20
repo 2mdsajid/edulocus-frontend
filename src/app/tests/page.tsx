@@ -76,7 +76,7 @@ export default async function Page() {
                   <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
                     Premium Tests
                   </h2>
-                  <p className="mt-1 text-lg text-purple-600 dark:text-purple-400 font-semibold">
+                  <p className="mt-1 text-xs text-purple-600 dark:text-purple-400 font-semibold">
                     For Members Only
                   </p>
                 </div>
@@ -84,7 +84,7 @@ export default async function Page() {
               {!isSubscribed && (
                 <Button asChild className="mt-4 sm:mt-0 group">
                   <Link href="/membership">
-                    Upgrade to Membership <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    Try For Free <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </Button>
               )}

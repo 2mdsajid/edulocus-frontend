@@ -137,6 +137,12 @@ const page = async () => {
                                     </li>
                                 ))}
                             </ul>
+                            <Link
+                                href={'/membership/trial'}
+                                className="mt-6 flex w-full items-center justify-center rounded-md bg-purple-600 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-purple-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2"
+                            >
+                                Start Free Trial <ChevronRight className="ml-2 h-4 w-4" />
+                            </Link>
                         </CardContent>
                     </Card>
                 </div>
