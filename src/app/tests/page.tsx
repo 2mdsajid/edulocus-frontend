@@ -1,6 +1,6 @@
 import { getUserSession } from '@/lib/auth/auth';
 import { getStreamCookieForUnauthenticatedUser } from '@/lib/actions/try.actions';
-import { typeOfTestsAndDescriptionData } from '@/lib/data';
+import { STREAM_DETAILS, typeOfTestsAndDescriptionData } from '@/lib/data';
 import { redirect } from 'next/navigation';
 import LiveTestCard from './_components/LiveTestCard';
 import TestTypeCard from './_components/TestTypeCard';
@@ -41,6 +41,9 @@ export default async function Page() {
     (test) => test.accessLevel === 'PREMIUM'
   );
 
+
+  const streamLowerCase = stream.toLowerCase() as keyof typeof STREAM_DETAILS
+
   return (
     <div className="w-full  py-8 px-4">
       <div className="max-w-7xl mx-auto">
@@ -73,13 +76,14 @@ export default async function Page() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
               {!isSubscribed && (
                 <div>
-                  <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-                    Premium Tests
-                  </h2>
-                  <p className="mt-1 text-xs text-purple-600 dark:text-purple-400 font-semibold">
-                    For Members Only
-                  </p>
-                </div>
+                <h2 className="text-3xl font-extrabold tracking-tight ...">
+                  Premium Tests
+                </h2>
+                {/* Information: Clearly state the price and duration */}
+                <p className="mt-1 text-xs text-purple-600 ...">
+                  For Members Only (@{STREAM_DETAILS[streamLowerCase].price}{STREAM_DETAILS[streamLowerCase].duration})
+                </p>
+              </div>
               )}
               {!isSubscribed && (
                 <Button asChild className="mt-4 sm:mt-0 group">

@@ -36,13 +36,13 @@ export const STREAM_DETAILS = {
     price: 299,
     title : 'PG',
     desc:'NMCLE, CEE PG, USMLE',
-    duration:' /month'
+    duration:'/month'
   },
   ug:{
     price: 159,
     title:'UG',
     desc:'CEE UG, NURSING, NEET',
-    duration:' till CEE'
+    duration:' till CEE 2025'
   }
 }
 
