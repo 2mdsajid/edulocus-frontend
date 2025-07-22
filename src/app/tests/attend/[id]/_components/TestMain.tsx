@@ -324,7 +324,7 @@ const TestMain = (props: Props) => {
                         </div> */}
 
                         <div className=" w-full">
-                            <ContributeCardComponent isSubscribed={isSubscribed} />
+                            <ContributeCardComponent isSubscribed={isSubscribed} authToken={authToken} />
                         </div> 
 
                         <div className="w-full">

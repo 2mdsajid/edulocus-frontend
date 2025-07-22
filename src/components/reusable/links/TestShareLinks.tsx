@@ -64,11 +64,11 @@ const TestShareLinks = (props: TestShareLinksProps) => {
             href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
             icon: FaLinkedinIn,
         },
-        {
-            name: 'Messenger',
-            href: `https://www.facebook.com/dialog/send?link=${encodedUrl}&app_id=423237070046415&redirect_uri=${encodedUrl}`,
-            icon: FaFacebookMessenger,
-        }
+        // {
+        //     name: 'Messenger',
+        //     href: `https://www.facebook.com/dialog/send?link=${encodedUrl}&app_id=423237070046415&redirect_uri=${encodedUrl}`,
+        //     icon: FaFacebookMessenger,
+        // }
     ];
 
     return (
