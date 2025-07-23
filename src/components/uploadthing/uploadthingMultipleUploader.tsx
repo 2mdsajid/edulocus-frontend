@@ -3,8 +3,8 @@
 import { UploadFileResponse, useUploadThing } from "@/lib/uploadthing";
 import { useState } from "react";
 
+// The 'buttonClickedState' prop is no longer needed
 type UploadComponentProps = {
-    buttonClickedState: boolean
     imageUploaderApi: 'imageUploader',
     onUploadComplete: (res: UploadFileResponse<{ uploadedBy: string }>[]) => void;
     onUploadError: (e: any) => void;
@@ -12,58 +12,65 @@ type UploadComponentProps = {
 };
 
 export default function UploadThingMultipleUploader(props: UploadComponentProps) {
-    const { imageUploaderApi, onUploadBegin, onUploadComplete, onUploadError, buttonClickedState } = props;
+    const { imageUploaderApi, onUploadBegin, onUploadComplete, onUploadError } = props;
     const [files, setFiles] = useState<File[]>([]);
 
-    const handleFilesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files;
-        if (!files) return;
-        const newImages = Array.from(files).map((file) => file)
-        setFiles((prevState) => [...prevState, ...newImages]);
-    };
-
-    const { startUpload } = useUploadThing(
+    const { startUpload, isUploading } = useUploadThing(
         imageUploaderApi,
         {
-            onClientUploadComplete: (res: UploadFileResponse<{ uploadedBy: string }>[]) => {
+            onClientUploadComplete: (res) => {
                 onUploadComplete(res);
-                setFiles([]);
+                setFiles([]); // Clear the file list on successful upload
             },
             onUploadError: onUploadError,
             onUploadBegin: onUploadBegin,
         },
     );
+
+    const handleFilesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFiles = event.target.files;
+        if (!selectedFiles) return;
+
+        const newFiles = Array.from(selectedFiles);
+        
+        // Even though we're uploading immediately, updating state can be useful for UI feedback
+        setFiles(newFiles); 
+
+        // Start the upload immediately with the newly selected files
+        startUpload(newFiles);
+    };
+
     return (
         <div>
             <label
                 htmlFor="fileInput"
                 className="relative inline-block border p-2 rounded-md cursor-pointer font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-offset-2 hover:text-blue-500"
             >
-                {files.length > 0 ? <>
-                    {files.map((f, i) => {
-                        return <p key={i}>{f.name}</p>
-                    })}
-                </> : 'Choose file'}
+                {/* Use the `isUploading` state for user feedback */}
+                {isUploading ? (
+                    'Uploading...'
+                ) : files.length > 0 ? (
+                    // Display names of files being uploaded
+                    <>
+                        {files.map((f, i) => (
+                            <p key={i}>{f.name}</p>
+                        ))}
+                    </>
+                ) : (
+                    'Choose file(s) to upload'
+                )}
+                
                 <input
                     id="fileInput"
                     type="file"
                     className="sr-only"
                     multiple
                     onChange={handleFilesChange}
+                    // Disable the input while an upload is in progress
+                    disabled={isUploading}
                 />
             </label>
-            <div>
-                {files.length > 0 && (
-                    <button
-                        className="mt-4 bg-blue-600 text-white  rounded-md w-max py-2 px-3 flex items-center justify-center"
-                        onClick={(e:any) => {
-                            e.preventDefault();
-                            startUpload(files)
-                        }}>
-                        {buttonClickedState ? 'uploading....' : `Upload ${files.length} files`}
-                    </button>
-                )}
-            </div>
+            {/* The upload button is no longer needed */}
         </div>
     );
 }

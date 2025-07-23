@@ -41,7 +41,7 @@ const ImageUploaderComponent = (props: Props) => {
         <div className=''>
             <label className='block text-gray-700'>Upload Image</label>
             <UploadThingMultipleUploader
-                buttonClickedState={isButtonClicked}
+                // buttonClickedState={isButtonClicked}
                 imageUploaderApi='imageUploader'
                 onUploadBegin={onUploadBegin}
                 onUploadComplete={onUploadComplete}

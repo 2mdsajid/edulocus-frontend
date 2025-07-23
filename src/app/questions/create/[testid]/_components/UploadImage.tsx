@@ -58,7 +58,7 @@ const UploadImage = ({ field, onImageUploaded }: Props) => {
             <p className="text-sm text-gray-500 mb-2">Upload image for {field.toUpperCase()}</p>
             {/* Assuming UploadThingMultipleUploader can handle single file upload or you configure it to */}
             <UploadThingMultipleUploader
-                buttonClickedState={isButtonClicked}
+                // buttonClickedState={isButtonClicked}
                 imageUploaderApi='imageUploader'
                 onUploadBegin={onUploadBegin}
                 onUploadComplete={onUploadComplete}

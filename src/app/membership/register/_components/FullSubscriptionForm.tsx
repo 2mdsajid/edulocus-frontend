@@ -24,22 +24,22 @@ import { createSubscriptionRequest } from "@/lib/actions/users.actions"
 import ImageUploaderComponent from "@/components/uploadthing/ImageUploaderComponent"
 
 const formSchema = z.object({
-  phone: z.string()
-    .refine(value => /^\d{10,}$/g.test(value), {
-      message: "A valid 10-digit phone number is required."
-    }),
+    phone: z.string()
+        .refine(value => /^\d{10,}$/g.test(value), {
+            message: "A valid 10-digit phone number is required."
+        }),
 });
 
 type Props = {
-  user: TBaseUser
+    user: TBaseUser
 }
 
 // --- Reusable Support Footer ---
 const SupportFooter = () => (
     <CardFooter className="flex flex-col items-center border-t border-zinc-200 p-6 text-center text-sm text-zinc-600">
-         <a href="/membership/trial" className="font-semibold mb-3">
+        <a href="/membership/trial" className="font-semibold mb-3">
             Get Your Free Trial - <span className="text-purple-700 hover:text-purple-800 underline underline-offset-4">Click Here</span>
-          </a>
+        </a>
         <p className="font-medium text-zinc-800">For Support or Inquiries:</p>
         <div className="flex gap-4 mt-2">
             <a href="https://www.facebook.com/edu.locus" className="font-semibold text-purple-700 hover:text-purple-800 underline underline-offset-4" target="_blank" rel="noopener noreferrer">
@@ -112,7 +112,7 @@ const FullSubscriptionForm = (props: Props) => {
                     <CardContent>
                         {/* --- UPDATED SUCCESS MESSAGE --- */}
                         <p className="text-lg text-zinc-700">
-                           Thank you for your support to EduLocus. We&apos;ll soon activate your membership.
+                            Thank you for your support to EduLocus. We&apos;ll soon activate your membership.
                         </p>
                     </CardContent>
                     <SupportFooter />
@@ -165,15 +165,15 @@ const FullSubscriptionForm = (props: Props) => {
                             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-600 text-white font-bold">2</div>
                             <h3 className="text-xl font-semibold text-gray-800">Upload Receipt</h3>
                         </div>
-                         <div className="rounded-lg border border-zinc-200 p-4 bg-slate-50">
+                        <div className="rounded-lg border border-zinc-200 p-4 bg-slate-50">
                             <p className="text-center text-sm text-zinc-700 mb-4">
                                 After payment, upload the transaction screenshot here.
                             </p>
                             {uploadedImages.length > 0 ? (
                                 <div className="space-y-4">
-                                    <img 
-                                        src={uploadedImages[0]} 
-                                        alt="Uploaded Receipt" 
+                                    <img
+                                        src={uploadedImages[0]}
+                                        alt="Uploaded Receipt"
                                         className="w-full rounded-md border border-zinc-200"
                                     />
                                     <div className="flex items-center justify-center gap-2 text-sm text-green-600 font-medium">
@@ -190,7 +190,7 @@ const FullSubscriptionForm = (props: Props) => {
                     {/* === STEP 3: SUBMIT INFO === */}
                     <div className="space-y-4">
                         <div className="flex items-center gap-3">
-                           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-600 text-white font-bold">3</div>
+                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-600 text-white font-bold">3</div>
                             <h3 className="text-xl font-semibold text-gray-800">Submit Your Details</h3>
                         </div>
                         <div className="rounded-lg border border-zinc-200 p-4 bg-slate-50">
@@ -214,9 +214,9 @@ const FullSubscriptionForm = (props: Props) => {
                                         )}
                                     />
                                     <Button
-                                        className="w-full py-6 text-lg font-semibold bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/40 hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                                        className="w-full py-6 text-lg font-semibold bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/40 hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                                         type="submit"
-                                        disabled={isSubmitting}
+                                        disabled={isSubmitting || uploadedImages.length === 0}
                                     >
                                         {isSubmitting ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <Send className="mr-2 h-5 w-5" />}
                                         {isSubmitting ? 'Submitting...' : 'Complete Membership'}
