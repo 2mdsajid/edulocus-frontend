@@ -8,7 +8,7 @@ const AboutUs = (props: Props) => {
       <h2 className="text-3xl font-bold text-center mb-4">About Us</h2>
       <p className="text-lg  text-center leading-relaxed max-w-3xl mx-auto">
         We are an educational site run by dedicated students from various medical colleges, 
-        committed to providing the most affordable MCQs tailored specifically for 
+        committed to providing the most affordable MCQs tailored specifically for CEE UG, Nursing & 
         PG/MD/MS entrance exams. Join us on your journey to success!
       </p>
     </div>

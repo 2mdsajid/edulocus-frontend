@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from '@/components/ui/input'
 import { toast } from '@/hooks/use-toast'
-import { createSubscriptionRequest, createTrialRequest } from '@/lib/actions/users.actions'
+import { createTrialRequest } from '@/lib/actions/users.actions'
 import { TBaseUser } from "@/lib/schema/users.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CheckCircle, Gift, Loader2 } from "lucide-react"
@@ -55,7 +55,7 @@ const CreateTrialForm = (props: Props) => {
     if (!data) {
       toast({
         variant: "destructive",
-        title: "Submission Faileddddd",
+        title: "Submission Failed",
         description: message,
       })
       return setIsSubmitting(false)
@@ -78,7 +78,7 @@ const CreateTrialForm = (props: Props) => {
           </CardHeader>
           <CardContent>
             <p className="text-lg text-zinc-700">
-              <span className="capitalize">{user.name}</span>, Enjoy exclusive membership features on EduLocus for <span className="font-bold">5 days</span>.
+              <span className="capitalize">{user.name}</span>, enjoy exclusive membership features on EduLocus for <span className="font-bold">5 days</span>.
             </p>
           </CardContent>
           <CardFooter className="p-6">
@@ -143,21 +143,24 @@ const CreateTrialForm = (props: Props) => {
             </form>
           </Form>
         </CardContent>
+        {/* --- UPDATED CARD FOOTER --- */}
         <CardFooter className="flex flex-col items-center border-t border-zinc-200 p-6 text-center text-sm text-zinc-600">
           <a href="/membership/register" className="font-semibold mb-3">
-            Apply for membership - <span className="text-purple-700 hover:text-purple-800 underline underline-offset-4">Click Here</span>
+            Want full access? <span className="text-purple-700 hover:text-purple-800 underline underline-offset-4">Apply for Membership</span>
           </a>
           <p className="font-medium text-zinc-800">For Support or Inquiries:</p>
-          <div className="flex flex-col gap-4 mt-2">
-            <div className="flex gap-4">
-              <a href="https://www.facebook.com/edu.locus" className="font-semibold text-purple-700 hover:text-purple-800 underline underline-offset-4" target="_blank" rel="noopener noreferrer">
-                Facebook
-              </a> .
-              <a href="mailto:edulocusweb@gmail.com" className="font-semibold text-purple-700 hover:text-purple-800 underline underline-offset-4">
-              edulocusweb@gmail.com
-              </a>
-            </div>
-            {/* <span className="text-zinc-600">or</span> */}
+          <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 mt-2">
+            <a href="https://www.facebook.com/edu.locus" className="font-semibold text-purple-700 hover:text-purple-800 underline underline-offset-4" target="_blank" rel="noopener noreferrer">
+              Facebook
+            </a>
+            <span className="text-zinc-400">•</span>
+            <a href="https://wa.me/9779763249052" className="font-semibold text-purple-700 hover:text-purple-800 underline underline-offset-4" target="_blank" rel="noopener noreferrer">
+              WhatsApp
+            </a>
+            <span className="text-zinc-400">•</span>
+            <a href="mailto:edulocusweb@gmail.com" className="font-semibold text-purple-700 hover:text-purple-800 underline underline-offset-4">
+              Email
+            </a>
           </div>
         </CardFooter>
       </Card>

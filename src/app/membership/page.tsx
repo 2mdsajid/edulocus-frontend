@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { 
     CheckCircle, ChevronRight, Star, Zap, Repeat, BarChart, BookOpen, 
     FileText, Wrench, Sliders, Shuffle, TrendingUp, RefreshCcw, 
-    Cpu
+    Cpu, Mail, MessageSquare, Phone
 } from "lucide-react";
 import Link from "next/link";
 import { constructMetadata } from "@/lib/data"; // Assuming this path is correct
@@ -24,7 +24,6 @@ const page = async () => {
         { title: 'Chapter Wise Tests', icon: FileText },
         { title: 'Comprehensive Dashboard', icon: CheckCircle },
         { title: '24/7 Counseling & Mentorship Support', icon: CheckCircle },
-
     ];
     
     const premiumTestFeatures = [
@@ -38,10 +37,7 @@ const page = async () => {
         { title: 'Unlock All Past Papers', icon: CheckCircle },
         { title: 'AI Based Analysis', icon: Cpu },
         { title: 'Priority Support & Early Access to New Features', icon: CheckCircle },
-
     ];
-
- 
 
     // Combine all premium features for easy rendering
     const allPremiumFeatures = premiumTestFeatures;
@@ -148,14 +144,36 @@ const page = async () => {
                 </div>
             </section>
 
+            {/* ========= NEW: Contact/Support Section ========= */}
+            {/* <section className="bg-white py-16">
+                
+            </section> */}
+
             {/* ========= Final CTA Section ========= */}
-            <section className="bg-purple-700 py-20 text-center text-white">
+            <section className="bg-purple-700 py-10 text-center text-white">
                 <div className="container mx-auto px-4">
-                    <h2 className="mb-4 text-3xl font-bold">Ready to Elevate Your Prep?</h2>
-                    <p className="mx-auto mb-8 max-w-2xl text-lg text-purple-200">
-                        Equip yourself with the tools, resources, and insights that make a difference. Your journey to success starts now.
+                <div className="container mx-auto px-4 text-center">
+                    <h2 className="mb-4 text-3xl font-bold text-white">
+                        Have Questions? We&apos;re Here to Help
+                    </h2>
+                    <p className="mx-auto max-w-3xl text-lg text-purple-100 mb-8">
+                        Our team is always ready to assist you with any inquiries or support you might need. Reach out to us anytime.
                     </p>
-                    <Button asChild size="lg" variant="secondary" className="rounded-full px-8 py-6 text-base font-semibold">
+                    <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-4 mt-2 text-lg">
+                        <a href="https://www.facebook.com/edu.locus" className="font-semibold text-purple-100 hover:text-purple-200 underline underline-offset-4" target="_blank" rel="noopener noreferrer">
+                            Facebook
+                        </a>
+                        <span className="hidden sm:inline text-gray-300">•</span>
+                        <a href="https://wa.me/9779763249052" className="font-semibold text-purple-100 hover:text-purple-200 underline underline-offset-4" target="_blank" rel="noopener noreferrer">
+                            WhatsApp
+                        </a>
+                        <span className="hidden sm:inline text-gray-300">•</span>
+                        <a href="mailto:edulocusweb@gmail.com" className="font-semibold text-purple-100 hover:text-purple-200 underline underline-offset-4">
+                            Email Us
+                        </a>
+                    </div>
+                </div>
+                    <Button asChild size="lg"  className="rounded-full px-8 py-6 mt-8 text-base font-semibold bg-white text-black hover:bg-gray-200">
                         <Link href={'/membership/register'}>
                             Get Started Now <ChevronRight className="ml-2 h-5 w-5" />
                         </Link>
