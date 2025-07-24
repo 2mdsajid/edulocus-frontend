@@ -4,6 +4,7 @@ import React from 'react'
 import UsersTableClient from './_components/UserTableClient'
 import { Metadata } from 'next';
 import { constructMetadata } from '@/lib/data';
+import UserAnalyticsClient from './_components/UsersAnalyticsClient';
 
 export const metadata: Metadata = constructMetadata({
     title: 'Admin | User Management',
@@ -18,7 +19,8 @@ const UsersPage = async () => {
     }    
 
     return (
-        <div className="container mx-auto py-8 px-4">
+        <div className="container mx-auto py-8 px-4 space-y-5">
+            <UserAnalyticsClient users={users} />
             <UsersTableClient initialUsers={users} />
         </div>
     )

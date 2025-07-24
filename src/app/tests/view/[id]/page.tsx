@@ -64,9 +64,9 @@ const page = async (props: Props) => {
     return (
         <div className="flex flex-col lg:flex-row flex-grow gap-5 bg-bg1">
             <div className="w-full lg:w-[40%]  bg-primary dark:bg-dark-primary border p-8 rounded-lg shadow h-fit">
-                {testMetadata.image && (
+                {testMetadata.imageUrl && (
                     <img
-                        src={testMetadata.image}
+                        src={testMetadata.imageUrl}
                         alt={testMetadata.name}
                         className="rounded-md w-full h-48 object-cover mb-4"
                         loading="lazy"
