@@ -10,11 +10,21 @@ export const getAllUsers = async (): Promise<{
     message: string;
 }> => {
     try {
+
+        const cookieStore = cookies();
+        const authToken = cookieStore.get("auth-token")?.value;
+
+        if (!authToken) {
+            return { data: null, message: "User not logged in!" };
+        }
+
+
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/users/get-all-users`, {
             method: "GET",
             cache: 'no-store',
             headers: {
                 "Content-Type": "application/json",
+                "authorization": "Bearer " + authToken,
             }
         });
 
