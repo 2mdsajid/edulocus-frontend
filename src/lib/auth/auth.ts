@@ -45,6 +45,7 @@ export const getUserSession = async (): Promise<{
 
 
   } catch (error) {
+    console.log(error)
     return { data: null, message: "Some Error Occured while getting user session!" };
   }
 };

@@ -142,10 +142,10 @@ const FullSubscriptionForm = (props: Props) => {
                     {/* --- ADDED PRICING DETAILS --- */}
                     <div className="mt-4 rounded-lg bg-slate-50 border border-slate-200 py-2 px-4">
                         <p className="text-center font-semibold text-gray-800">
-                            Membership fee for {user.stream} is Rs {STREAM_DETAILS[user.stream.toLowerCase() as keyof typeof STREAM_DETAILS].price} {STREAM_DETAILS[user.stream.toLowerCase() as keyof typeof STREAM_DETAILS].duration}.
+                            Membership fee for {user.stream} is Rs {STREAM_DETAILS[user.stream].price} {STREAM_DETAILS[user.stream].duration}.
                         </p>
                         <p className="text-center text-zinc-600 text-sm">
-                            [{STREAM_DETAILS[user.stream.toLowerCase() as keyof typeof STREAM_DETAILS].desc}]
+                            [{STREAM_DETAILS[user.stream].desc}]
                         </p>
                     </div>
                 </CardHeader>

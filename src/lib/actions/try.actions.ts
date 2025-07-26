@@ -1,9 +1,9 @@
 'use server'
 
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { TStream } from "../schema/users.schema";
 
-export const setStreamCookieForUnauthenticatedUser = async (stream: string) => {
+export const setStreamCookieForUnauthenticatedUser = async (stream: TStream) => {
     const cookieStore = await cookies()
     cookieStore.set('stream', stream, {
         httpOnly: true,

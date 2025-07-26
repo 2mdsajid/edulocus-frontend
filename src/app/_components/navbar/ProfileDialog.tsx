@@ -61,7 +61,7 @@ const ProfileDialog = (props: Props) => {
             <div className='my-2 flex gap-3 items-center text-lg cursor-pointer rounded-sm p-1 hover:bg-gray-500'
               onClick={() => {
                 logOut()
-                router.push('/')
+                router.refresh()
               }}>
               <BiLogOutCircle />
               Log Out

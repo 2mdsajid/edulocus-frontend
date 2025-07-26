@@ -73,9 +73,9 @@ const TestBasicAnalysis = (props: Props) => {
                     />
                 </div>
             </div>
-            <div className="w-full">
+            {/* <div className="w-full">
                 <VariousScoresPieChart data={scoreParametersData} />
-            </div>
+            </div> */}
         </div>
     )
 }

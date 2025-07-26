@@ -42,7 +42,6 @@ export default async function Page() {
   );
 
 
-  const streamLowerCase = stream.toLowerCase() as keyof typeof STREAM_DETAILS
 
   return (
     <div className="w-full  py-8 px-4">
@@ -81,7 +80,7 @@ export default async function Page() {
                 </h2>
                 {/* Information: Clearly state the price and duration */}
                 <p className="mt-1 text-xs text-purple-600 ...">
-                  For Members Only (@{STREAM_DETAILS[streamLowerCase].price}{STREAM_DETAILS[streamLowerCase].duration})
+                  For Members Only (@{STREAM_DETAILS[stream].price}{STREAM_DETAILS[stream].duration})
                 </p>
               </div>
               )}

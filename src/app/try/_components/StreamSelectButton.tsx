@@ -5,9 +5,10 @@ import { setStreamCookieForUnauthenticatedUser } from '@/lib/actions/try.actions
 import { useRouter, useSearchParams } from 'next/navigation' // Import useSearchParams
 import React from 'react'
 import { STREAM_DETAILS } from '@/lib/data'
+import { TStream } from '@/lib/schema/users.schema'
 
 type Props = {
-    stream: "pg" | "ug"
+    stream: TStream
     ru: string
 }
 
@@ -18,12 +19,17 @@ const StreamSelectButton = (props: Props) => {
     const handleClick = async () => {
         setIsLoading(true);
         try {
-            await setStreamCookieForUnauthenticatedUser(props.stream);
+            try {
+                await setStreamCookieForUnauthenticatedUser(props.stream);
 
-            if (props.ru) {
-                router.push(props.ru); // Redirect back to the original page
-            } else {
-                router.push(`/tests`); // Fallback if no redirectBack URL is found
+                if (props.ru) {
+                    router.push(props.ru); // Redirect back to the original page
+                } else {
+                    router.push(`/tests`); // Fallback if no redirectBack URL is found
+                }
+            } catch (error) {
+                console.error("An error occurred:", error);
+                // Optionally, display an error message to the user
             }
         } finally {
             setIsLoading(false);

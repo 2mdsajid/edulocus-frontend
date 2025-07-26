@@ -31,20 +31,29 @@ import {
 } from 'lucide-react';
 
 
-export const STREAM_DETAILS = {
-  pg:{
+export type TStreamDetails = {
+  [key: string]: {
+    price: number;
+    title: TStream;
+    desc: string;
+    duration: string;
+  };
+};
+
+export const STREAM_DETAILS: TStreamDetails = {
+  PG: {
     price: 299,
-    title : 'PG',
-    desc:'NMCLE, CEE PG, USMLE',
-    duration:'/month'
+    title: 'PG',
+    desc: 'NMCLE, CEE PG, USMLE',
+    duration: '/month',
   },
-  ug:{
+  UG: {
     price: 159,
-    title:'UG',
-    desc:'CEE UG, NURSING, NEET',
-    duration:' till CEE 2025'
-  }
-}
+    title: 'UG',
+    desc: 'CEE UG, NURSING, NEET',
+    duration: ' till CEE 2025',
+  },
+};
 
 
 export type TAccessLevel = 'FREE' | 'PREMIUM';

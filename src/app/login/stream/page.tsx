@@ -3,7 +3,8 @@ import { getAllStreams, setUserStream } from '@/lib/actions/stream.actions'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import ErrorPage from '@/components/reusable/ErrorPage'
-import SetUserStreamButton from './_components/SetUserStreamButton'
+import SetUserStreamButton from './_components/StreamSelectionPage'
+import StreamSelectionPage from './_components/StreamSelectionPage'
 
 type Props = {
     searchParams: {
@@ -13,7 +14,7 @@ type Props = {
 
 const page = async (props: Props) => {
 
-    const redirectUrl = props.searchParams.ru
+    const redirectUrl = props.searchParams.ru || '/dashboard'
 
     const { data: user, message: authMessage } = await getUserSession()
     if (!user || !user.googleId || !user.id) {
@@ -22,7 +23,7 @@ const page = async (props: Props) => {
 
     if (user.isCompleted) {
         await setUserStream(user.stream)
-        redirect('/dashboard')
+        redirect(redirectUrl)
     }
 
     const { data: streams, message: streamsMessage } = await getAllStreams()
@@ -33,11 +34,16 @@ const page = async (props: Props) => {
 
     return (
         <div className='min-h-screen bg-background flex flex-col items-center justify-center p-8 py-12'>
-            <h1 className='text-2xl font-bold mb-5'>Select A Stream</h1>
+            <div className="text-center mb-12">
+                <h1 className="text-4xl md:text-5xl font-extrabold text-slate-800 dark:text-white tracking-tight">
+                    What are you preparing for?
+                </h1>
+                <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
+                    Select your stream to personalize your experience.
+                </p>
+            </div>            
             <div className='flex gap-4'>
-                {streams?.map((stream) => (
-                    <SetUserStreamButton key={stream} stream={stream} ru={redirectUrl} />
-                ))}
+                <StreamSelectionPage ru={redirectUrl} />
             </div>
         </div>
     )
