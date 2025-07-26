@@ -46,15 +46,15 @@ const StreamSelectionPage = ({ ru }: Props) => {
             {/* Selection Cards */}
             <div className="flex flex-col md:flex-row items-center gap-8">
                 <StreamSelectionCard
-                    title={STREAM_DETAILS.ug.title}
-                    description={STREAM_DETAILS.ug.desc}
+                    title={STREAM_DETAILS.UG.title}
+                    description={STREAM_DETAILS.UG.desc}
                     stream="UG"
                     isSelected={selectedStream === 'UG'}
                     onSelect={setSelectedStream}
                 />
                 <StreamSelectionCard
-                    title={STREAM_DETAILS.pg.title}
-                    description={STREAM_DETAILS.pg.desc}
+                    title={STREAM_DETAILS.PG.title}
+                    description={STREAM_DETAILS.PG.desc}
                     stream="PG"
                     isSelected={selectedStream === 'PG'}
                     onSelect={setSelectedStream}

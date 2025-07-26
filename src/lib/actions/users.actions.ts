@@ -326,6 +326,13 @@ export const changeStream = async (stream: TStream): Promise<{
             return { data: null, message };
         }
 
+        await  cookieStore.set('stream', stream, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 60 * 60 * 24 * 30, // 30 days
+            path: '/',
+        })
+
         const { data, message } = await response.json();
         return { data, message };
     } catch (error) {
