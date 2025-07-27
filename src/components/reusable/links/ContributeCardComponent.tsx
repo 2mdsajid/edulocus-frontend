@@ -46,13 +46,14 @@ export default function CommunityAndMembershipCard({ isSubscribed, authToken }: 
                   <span className="sr-only">Navigate to login</span>
                 </Link>
               </Button>
-              <div className="my-8 border-t border-gray-200"></div>
             </div>
           </>
         )}
 
 
         {/* --- Community Section --- */}
+        <div className="my-8 border-t border-gray-200"></div>
+
         <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:gap-8 sm:text-left">
           {/* Icon */}
           <div className="flex-shrink-0">
