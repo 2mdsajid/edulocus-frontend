@@ -4,6 +4,7 @@ import { getAllTestsByType } from '@/lib/actions/tests.actions'
 import { TBaseCustomTest } from '@/lib/schema/tests.schema'
 import ChangeCategoryButton from './_components/ChangeCategoryButton'
 import DisplayCustomTests from './_components/DisplayCustomTests'
+import { getUserSession } from '@/lib/auth/auth'
 
 type Props = {
   searchParams: {
@@ -12,6 +13,10 @@ type Props = {
 }
 
 const page = async (props: Props) => {
+
+  const { data: user } = await getUserSession();
+  const isUserSubscribed = user?.isSubscribed || false
+
 
   const { data: customTestsData, message: customTestsDataMessage } = await getAllTestsByType('PAST_PAPER')
   if (!customTestsData || customTestsData.length === 0) {
@@ -27,7 +32,7 @@ const page = async (props: Props) => {
       {(uniqueCategories.length > 0)
         && <ChangeCategoryButton categories={uniqueCategories} />}
 
-      <DisplayCustomTests customTestsData={customTestsData} />
+      <DisplayCustomTests customTestsData={customTestsData} isUserSubscribed={isUserSubscribed} />
     </div>
   )
 }
