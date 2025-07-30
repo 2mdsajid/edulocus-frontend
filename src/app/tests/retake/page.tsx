@@ -9,10 +9,11 @@ import { getRecentTests } from '@/lib/actions/tests.actions';
 import { RecentTestsClientPage } from './_components/RecentTestsClientPage';
 import NoTestFoundError from '@/components/reusable/NoTestFoundError';
 
-export const metadata =  constructMetadata({
-  title: `Edulocus | Recent Tests`,
-  description: `Review your recent test history, check your scores, and retake tests to improve.`,
+export const metadata = constructMetadata({
+  title: "Edulocus | Retake Test",
+  description: "Attempt previous tests again to track your improvement over time."
 });
+
 
 // This is the type for the data you will receive
 export type TRecentTest = {

@@ -4,6 +4,14 @@ import { Separator } from "@/components/ui/separator";
 import { GROUP_FEATURES } from "@/lib/data";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { constructMetadata } from "@/lib/data";
+
+
+export const metadata = constructMetadata({
+    title: 'EduLocus | Groups',
+    description: 'Collaborate with peers, track progress, and create custom assessments with EduLocus Groups.'
+});
+
 
 const page = async () => { 
     return (

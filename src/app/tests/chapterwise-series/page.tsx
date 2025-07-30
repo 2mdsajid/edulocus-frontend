@@ -9,7 +9,7 @@ type Props = {}
 
 export const metadata = {
     title: "Edulocus | Chapter-Wise Series",
-    description: "Participate in live tests conducted by Edulocus"
+    description: "Participate in live chapter wise tests conducted by Edulocus"
 }
 
 

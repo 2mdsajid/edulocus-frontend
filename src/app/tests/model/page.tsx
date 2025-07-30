@@ -3,6 +3,14 @@ import ErrorPage from '@/components/reusable/ErrorPage'
 import TestList from './_components/TestList'
 import { getAllTestsByType } from '@/lib/actions/tests.actions'
 import { getUserSession } from '@/lib/auth/auth'
+import { constructMetadata } from '@/lib/data'
+
+
+export const metadata = constructMetadata({
+  title: "Edulocus | Model Exams",
+  description: "Simulate exam day with our realistic model tests."
+});
+
 
 type Props = {
 

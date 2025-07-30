@@ -42,3 +42,4 @@ type TTypeOfTest = "MODEL"
     | "RETAKE"
     | "PAST_PAPER"
     | "LIVE"
+    | "MOCK" //newly added for exclusive 200 marks tests

@@ -6,10 +6,11 @@ import { getTotalQuestionsPerSubjectAndChapter } from '@/lib/actions/questions.a
 
 type Props = {}
 
-export const metadata =  constructMetadata({
-  title: `Edulocus | Chapterwise Test`,
-  description: `Chapterwise test created from EduLocus for a comprehensive learning experience.`,
+export const metadata = constructMetadata({
+  title: "Edulocus | Chapter Wise Tests",
+  description: "Drill down into individual chapters of a se=pecific subject to strengthen your knowledge."
 });
+
 
 const page = async (props: Props) => {
 

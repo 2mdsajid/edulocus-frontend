@@ -6,10 +6,11 @@ import SubjectsList from './_components/SubjectsList'
 
 type Props = {}
 
-export const metadata =  constructMetadata({
-  title: `Edulocus | Subjectwise Test`,
-  description: `Subjectwise test created from EduLocus for a comprehensive learning experience.`,
+export const metadata = constructMetadata({
+  title: "Edulocus | Subject Wise Tests",
+  description: "Master specific subjects with our targeted practice tests."
 });
+
 
 const page = async (props: Props) => {
 

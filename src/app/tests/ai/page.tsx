@@ -1,5 +1,12 @@
 
+import { constructMetadata } from '@/lib/data';
 import React from 'react'
+
+export const metadata = constructMetadata({
+  title: "Edulocus | AI Generated Tests",
+  description: "Get personalized tests generated just for you by our advanced AI."
+});
+
 
 type Props = {}
 

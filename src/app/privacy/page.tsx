@@ -5,7 +5,7 @@ type Props = {}
 
 export const metadata = constructMetadata({
     title: `Edulocus | Privacy`,
-    description: `Privacy policies for EduLocus members data.`,
+    description: `Privacy policies for EduLocus users.`,
 });
 
 

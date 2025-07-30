@@ -2,8 +2,14 @@ import ErrorPage from '@/components/reusable/ErrorPage'
 import { getAllTestsByType } from '@/lib/actions/tests.actions'
 import React from 'react'
 import TestList from './_components/TestsList'
+import { constructMetadata } from '@/lib/data'
 
 type Props = {}
+
+export const metadata = constructMetadata({
+    title: "Edulocus | Daily Test",
+    description: "Engage with fresh questions and new challenges every day."
+});
 
 const page = async (props: Props) => {
     const { data: customTestsData, message: customTestsDataMessage } = await getAllTestsByType('DAILY_TEST')

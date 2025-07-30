@@ -10,10 +10,11 @@ import MistakeRevisionClient from './_components/MistakeRevisionClient';
 import NoTestFoundError from '@/components/reusable/NoTestFoundError';
 
 
-export const metadata: Metadata = constructMetadata({
-  title: `Edulocus | Mistakes Revision`,
-  description: `An in-depth analysis of your mistake questions. Practice them to improve your efficiency.`,
+export const metadata = constructMetadata({
+  title: "Edulocus | Revision Test",
+  description: "Reinforce your learning by revisiting challenging questions."
 });
+
 
 const Page = async () => {
   const { data: user } = await getUserSession();

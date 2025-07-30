@@ -6,8 +6,8 @@ import { redirect } from 'next/navigation';
 import { DifficultyTestForm } from './_components/DifficultyTestForm';
 
 export const metadata = constructMetadata({
-  title: `Edulocus | Difficulty Based Test`,
-  description: `Difficulty Based Test created from EduLocus for a comprehensive learning experience.`,
+  title: "Edulocus | Difficulty Based Tests",
+  description: "Challenge yourself with tests based on varying difficulty levels."
 });
 
 

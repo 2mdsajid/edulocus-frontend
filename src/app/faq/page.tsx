@@ -8,6 +8,15 @@ import {
 import { FAQ_QUESTIONS } from '@/lib/data';
 
 
+import { constructMetadata } from '@/lib/data';
+
+export const metadata = constructMetadata({
+  title: 'EduLocus | FAQ',
+  description: 'Frequently Asked Questions about EduLocus and its services.'
+});
+
+
+
 const FAQPage: React.FC = () => {
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-indigo-50 to-purple-50 py-20 px-4 md:px-10 lg:px-20 xl:px-32">

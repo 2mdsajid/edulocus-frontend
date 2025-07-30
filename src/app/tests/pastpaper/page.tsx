@@ -5,6 +5,12 @@ import { TBaseCustomTest } from '@/lib/schema/tests.schema'
 import ChangeCategoryButton from './_components/ChangeCategoryButton'
 import DisplayCustomTests from './_components/DisplayCustomTests'
 import { getUserSession } from '@/lib/auth/auth'
+import { constructMetadata } from '@/lib/data'
+
+export const metadata = constructMetadata({
+  title: "Edulocus | Past Papers",
+  description: "Hone your skills with a wide collection of previous exam papers."
+});
 
 type Props = {
   searchParams: {

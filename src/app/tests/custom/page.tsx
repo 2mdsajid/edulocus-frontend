@@ -6,9 +6,9 @@ import { getTotalQuestionsPerSubjectAndChapter } from '@/lib/actions/questions.a
 import { CustomTestForm } from './_components/CustomTestForm';
 import { constructMetadata } from '@/lib/data';
 
-export const metadata =  constructMetadata({
-  title: `Edulocus | Custom Test`,
-  description: `Custom Test created by EduLocus for a comprehensive learning experience.`,
+export const metadata = constructMetadata({
+  title: "Edulocus | Custom Test",
+  description: "Design your own tests to perfectly match your study needs."
 });
 
 

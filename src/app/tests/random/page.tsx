@@ -5,11 +5,10 @@ import RandomTestForm from './_components/RandomTestForm';
 import ErrorPage from '@/components/reusable/ErrorPage';
 import { constructMetadata } from '@/lib/data';
 
-export const metadata =  constructMetadata({
-  title: `Edulocus | Random Test`,
-  description: `Random Test created from EduLocus for a comprehensive learning experience.`,
+export const metadata = constructMetadata({
+  title: "Edulocus | Random Test",
+  description: "Keep your practice sessions fresh with a random assortment of questions."
 });
-
 
 const Page = async () => {
   const { data: user } = await getUserSession();
