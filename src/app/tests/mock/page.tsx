@@ -3,18 +3,20 @@ import ErrorPage from '@/components/reusable/ErrorPage'
 import TestList from './_components/TestList'
 import { getAllTestsByType } from '@/lib/actions/tests.actions'
 import { getUserSession } from '@/lib/auth/auth'
+import { constructMetadata } from '@/lib/data'
 
-type Props = {
+export const metadata = constructMetadata({
+  title: "Edulocus | Mock Tests",
+  description: "CEE syllabus 200 marks full mock tests"
+})
 
-}
-
-const page = async (props: Props) => {
+const page = async () => {
 
   const { data: user } = await getUserSession();
   const isUserSubscribed = user?.isSubscribed || false
 
 
-  const { data: customTestsData, message: customTestsDataMessage } = await getAllTestsByType('MODEL')
+  const { data: customTestsData, message: customTestsDataMessage } = await getAllTestsByType('MOCK')
   // console.log(customTestsData)
   if (!customTestsData || customTestsData.length === 0) {
     return <ErrorPage errorMessage={customTestsDataMessage} />

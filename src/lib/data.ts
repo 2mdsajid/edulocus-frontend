@@ -18,6 +18,7 @@ import {
   FileText,
   FlaskConical,
   Folder,
+  GraduationCap,
   Lightbulb,
   LucideIcon,
   RefreshCcw,
@@ -65,6 +66,7 @@ export type TTypeOfTestsAndDescription = {
   accessLevel: TAccessLevel;
   icon: LucideIcon;
   href: string; 
+  isPopular?: boolean;
 }
 
 // Data array with the new fields
@@ -79,6 +81,16 @@ export const typeOfTestsAndDescriptionData: TTypeOfTestsAndDescription[] = [
     href: '/tests/dailytest'
   },
   {
+    type: 'MODEL',
+    title: 'Mock Tests',
+    description: 'Full length mock tests based on CEE syllabus.',
+    isAvailableTo: ['UG'],
+    accessLevel: 'FREE',
+    icon: GraduationCap,
+    href: '/tests/mock',
+    isPopular:true
+  },
+  {
     type: 'PAST_PAPER',
     title: 'Past Papers',
     description: 'Collection of past papers from various exams.',
@@ -88,7 +100,7 @@ export const typeOfTestsAndDescriptionData: TTypeOfTestsAndDescription[] = [
     href: '/tests/pastpaper'
   },
   {
-    type: 'MODEL',
+    type: 'MOCK',
     title: 'Model Exams',
     description: 'Mock test to simulate real exam conditions.',
     isAvailableTo: ['UG','PG'],
@@ -148,7 +160,7 @@ export const typeOfTestsAndDescriptionData: TTypeOfTestsAndDescription[] = [
     isAvailableTo: ['UG','PG'],
     accessLevel: 'PREMIUM',
     icon: TrendingUp,
-    href: '/tests/performance'
+    href: '/tests/performance',
   },
   {
     type: 'REVISION',

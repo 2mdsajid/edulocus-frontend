@@ -33,9 +33,9 @@ export default function TestList({ tests, isUserSubscribed }: Props) {
           {/* Unlocked Tests Section */}
           {unlockedTests.length > 0 && (
             <section>
-              <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6">
+              {/* <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6">
                 Free Tests
-              </h2>
+              </h2> */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {unlockedTests.map(test => (
                   <TestCard key={test.id} test={test} isLocked={false} />

@@ -61,7 +61,7 @@ export type CustomTest = {
     specialUrl?: string
     imageUrl?: string
     specialImage?: string
-
+    isAvailableToPremium?: boolean
 }
 
 export type TPastPaper = {
@@ -134,7 +134,8 @@ export type TBaseCustomTest = Pick<CustomTest,
     'date' |
     'archive' |
     'questions' |
-    'stream'
+    'stream' |
+    'isAvailableToPremium'
 > & {
     creator?: string,
     pastPaper: TBasePastPaper | null

@@ -53,7 +53,7 @@ const page = async (props: Props) => {
         return <ErrorPage errorMessage={message} />
     }
 
-    console.log(testMetadata)
+    // console.log(testMetadata)
     const rankedUsers = [...testMetadata.usersAttended]
         .sort((a, b) => b.totalScore - a.totalScore) // Sort by score (descending)
         .map((user, index) => ({
