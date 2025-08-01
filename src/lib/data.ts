@@ -323,7 +323,7 @@ export const navItems = [
   { name: 'Home', href: '/' },
   { name: 'Tests', href: '/tests' },
   // { name: 'Membership', href: '/membership' },
-  { name: 'Dhasboard', href: '/dashboard' },
+  { name: 'Dashboard', href: '/dashboard' },
 ]
 
 
