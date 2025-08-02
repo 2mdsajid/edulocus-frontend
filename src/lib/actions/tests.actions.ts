@@ -55,6 +55,41 @@ export const getAllTestsCreatedByUser = async (): Promise<{
 };
 
 
+export const getAllMockTests = async (): Promise<{
+    data: TBaseCustomTest[] | null;
+    message: string;
+}> => {
+    try {   
+        const cookieStore = cookies()
+        const stream = cookieStore.get('stream')?.value
+
+        if (!stream) {
+            return { data: null, message: "Stream not found!" }
+        }
+
+
+        const response = await fetch(`${process.env.BACKEND}/tests/get-mock-tests`, {
+            method: "GET",
+            cache: 'no-store',
+            headers: {
+                "Content-Type": "application/json",
+                "stream": stream,
+            },
+        });
+
+        if (!response.ok) {
+            const { data, message } = await response.json();
+            return { data: [], message }
+        }
+
+        const { data, message } = await response.json();
+        return { data, message };
+    } catch (error) {
+        return { data: null, message: "Some Error Occured while fetching all tests!" };
+    }
+}; 
+        
+
 export const getTypesOfTests = async (): Promise<{
     data: TTypeOfTestsAndDescription[] | null;
     message: string;

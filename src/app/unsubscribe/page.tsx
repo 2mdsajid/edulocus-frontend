@@ -1,9 +1,14 @@
 import { unsubscribeEmail } from '@/lib/actions/users.actions'
 import { getUserSession } from '@/lib/auth/auth'
+import { constructMetadata } from '@/lib/data';
 import { redirect } from 'next/navigation'
 import React from 'react'
 
-/* bro got no time to make a new page to unsubscribe for the cold emails. please if you are a developer then kindly do not spam our mail. we'll update the page very soon */
+
+export const metadata = constructMetadata({
+  title: "Edulocus | Unsubscribe",
+  description: "Unsubscribe from our mailing list."
+});
 
 const UnsubscribePage = async () => {
   const { data: user, message } = await getUserSession()
