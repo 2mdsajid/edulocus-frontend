@@ -11,7 +11,7 @@ const Footer = () => {
                      */}
                     <div className='items-center md:items-start flex flex-col'>
                     <div className='flex flex-wrap items-center gap-x-4 gap-y-2 mb-2'>
-    <Link target='_blank' referrerPolicy='no-referrer' href={'https://www.facebook.com/profile.php?id=61567770503553'} className='flex items-center text-xl text-gray-100 hover:text-blue-600 transition-colors'>
+    <Link target='_blank' referrerPolicy='no-referrer' href={'https://www.facebook.com/edu.locus'} className='flex items-center text-xl text-gray-100 hover:text-blue-600 transition-colors'>
         <FaFacebookF />
         <span className="sr-only">Facebook</span>
     </Link>

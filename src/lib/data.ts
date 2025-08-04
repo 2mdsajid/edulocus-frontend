@@ -43,13 +43,13 @@ export type TStreamDetails = {
 
 export const STREAM_DETAILS: TStreamDetails = {
   PG: {
-    price: 299,
+    price: 199,
     title: 'PG',
     desc: 'NMCLE, CEE PG, USMLE',
     duration: '/month',
   },
   UG: {
-    price: 159,
+    price: 100,
     title: 'UG',
     desc: 'CEE UG, NURSING, NEET',
     duration: ' till CEE 2025',
